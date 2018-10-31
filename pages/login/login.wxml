@@ -1,0 +1,18 @@
+<view>
+    <view class="handPortrait">
+        
+    </view>
+    <view>
+        <view class="account clearfix box">
+            <text class="account_text fl">账号：</text>
+            <input class="account_input fl"/>
+        </view>
+        <view class="password clearfix box">
+            <text class="password_text fl">密码：</text>
+            <input class="password_input fl"/>
+        </view>
+    </view>
+    <text class="bind">
+        绑定
+    </text> 
+</view>

@@ -1,0 +1,3 @@
+<view class="scan" bindtouchstart="scanTouch" bindtouchend="scanTouchEnd" bindtap="scanCode">
+    <image src="{{scanSrc}}" />
+</view>

@@ -1,0 +1,39 @@
+view{
+    font-size:28rpx;
+    color:#555;
+}
+.handPortrait{
+    width:180rpx;
+    height:180rpx;
+    border-radius:50%;
+    background:#ccc;
+    margin:102rpx 0rpx 80rpx 285rpx;
+}
+.account{
+
+}
+.box{
+    width:550rpx;
+    height:80rpx;
+    background:#fff;
+    line-height:80rpx;
+    padding-left:20rpx;
+    margin-left:100rpx;
+    margin-bottom:40rpx;
+}
+.box input{
+    height:100%;
+    
+}
+page{
+  background-color: #e6eaf3;
+}
+.bind{
+    width:550rpx;
+    height:80rpx;
+    font-size:28rpx;
+    color:#fff;
+    background:#3186fd;
+    line-height:80rpx;
+    text-agin:center;   
+}
