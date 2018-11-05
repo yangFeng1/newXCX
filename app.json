@@ -1,7 +1,10 @@
 {
-    "pages":[
-      "pages/index/index",
-      "pages/login/login"
+  "pages":[
+    "pages/choseClass/choseClass",
+    "pages/schoolList/schoolList",
+      "pages/facilityManage/facilityManage",
+     "pages/login/login",
+      "pages/index/index"
     ],
     "window":{
       "backgroundTextStyle":"light",

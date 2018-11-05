@@ -1,0 +1,129 @@
+page{
+    background: #e6eaf3;
+    padding: 32rpx;
+}
+.schoolName{
+    height: 80rpx;
+    width: 686rpx;
+    border-radius: 4rpx;
+    color: #555;
+    font-size: 28rpx;
+    background: #fff;
+}
+.schoolName text{
+    height: 80rpx;
+    line-height: 80rpx;
+    background-image: 80rpx;
+    margin-left: 24rpx;
+}
+.schoolName image{
+    width: 15rpx;
+    height: 28rpx;
+    margin-right: 24rpx;
+    margin-top: 24rpx;
+}
+.facilityList{
+    background: #fff;
+    width: 686rpx;
+    margin-top: 2rpx;
+    border-radius: 4rpx;
+}
+.facilityOperation{
+    height: 88rpx;
+    background: #fff;
+}
+.facilityOperation{
+    line-height: 88rpx;
+}
+.facilityOperation .facilityOperationTitle{
+    font-size: 28rpx;
+    line-height: 88rpx;
+    color: #555;
+    margin-left: 24rpx;
+    width: 226rpx;
+}
+.restartStyle{
+    margin-right: 14rpx;
+}
+.restartStyle text{
+    font-size: 22rpx;
+}
+.restartStyle image{
+    width: 4rpx;
+    height: 36rpx;
+    margin-top: 26rpx;
+    margin-right: 8rpx;
+}
+.batch{
+    width: 124rpx;
+    height: 48rpx;
+    font-size: 24rpx;
+    color: #fff;
+    border-radius: 4rpx;
+    background: #3186fd;
+    line-height: 48rpx;
+    text-align: center;
+    margin-top:24rpx;
+    margin-left: 16rpx; 
+}
+.groupList{
+    background: #f0f0f2;
+    margin: 0rpx 24rpx;
+    padding: 24rpx;
+    margin-bottom: 2rpx;
+}
+.groupList .item{
+    background: #fff;
+    font-size: 22rpx;
+    color: #555;
+    border-radius: 2rpx;
+    height: 32rpx;
+    /* line-height: 32rpx; */
+    padding: 14rpx 16rpx;
+    margin-right: 16rpx;
+}
+.groupList image{
+    width:32rpx;
+    height: 32rpx;
+    margin-right: 16rpx;
+}
+.groupList text{
+    height: 60rpx;
+}
+
+.classList{
+    background: #e3e3e6;
+    border-radius: 4rpx;
+    margin: 0rpx 24rpx;
+    padding: 24rpx;
+}
+.classList image{
+    width: 32rpx;
+    height: 32rpx;
+    margin: 14rpx;
+}
+.classList text{
+    font-size: 22rpx;
+    color: #555;
+    padding: 0rpx 20rpx;
+}
+.classList .item{
+    background: #fff;
+    height: 60rpx;
+    line-height: 60rpx;
+    font-size: 22rpx;
+    color: #555;
+    border-radius: 2rpx;
+    /* line-height: 32rpx; */
+    margin-right: 16rpx;
+}
+.imgBox{
+    width: 60rpx;
+    height: 60rpx;
+    background: #e5ecfb;
+}
+.lineStatus{
+    width: 4rpx !important;
+    height: 36rpx !important;
+    margin: 14rpx 0rpx !important;
+}

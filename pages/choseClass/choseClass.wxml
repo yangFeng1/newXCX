@@ -1,0 +1,59 @@
+<view class="schoolName">
+    <text class="fl">四川省成都市浅川一中</text>
+    <image src="{{IP}}nextPage-default.png"  class="fr"/>
+</view>
+<view class="facilityList">
+    <view class="facilityOperation">
+        <text class="fl facilityOperationTitle">设备列表</text>
+        <view class="fl restartStyle">
+            <image src="{{IP}}openStatus.png" class="fl" />
+            <text class="fl">开机</text>
+        </view>
+        <view class="fl restartStyle">
+            <image src="{{IP}}shutdown.png"  class="fl"/>
+            <text class="fl">关机</text>
+        </view>
+        <view class="fl batch">
+            批量开机
+        </view>
+        <view class="fl batch">
+            批量关机
+        </view>
+    </view>
+    <view class="groupList clearfix">
+        <view class="item fl">
+            <image src="{{IP}}choose-default.png" class="fl" />
+            <text class="fl">全选</text>
+        </view>
+        <view class="item fl">
+            <image src="{{IP}}choose-default.png" class="fl" />
+            <text class="fl">全选</text>
+        </view><view class="item fl">
+            <image src="{{IP}}choose-default.png" class="fl" />
+            <text class="fl">全选</text>
+        </view>
+    </view>
+    <view class="classList clearfix">
+        <view class="item fl">
+            <view class="fl imgBox" >
+                <image src="{{IP}}choose-default.png" />
+            </view>
+            <text class="fl">全选</text>
+            <image class="fr lineStatus" src="{{IP}}shutdown.png" />
+        </view>
+         <view class="item fl">
+            <view class="fl imgBox" >
+                <image src="{{IP}}choose-default.png" />
+            </view>
+            <text class="fl">全选</text>
+            <image class="fr lineStatus" src="{{IP}}shutdown.png" />
+        </view>
+         <view class="item fl">
+            <view class="fl imgBox" >
+                <image src="{{IP}}choose-default.png" />
+            </view>
+            <text class="fl">全选</text>
+            <image class="fr lineStatus" src="{{IP}}shutdown.png" />
+        </view>
+    </view>
+</view>

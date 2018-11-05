@@ -13,13 +13,14 @@ view{
 
 }
 .box{
-    width:550rpx;
+    width:530rpx;
     height:80rpx;
     background:#fff;
     line-height:80rpx;
     padding-left:20rpx;
     margin-left:100rpx;
     margin-bottom:40rpx;
+    border-radius: 10rpx;
 }
 .box input{
     height:100%;
@@ -35,5 +36,13 @@ page{
     color:#fff;
     background:#3186fd;
     line-height:80rpx;
-    text-agin:center;   
+    text-align: center;
+    border-radius:10rpx;
+    margin-left: 100rpx;
+    font-size: 28rpx;
+}
+.tips{
+    font-size: 22rpx;
+    margin-left: 100rpx;
+    margin-top: 24rpx;
 }

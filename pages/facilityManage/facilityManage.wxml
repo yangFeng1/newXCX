@@ -1,0 +1,126 @@
+<view class='mybody'>
+
+   <view class='schoolName clearfix'>
+    <text class='fl'>成都市一中</text>
+    <view class='collect fr'>
+      <image src='{{IP}}collect-default.png' bindtouchstart="collectTouch" bindtouchend="collectTouchEnd" ></image>
+    </view> 
+   </view>
+
+
+  <view class='classManage'>
+    <view class='className'>三年二班</view>
+    <view class='screen clearfix'>
+      <view class='screenOnText fl'>屏幕解锁</view> 
+      
+      <view class='screenOff fr' data-msg="确定解锁屏幕吗？" bindtap='showModel'>
+        <image src='{{IP}}unlock-default.png'></image>
+      </view>
+      <view class='screenOn fr'>
+        <image src='{{IP}}lockScreen-default.png'></image>
+      </view>
+    </view>
+
+
+    <view class='powerManage'>
+      <text>电源管理</text>
+      
+      <view class='powerRestart fr'>
+        <image src='{{IP}}restart-default.png'></image>
+      </view>
+      <view class='powerOff fr'>
+      <image src='{{IP}}close-default.png'></image>
+      </view>
+      <view class='powerOn fr'>
+        <image src='{{IP}}open-default.png'></image>
+      </view>
+    </view>
+
+
+    <view class='record'>
+      <view class='recordTitle'>录制</view>
+      <view class='recordControl'>
+        <image src="{{IP}}transcribe-background.png"></image>
+      </view>
+      <view class='beginAndEnd'>
+        <image src='{{IP}}transcribe-default.png' class='beginRecord'></image>
+        <image src='{{IP}}transcribe-touch.png' class='overRecord'></image>
+      </view>
+      <view class='beginAndStop'>
+        <image src='{{IP}}stop-default.png'></image>
+        <image src='{{IP}}pause-default.png'></image>
+      </view>
+      <text class='timeRecord'>00:00:00</text>
+    </view>
+
+    <view class='live'>
+      <view class='liveTitle'>直播</view>
+      <view class='recordControl'>
+        <image src="{{IP}}transcribe-background.png"></image>
+      </view>
+      <view class='beginAndEnd'>
+        <image src='{{IP}}transcribe-default.png' class='beginRecord'></image>
+        <image src='{{IP}}transcribe-touch.png' class='overRecord'></image>
+      </view>
+      <view class='beginAndStop'>
+        <image src='{{IP}}stop-default.png'></image>
+        <image src='{{IP}}pause-default.png'></image>
+      </view>
+      <text class='timeRecord'>00:00:00</text>
+    </view>
+      
+    <view class='interaction'>
+      <text class='interactionTitle'>互动</text>
+      <view class='interactionInfo'>
+        <view class='interactionInfoTitle'>
+          <view class='VIPlevel fl'>{{VIPlevel}}</view>
+          <view class='serviceTime fl'>使用期限：{{serviceTime}}</view>
+          <image class='signal' src='{{IP}}signal-three.png'></image>
+          <image class='signal' src='{{IP}}signal-one.png'></image>
+          <image class='signal' src='{{IP}}signal-tow.png'></image>
+          <image class='signal' src='{{IP}}signal-four.png'></image>
+        </view>
+
+        <view class='interactionOperation'>
+          <view class='operationTop'> 
+            <text class='fl'>课堂互动</text>
+            <view class='button appointment_Time fr' wx:if='{{interactionStatus == "insert"}}'>
+              <image src='{{IP}}appointment.png'></image>
+              <text>课堂预约</text>
+            </view>
+            <view class='button begin fr' wx:if='{{interactionStatus == "insert"}}'>
+              <image src='{{IP}}interactBegin.png'></image>
+               <text >开始</text>
+            </view>
+            <view class='button appointment_Time fr' wx:if='{{interactionStatus != "insert"}}'>
+              <image src='{{IP}}class.png'></image>
+              <text>课堂成员</text>
+            </view>
+            <view>
+            </view>
+          </view>
+          <view class='insertMeeting'>
+            <view class='Mleft fl'>
+              <view class='classId clearfix account'>
+                <text class="fl">课堂ID</text>
+                <input class="fl"></input>
+              </view>
+              <view class='meetingPwd clearfix account'>
+                <text class="fl">密码</text>
+                <input class="fl"></input>
+              </view>
+            </view>
+            <view class="Mright fl bule">
+              加入课堂
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+
+    <view>
+
+    </view>
+  </view>
+</view>

@@ -1,0 +1,15 @@
+page{
+    background: #e6eaf3;
+    padding: 32rpx;
+}
+view{
+    width: 662rpx;
+    height: 80rpx;
+    background: #fff;
+    font-size: 28rpx;
+    color: #555;
+    border-radius: 5rpx;
+    line-height: 80rpx;
+    padding-left: 24rpx;
+    margin-bottom: 2rpx;
+}

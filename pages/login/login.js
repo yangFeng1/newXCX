@@ -1,7 +1,7 @@
 const app = getApp();
 Page({
     data:{
-
+        data:'1111'
     },
     onLoad(){
         wx.setNavigationBarTitle({
