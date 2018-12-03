@@ -1,15 +1,17 @@
 {
   "pages":[
     "pages/choseClass/choseClass",
-    "pages/schoolList/schoolList",
-      "pages/facilityManage/facilityManage",
+      "pages/index/index",  
      "pages/login/login",
-      "pages/index/index"
+    "pages/facilityManage/facilityManage",
+    "pages/videoManage/videoManage",
+    "pages/schoolList/schoolList"
     ],
     "window":{
       "backgroundTextStyle":"light",
       "navigationBarBackgroundColor": "#4b94fa",
       "navigationBarTitleText": "Account  Manage",
-      "navigationBarTextStyle":"#fff"
+      "navigationBarTextStyle":"#fff",
+      "disableScroll": true
     }
   }

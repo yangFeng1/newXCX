@@ -6,3 +6,18 @@
     width:314rpx;
     height:314rpx;
 }
+.collect{
+  width: 100%;
+  background: #fff;
+  height: 98rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #555;
+  line-height: 98rpx;
+  position: absolute;
+  bottom:0rpx;
+  box-shadow: 10rpx rgba(0, 0, 0, 0.2);
+}
+page{
+  background: #e6eaf3;
+}

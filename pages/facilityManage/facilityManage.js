@@ -24,15 +24,25 @@ Page({
     wx.setNavigationBarTitle({
       title: '个人ID：156156'
     });
+    console.log(app)
    },
-  collectTouch(){
-    this.setData({
-      collectUrl: app.IPaddress + 'collect-touch.png'
-    })
-  },
-  collectTouchEnd(){
-    this.setData({
-      collectUrl: app.IPaddress + 'collect-default.png'
-    })
+  collect(e){
+    var flag = false;
+    var obj = { MatterServerId: app.MatterServerId, name: e.target.dataset.name };
+    var schoolList = wx.getStorageSync('schoolList');
+    if (!schoolList){
+      wx.setStorage({ key: 'schoolList', data: [obj]});
+    }else{
+      for(var i = 0; i < schoolList.length; i++){
+        if (schoolList[i]['MatterServerId'] == obj['MatterServerId']){
+          schoolList[i]['name'] = obj['name'];
+          flag = true;
+          break;
+        }
+      }
+    }
+    flag || schoolList.push(obj);
+    wx.setStorage({ key: 'schoolList', data: schoolList });
+    console.log(wx.getStorageSync('schoolList'));
   }
 }) 

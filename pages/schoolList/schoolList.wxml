@@ -1,9 +1,3 @@
-<view>
-    四川省成都市浅川一中
-</view>
-<view>
-    四川省成都市浅川一中
-</view>
-<view>
-    四川省成都市浅川一中
+<view wx:for="{{schoolList}}" data-MatterServerId="{{item.MatterServerId}}" bindtap='chose'>
+  {{item.name}}
 </view>

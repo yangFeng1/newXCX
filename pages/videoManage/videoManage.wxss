@@ -1,0 +1,71 @@
+@import '/utils/ripples.min.wxss';
+page{
+    background: #e6eaf3;
+}
+.layout {
+    height: 208rpx;
+    background: #fff;
+    padding: 0rpx 8rpx 24rpx 24rpx;
+    margin: 32rpx;
+}
+.layout image{
+    width: 202rpx ;
+    height: 80rpx ; 
+    float: left;
+    margin: 24rpx 16rpx 0rpx 0rpx;
+}
+.memberList{
+    margin-top: 32rpx;
+}
+.memberList .contant{
+  width: 650rpx;
+  height: 776rpx;
+  background: #fff;
+  margin-left: 16rpx;
+  padding-top: 8rpx;
+}
+.memberList .left{
+    width: 35rpx;
+    height: 696rpx;
+    background: #fff;
+    margin-top: 40rpx;
+}
+.foot{
+  margin-top: 32rpx;
+  margin-left: 99rpx;
+}
+.foot view{
+  width: 240rpx;
+  height: 80rpx;
+  border-radius: 4rpx;
+  font-size: 28rpx;
+  color: #fff;
+  text-align: center;
+  background: #3186fd;
+  line-height: 80rpx;
+  margin-left: 24rpx;
+}
+.member{
+  width: 306rpx;
+  height: 146rpx;
+  background: #b8c4d5;
+  margin: 16rpx 0rpx 0rpx 16rpx;
+}
+.memberOperation image{
+  width: 80rpx;
+  height: 80rpx;
+  margin-left: 16rpx;
+}
+.memberName{
+  height: 50rpx;
+  line-height: 50rpx;
+  font-size: 22rpx;
+  color: #fff;
+  margin-left: 16rpx;
+}
+.text{
+  width: 100rpx;  
+  height: 100rpx;
+  background: red;
+  position: absolute;
+}

@@ -26,7 +26,7 @@ page{
  font-size: 24rpx;
   color: #777;
 }
-.className{
+.className{ 
  font-size: 28rpx;
  color: #555;
  height: 60rpx;

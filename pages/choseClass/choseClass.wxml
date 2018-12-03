@@ -17,7 +17,7 @@
             批量开机
         </view>
         <view class="fl batch">
-            批量关机
+            批量关机  
         </view>
     </view>
     <view class="groupList clearfix">
@@ -49,7 +49,7 @@
             <image class="fr lineStatus" src="{{IP}}shutdown.png" />
         </view>
          <view class="item fl">
-            <view class="fl imgBox" >
+            <view class="fl imgBox" > 
                 <image src="{{IP}}choose-default.png" />
             </view>
             <text class="fl">全选</text>

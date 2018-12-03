@@ -1,0 +1,28 @@
+
+<view class="layout">
+    <image src="{{IP}}class_layout_one_press.png" />
+    <image src="{{IP}}class_layout_four_press.png" />
+    <image src="{{IP}}class_layout_nine_press.png" />
+    <image src="{{IP}}class_layout_sixteen_press.png" />
+    <image src="{{IP}}class_layout_twentyfive_press.png" />
+    <image src="{{IP}}class_layout_thirtysix_press.png" />
+</view>
+<view class="memberList clearfix">
+    <view class="left fl"></view>
+    <view class="contant fl">
+        <view class='member'>
+          <view class='memberName'>成员名称</view>
+          <view class='memberOperation clearfix'>
+            <image class='sork' src='{{IP}}class_layout_sort_default.png'></image>
+            <image src='{{IP}}class_layout_talkback_default.png'></image>
+            <image src='{{IP}}class_layout_kicking_default.png'></image>
+          </view>
+        </view>
+    </view>
+    <view class="left fr"></view>
+</view>
+<view class='foot'>
+  <view class='fl'>切换当前页</view>
+  <view class='fl'>返回选中页</view> 
+</view>
+<view class='text' style="left:{{left}}px;top:{{top}}px;"  bindtouchstart="scanTouch" bindtouchend="scanTouchEnd" bindtouchmove='scanCode'></view>

@@ -5,14 +5,16 @@
     <view>
         <view class="account clearfix box">
             <text class="account_text fl">账号：</text>
-            <input class="account_input fl" value='{{data}}'/>
+            <input class="account_input fl" data-account='account'  bindinput="getAccount" />
         </view>
         <view class="password clearfix box">
             <text class="password_text fl">密码：</text>
-            <input class="password_input fl"/>
+            <input class="password_input fl" data-pwd="pwd" bindinput="getAccount"/>
+            
         </view>
+        <text wx:if="{{errTips}}" class='errTips'>账号或密码错误</text>
     </view>
-    <view class="bind">
+    <view class="bind" bindtap='register'>
         绑定
     </view> 
     <view class="tips">

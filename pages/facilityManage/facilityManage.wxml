@@ -3,7 +3,7 @@
    <view class='schoolName clearfix'>
     <text class='fl'>成都市一中</text>
     <view class='collect fr'>
-      <image src='{{IP}}collect-default.png' bindtouchstart="collectTouch" bindtouchend="collectTouchEnd" ></image>
+      <image src='{{IP}}collect-default.png' data-name="成都市一中" bindtap='collect'></image>
     </view> 
    </view>
 
