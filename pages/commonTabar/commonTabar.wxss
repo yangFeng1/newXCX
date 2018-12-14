@@ -1,0 +1,15 @@
+.commonTabar {
+    height: 98rpx;
+    border-top: 1px solid #ced1d9;
+    position: absolute;
+    bottom:0rpx;
+}
+.commonTabar view{
+    width: 250rpx;
+    height: 98rpx;
+    float: left;
+}
+.commonTabar image{
+    width: 250rpx;
+    height: 98rpx;
+}

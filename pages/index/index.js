@@ -2,7 +2,8 @@ const app = getApp()
 
 Page({
   data:{
-    scanSrc: app.IPaddress+"scan-default.png"
+    scanSrc: app.IPaddress+"scan-default.png",
+    IP:app.IPaddress
   },
   onLoad(){
     wx.setNavigationBarTitle({

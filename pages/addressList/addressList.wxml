@@ -1,0 +1,47 @@
+<view>
+    <!-- <view class="box" bindtouchstart="touchStart" bindtouchmove="TouchMove" bindtouchend="touchEnd">
+        <view class="box1" style="left:{{left1}}px"  bindtouchcancel="">
+            
+        </view>
+        <view class="box2" style="right:{{left2}}px" animation="{{ani}}">
+            
+        </view>        
+    </view>     -->
+   
+        <view class="addAddress">
+            <text>添加通讯录</text>
+            <navigator url="/pages/editAddress/editAddress?data=add">
+                <image src="{{IP}}address_add_default.png" />
+            </navigator>
+           
+        </view>
+
+        <view class="listTitle">
+            <view class="item"  bindtouchstart="touchStart" bindtouchmove="TouchMove" bindtouchend="touchEnd"  >
+                   <view class="title">A</view>
+
+                   <view class="box" animation="{{ani}}">
+                       <view class="name fl">
+                           <text class="left fl">录播设备</text>
+                           <text class="right fr">123456</text>
+                       </view>
+                       <view class="operation fl">
+                            <navigator  url="/pages/editAddress/editAddress?data=edit">
+                           <view class="edit fl">
+                               编辑
+                           </view>
+                        </navigator>
+                                <view class="del fl">
+                                        删除
+                                </view>
+                       </view>
+                   </view> 
+
+            </view>
+        </view> 
+
+        <import   src="/pages/commonTabar/commonTabar.wxml" />
+         <template is="msgItem" data="{{IP:IP,flag:'home'}}"/>
+    
+</view>
+

@@ -1,0 +1,85 @@
+page{
+    background: #e6eaf3;
+}
+.background{
+    height: 160rpx;
+    background: #4b94fa;
+}
+.interaction{
+    padding: 48rpx 40rpx 0rpx 40rpx;
+    width: 590rpx;
+    height: 132rpx;
+    border-radius: 4rpx;
+    background: #f2f5fb;
+    margin-left:40rpx;
+    margin-top: -100rpx; 
+    font-size: 28rpx;
+    color: #555;
+}
+.interaction .school{
+    margin-bottom: 32rpx;
+}
+.interaction image{
+    width: 128rpx;
+    height: 128rpx;
+    margin-top: -25rpx;
+}
+
+.controlTitle{
+    font-size: 30rpx;
+    color: #555;
+}
+
+.controlTime{
+    font-size: 24rpx;
+    color: #999;
+}
+.record{
+    padding: 30rpx 0rpx 30rpx 40rpx;
+    width: 630rpx;
+    height: 164rpx;
+    background: #f2f5fb;
+    border-radius: 4rpx;
+    margin-top: 40rpx;
+    margin-left: 40rpx;
+}
+.record image{
+    width: 164rpx;
+    height: 164rpx;
+}
+.record .contant{
+    margin-left: 32rpx;
+}
+.record .contant .title{
+    margin: 45rpx 0rpx 24rpx 32rpx;
+}
+.record .contant .time{
+    margin-left: 32rpx;
+}
+.live{
+    padding: 0rpx 0rpx 30rpx 40rpx;
+    width: 630rpx;
+    height: 114rpx;
+    background: #f2f5fb;
+    border-radius: 4rpx;
+    margin-top: 40rpx;
+    margin-left: 40rpx;
+}
+.live image{
+    width: 124rpx;
+    height: 48rpx;
+    margin: 48rpx 48rpx 0rpx 56rpx;
+}
+.live .text_one{
+    margin-top: 58rpx;
+}
+.live .text_tow{
+    margin-top: 60rpx;
+}
+.live .text_thr{
+    margin-top: 60rpx;
+    font-size: 24rpx;
+}
+.living{
+    color: #555;
+}

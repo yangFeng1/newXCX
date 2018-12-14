@@ -1,0 +1,39 @@
+<import   src="/pages/commonTabar/commonTabar.wxml" />
+<view class="box">
+    <image src="{{IP}}home_stop_default.png" class="headPortrait" />
+    <view class="name">
+        <text>123456</text>
+        <image src="{{IP}}myself_editor_default.png" />
+    </view>
+    <view class="personalData ">
+        <view class="title border">
+            <text class="fl left">个人资料</text>
+            <text class="fr right {{inputState?'':'save'}}" bindtap="edit">{{editText}}</text>
+        </view>
+        <view class="personalName border">
+            <view class="top">
+                名称
+            </view>
+            <input class="content" value="成大叔" disabled="{{inputState}}"/>
+        </view>
+        <view class="gender border">
+            <view  class="top">
+                性别
+            </view>
+             <input class="content" value="成大叔" disabled="{{inputState}}"/>
+        </view>
+        <view class="school border">
+            <view  class="top">
+                学校
+            </view>
+            <input class="content" value="成大叔" disabled="{{inputState}}"/>
+        </view>
+        <view class="remake">
+            <view  class="top">
+                备注
+            </view>
+             <input class="content" value="成大叔" disabled="{{inputState}}"/>
+        </view>
+    </view>
+    <template is="msgItem" data="{{IP:IP,flag:'myself'}}"/>
+</view>

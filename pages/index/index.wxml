@@ -1,4 +1,14 @@
-<view class="scan" bindtouchstart="scanTouch" bindtouchend="scanTouchEnd" bindtap="scanCode">
+
+<view>
+    <view class="scan" bindtouchstart="scanTouch" bindtouchend="scanTouchEnd" bindtap="scanCode">
     <image src="{{scanSrc}}" />
+    
 </view>
-<view class='collect' bindtap="collect">我的收藏</view>
+<view class="tips">
+        扫码进入课堂
+</view>
+<view>
+        <import   src="/pages/commonTabar/commonTabar.wxml" />
+    <template is="msgItem" data="{{IP:IP,flag:'index'}}"/>
+</view>
+</view>

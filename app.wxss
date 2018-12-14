@@ -1,3 +1,4 @@
+@import "pages/commonTabar/commonTabar.wxss";
 .fl{
     float:left;
 }

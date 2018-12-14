@@ -1,0 +1,56 @@
+page{
+    background: #e6eaf3;
+}
+.tabar view{
+    height: 98rpx;
+    width: 250rpx;
+    position: relative;
+    background: #63a0fa;
+}
+.tabar view text{
+    height: 98rpx;
+    width: 250rpx;
+    line-height: 98rpx;
+    text-align: center;
+    font-size: 28rpx;
+    color: #fff;
+    position: absolute;
+    z-index: 999;
+}
+.tabar view image{
+    height: 98rpx;
+    width: 250rpx;
+    position: absolute;
+    top: 0rpx;
+    left: 0rpx;
+}
+.startClass input{
+    height: 80rpx;
+    padding-left: 40rpx;
+    background: #d8dce5;
+    font-size: 24rpx;
+    color: #999;
+    line-height: 80rpx;
+}
+.startClass input:focus {
+    background: #fff;
+}
+.startClass .item{
+    height: 104rpx;
+    padding: 0 40rpx;
+    background: #f2f5fb;
+    font-size: 26rpx;
+    color: #555;
+    line-height: 104rpx;
+    border: 1px solid #f2f5fb;
+}
+.startClass .selected{
+    background: #d7e4fc;
+    border: 1px solid #ced1d9;
+}
+.black{
+    color: #555;
+}
+.gray{
+    color: #999;
+}

@@ -43,12 +43,12 @@
         <image src="{{IP}}transcribe-background.png"></image>
       </view>
       <view class='beginAndEnd'>
-        <image src='{{IP}}transcribe-default.png' class='beginRecord'></image>
-        <image src='{{IP}}transcribe-touch.png' class='overRecord'></image>
+        <image src='{{IP}}transcribe-default.png' class='beginRecord' wx:if="{{recordStatus == 'stop' }}" data-name="NETCMD_WECHAT_RECORD_START" bindtap="sendCmd"></image>
+        <image src='{{IP}}transcribe-touch.png' class='overRecord' wx:if="{{recordStatus == 'start' || recordStatus == 'pause'}}" data-name="NETCMD_WECHAT_RECORD_STOP" bindtap="sendCmd"></image>
       </view>
       <view class='beginAndStop'>
-        <image src='{{IP}}stop-default.png'></image>
-        <image src='{{IP}}pause-default.png'></image>
+        <image src='{{IP}}stop-default.png' wx:if="{{recordStatus == 'pause' || recordStatus == 'stop'}}" data-name="NETCMD_WECHAT_RECORD_CONTINUE" bindtap="sendCmd"></image>
+        <image src='{{IP}}pause-default.png' wx:if="{{recordStatus == 'start'}}" data-name="NETCMD_WECHAT_RECORD_PAUSE" bindtap="sendCmd"></image>
       </view>
       <text class='timeRecord'>00:00:00</text>
     </view>
@@ -59,12 +59,8 @@
         <image src="{{IP}}transcribe-background.png"></image>
       </view>
       <view class='beginAndEnd'>
-        <image src='{{IP}}transcribe-default.png' class='beginRecord'></image>
-        <image src='{{IP}}transcribe-touch.png' class='overRecord'></image>
-      </view>
-      <view class='beginAndStop'>
-        <image src='{{IP}}stop-default.png'></image>
-        <image src='{{IP}}pause-default.png'></image>
+        <image src='{{IP}}transcribe-default.png' class='beginRecord'  wx:if="{{liveStatus == 'stop' || liveStatus == 'pause'}}" data-name="NETCMD_WECHAT_LIVE_START" bindtap="sendCmd"></image>
+        <image src='{{IP}}transcribe-touch.png' class='overRecord'  wx:if="{{liveStatus == 'start'}}" data-name="NETCMD_WECHAT_LIVE_STOP" bindtap="sendCmd"></image>
       </view>
       <text class='timeRecord'>00:00:00</text>
     </view>
