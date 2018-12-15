@@ -1,3 +1,0 @@
-<view wx:for="{{schoolList}}" data-MatterServerId="{{item.MatterServerId}}" bindtap='chose'>
-  {{item.name}}
-</view>

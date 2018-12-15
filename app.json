@@ -1,16 +1,13 @@
 {
   "pages":[
+    "pages/interactionMain/interactionMain",
     "pages/interaction/interaction",
     "pages/controlMain/controlMain",
     "pages/myself/myself",
     "pages/editAddress/editAddress",
     "pages/addressList/addressList",
     "pages/index/index",  
-    "pages/facilityManage/facilityManage",
-    "pages/choseClass/choseClass",
-     "pages/login/login",
-    "pages/videoManage/videoManage",
-    "pages/schoolList/schoolList"
+     "pages/login/login"
     ],
     "window":{
       "backgroundTextStyle":"light",

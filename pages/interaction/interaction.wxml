@@ -1,21 +1,29 @@
 <view>
     <view class="tabar">
-        <view class="fl" data-index="0" bindtap="switch">
+        <view class="fl" data-name="startClass" data-index="0" bindtap="switch">
            <text>启动课堂</text>
            <image src="{{IP}}interactive_openClass_bg_default.png" wx:if="!{{tabarList[0]}}"/>
            <image src="{{IP}}interactive_openClass_bg_selected.png" wx:if="{{tabarList[0]}}"/>
+           <view class="hide">
+               <view class="beginClass">
+                   启动课堂
+               </view>
+               <view class="beginMeeting">
+                   启动会议
+               </view>
+           </view>
         </view>
-        <view class="fl" data-index="1" bindtap="switch">
-           <text> 启动课堂</text>
+        <view class="fl" data-name="insert" data-index="1" bindtap="switch">
+           <text> 加入</text>
            <image src="{{IP}}interactive_bg_default.png" wx:if="{{tabarList[1]}}"/>
         </view>
-        <view class="fl" data-index="2" bindtap="switch">
+        <view class="fl" data-name="appointment"  data-index="2" bindtap="switch">
             <text>课堂预约</text>
             <image src="{{IP}}interactive_bg_default.png" wx:if="{{tabarList[2]}}"/>
         </view>
     </view>
 
-    <view class="startClass">
+    <view class="startClass" wx:if="{{tabar=='startClass'}}">
         <input type="" placeholder="输入成员账号"/>
         <view data-index='0' class="item {{startClassList[0]?'selected':''}}" bindtap="chooseClass">
             <text class="fl black">互动设备</text>
@@ -25,8 +33,104 @@
             <text class="fl black">互动设备</text>
             <text class="fr gray">123456</text>
         </view>
-        <view class="">
+        <view class="call">
             呼叫
         </view>
     </view>
+
+    <view class="insert" wx:if="{{tabar=='insert'}}">
+        <input type="text" placeholder="账号"/>
+        <input type="" placeholder="密码" password />
+        <view>
+            加入课堂
+        </view>
+    </view>
+
+
+    <view class="appointment" wx:if="{{tabar=='appointment'}}">
+        <view class="item">
+            <view>
+                 <text class="appointmentTitle">讲师名称：</text>
+                 <text class="appointmentB">正大叔</text>
+            </view>
+            <view>
+                 <text class="appointmentTitle">课堂ID：</text>
+                 <text class="appointmentB">正大叔</text>
+            </view>
+            <view>
+                 <text class="appointmentTitle">课程主题：</text>
+                 <text class="appointmentB">正大叔</text>
+            </view>
+            <view>
+                 <text class="appointmentTitle">开始时间：</text>
+                 <text class="appointmentB">2018-09-12</text>
+                 <text class="appointmentB">00:05:30</text>
+            </view>
+            <view>
+                 <text class="appointmentTitle">结束时间：</text>
+                 <text class="appointmentB">2018-09-12</text>
+                 <text class="appointmentB">00:05:30</text>
+            </view>
+            <image src="{{IP}}interactive_openClass_default.png" />
+        </view>
+         <view class="item">
+            <view>
+                 <text class="appointmentTitle">讲师名称：</text>
+                 <text class="appointmentB">正大叔</text>
+            </view>
+            <view>
+                 <text class="appointmentTitle">课堂ID：</text>
+                 <text class="appointmentB">正大叔</text>
+            </view>
+            <view>
+                 <text class="appointmentTitle">课程主题：</text>
+                 <text class="appointmentB">正大叔</text>
+            </view>
+            <view>
+                 <text class="appointmentTitle">开始时间：</text>
+                 <text class="appointmentB">2018-09-12</text>
+                 <text class="appointmentB">00:05:30</text>
+            </view>
+            <view>
+                 <text class="appointmentTitle">结束时间：</text>
+                 <text class="appointmentB">2018-09-12</text>
+                 <text class="appointmentB">00:05:30</text>
+            </view>
+            <image src="{{IP}}interactive_openClass_default.png" />
+        </view>
+         <image src="{{IP}}interactive_add_default.png" class="createClass" data-name="true" bindtap="modal"/>
+
+         <view class="modal" wx:if="{{model}}">
+             <view class="contant">
+                 <view class="top">
+                     <view class=" clearfix">
+                         <text class="fl">讲师名字</text>
+                         <input type="" class="fl"/>
+                     </view>
+                     <view class=" clearfix">
+                         <text class="fl">开始时间</text>
+                         <input type=""  class="fl"/>
+                     </view>
+                     <view class=" clearfix">
+                         <text class="fl">结束时间</text>
+                         <input type="" class="fl"/>
+                     </view>
+                     <view class=" clearfix">
+                         <text class="fl">课程主题</text>
+                         <input type="" class="fl"/>
+                     </view>
+                 </view>
+                 <view class="bottom">
+                     <view class="fl">
+                         添加
+                     </view>
+                     <view class="red fl" data-name="false" bindtap="modal">
+                         取消
+                     </view>
+                 </view>
+             </view>
+         </view>
+    </view>
+
+   
 </view>

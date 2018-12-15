@@ -1,0 +1,192 @@
+<view bindtouchstart="touchStart" bindtouchend="touchEnd">
+    <image src="{{IP}}speaker_bg.png" class=" bg" /> 
+    <view class="personData">
+        <image src="{{IP}}speaker_call_big_selected.png" class="headPortrait fl"/>
+        <view class="fl data">
+            <text>课堂ID：132131</text>
+            <text>密码ID：132131</text>
+        </view>
+        <image src="{{IP}}speaker_end_default.png" class="operation fr"/>
+    </view>
+        <view class="facilityBox">
+         <view class="mybody"  animation="{{ani}}" >
+            <view class="facilityList clearfix">
+                <view class="item">
+                    <view class="left fl">
+                        <view class="online">
+                            
+                        </view>
+                        <view class="black">
+                            互动设备四栋302
+                        </view>
+                        <view class="gray">
+                            123456
+                        </view>
+                    </view>
+                    <view class="right fr">
+                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
+                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
+                    </view>
+                </view>
+                <view class="item">
+                    <view class="left fl">
+                        <view class="black">
+                            互动设备四栋302
+                        </view>
+                        <view class="gray">
+                            123456
+                        </view>
+                    </view>
+                    <view class="right fr">
+                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
+                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
+                    </view>
+                </view>
+                <view class="item">
+                    <view class="left fl">
+                        <view class="black">
+                            互动设备四栋302
+                        </view>
+                        <view class="gray">
+                            123456
+                        </view>
+                    </view>
+                    <view class="right fr">
+                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
+                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
+                    </view>
+                </view>
+                <view class="item">
+                    <view class="left fl">
+                        <view class="black">
+                            互动设备四栋302
+                        </view>
+                        <view class="gray">
+                            123456
+                        </view>
+                    </view>
+                    <view class="right fr">
+                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
+                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
+                    </view>
+                </view>
+                <view class="item">
+                    <view class="left fl">
+                        <view class="black">
+                            互动设备四栋302
+                        </view>
+                        <view class="gray">
+                            123456
+                        </view>
+                    </view>
+                    <view class="right fr">
+                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
+                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
+                    </view>
+                </view>
+                <view class="item">
+                    <view class="left fl">
+                        <view class="black">
+                            互动设备四栋302
+                        </view>
+                        <view class="gray">
+                            123456
+                        </view>
+                    </view>
+                    <view class="right fr">
+                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
+                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
+                    </view>
+                </view>
+                <view class="item">
+                    <view class="left fl">
+                        <view class="black">
+                            互动设备四栋302
+                        </view>
+                        <view class="gray">
+                            123456
+                        </view>
+                    </view>
+                    <view class="right fr">
+                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
+                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
+                    </view>
+                </view>
+                <view class="item">
+                    <view class="left fl">
+                        <view class="black">
+                            互动设备四栋302
+                        </view>
+                        <view class="gray">
+                            123456
+                        </view>
+                    </view>
+                    <view class="right fr">
+                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
+                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
+                    </view>
+                </view>
+                <view class="item">
+                    <view class="left fl">
+                        <view class="black">
+                            互动设备四栋302
+                        </view>
+                        <view class="gray">
+                            123456
+                        </view>
+                    </view>
+                    <view class="right fr">
+                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
+                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
+                    </view>
+                </view>
+                <view class="item">
+                    <view class="left fl">
+                        <view class="black">
+                            互动设备四栋302
+                        </view>
+                        <view class="gray">
+                            123456
+                        </view>
+                    </view>
+                    <view class="right fr">
+                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
+                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
+                    </view>
+                </view>
+            </view>
+            <image src="{{IP}}speaker_add_default.png" class="facilityAdd"/>
+         <view class="switchPicture">
+             <view class="switchPage">
+                 <view class="layout">
+                     布局
+                 </view>
+                 <view class="clip">
+                     <view class="fl">
+                         四画面
+                     </view>
+                     <view class="fl selected">
+                         九画面
+                     </view>
+                 </view>
+                 <image src="{{IP}}speaker_switch_default.png"  class="switchPageButton"/>
+             </view>
+         </view>
+         <view class="viewLayout">
+             <view class="title">
+                 视频画面
+             </view>
+             <image src="{{IP}}speaker_FM_default.png" />
+             <image src="{{IP}}speaker_FM_default.png" />
+             <image src="{{IP}}speaker_FM_default.png" />
+             <image src="{{IP}}speaker_FM_default.png" />
+             <image src="{{IP}}speaker_FM_default.png" />
+             <image src="{{IP}}speaker_FM_default.png" />
+             <image src="{{IP}}speaker_FM_default.png" />
+             <image src="{{IP}}speaker_FM_default.png" />
+             <image src="{{IP}}speaker_FM_default.png" />
+             <image src="{{IP}}speaker_FM_default.png" />
+         </view>
+        </view>
+     </view>
+</view>
