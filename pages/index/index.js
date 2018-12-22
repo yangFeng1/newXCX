@@ -3,27 +3,31 @@ const app = getApp()
 Page({
   data:{
     scanSrc: app.IPaddress+"scan-default.png",
-    IP:app.IPaddress
+    IP:app.IPaddress,
+    cover:app.cover
   },
-  onLoad(){
+  onLoad(options){
+    var _this = this;
     wx.setNavigationBarTitle({
       title: '个人ID：15616' 
     });
-    wx.onSocketMessage(function (res) {
-      console.log(res);
-      res = JSON.parse(res.data);
-      if (res.cmd == 'login'){
-        if(res.code == 200){
-          wx.navigateTo({
-            url: '../facilityManage/facilityManage'　　// 页面 A
-          })
-        }else{
-          wx.navigateTo({
-            url: '../login/login'　　// 页面 A
-          })
-        }
+    var timer = setInterval(function(){//等待app.js的 onSocketMessage 数据处理完之后再由当前页面接手
+      console.log(1);
+      if(!app.socketLinste){
+        console.log(2);
+        clearInterval(timer);
+        _this.setData({
+          cover:app.cover
+        })
+        wx.onSocketMessage(function(data) {
+          // data
+          console.log(data);
+          data = JSON.parse(data.data);
+          console.log(_this);
+          console.log(data);
+        })  
       }
-    })
+    },20)
   },
   scanTouch(){
     this.setData({

@@ -10,7 +10,7 @@
     </view>
         <view class="facilityBox">
          <view class="mybody"  animation="{{ani}}" >
-            <view class="facilityList clearfix">
+            <view class="facilityList clearfix" wx:if="{{!secondPage}}">
                 <view class="item">
                     <view class="left fl">
                         <view class="online">
@@ -186,6 +186,34 @@
              <image src="{{IP}}speaker_FM_default.png" />
              <image src="{{IP}}speaker_FM_default.png" />
              <image src="{{IP}}speaker_FM_default.png" />
+         </view>
+         <view class="chooseAccount"  wx:if="{{secondPage}}">
+             <input type="" placeholder="输入成员账号"/>
+             <view class="item">
+                 <view class="fl left">
+                     互动设备四栋
+                 </view>
+                 <view class="fr right">
+                     123456
+                 </view>
+             </view>
+             <view class="item">
+                 <view class="fl left">
+                     互动设备四栋
+                 </view>
+                 <view class="fr right">
+                     123456
+                 </view>
+             </view>
+             <view class="item selected">
+                 <view class="fl left">
+                     互动设备四栋
+                 </view>
+                 <view class="fr right">
+                     123456
+                 </view>
+             </view>
+             <image src="{{IP}}speaker_call_small_default.png"  class="dial"/>
          </view>
         </view>
      </view>

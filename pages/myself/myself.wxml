@@ -2,8 +2,10 @@
 <view class="box">
     <image src="{{IP}}home_stop_default.png" class="headPortrait" />
     <view class="name">
-        <text>123456</text>
-        <image src="{{IP}}myself_editor_default.png" />
+        <text class="fl">{{userInfo.account}}</text>
+        <navigator  url="/pages/login/login?id={{zwechatId}}" class="fl">
+         <image src="{{IP}}myself_editor_default.png" wx:if="{{userInfo.flag == 0}}"/>
+        </navigator>
     </view>
     <view class="personalData ">
         <view class="title border">
@@ -14,25 +16,25 @@
             <view class="top">
                 名称
             </view>
-            <input class="content" value="成大叔" disabled="{{inputState}}"/>
+            <input class="content" value="{{userInfo.name}}" disabled="{{inputState}}" data-name='name' bindinput="bindInput"/>
         </view>
         <view class="gender border">
             <view  class="top">
                 性别
             </view>
-             <input class="content" value="成大叔" disabled="{{inputState}}"/>
+             <input class="content" value="{{userInfo.gender}}" disabled="{{inputState}}" data-name='gender' bindinput="bindInput"/>
         </view>
         <view class="school border">
             <view  class="top">
                 学校
             </view>
-            <input class="content" value="成大叔" disabled="{{inputState}}"/>
+            <input class="content" value="{{userInfo.school}}" disabled="{{inputState}}" data-name='school' bindinput="bindInput"/>
         </view>
         <view class="remake">
             <view  class="top">
                 备注
             </view>
-             <input class="content" value="成大叔" disabled="{{inputState}}"/>
+             <input class="content" value="{{userInfo.gender}}" disabled="{{inputState}}" data-name='remark' bindinput="bindInput"/>
         </view>
     </view>
     <template is="msgItem" data="{{IP:IP,flag:'myself'}}"/>

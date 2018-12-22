@@ -8,22 +8,23 @@ Page({
     },
     onLoad(){
         wx.setNavigationBarTitle({
-            title: '绑定账号' 
+            title: '修改账号' 
         });
         wx.onSocketMessage(function(res){
           console.log(res);
-          res = JSON.parse(res.data);
-          if (res.cmd == 'login') {
-            if (res.code == 200) {
-              wx.navigateTo({
-                url: '../facilityManage/facilityManage'　　// 页面 A
-              })
-            } else {
-              wx.navigateTo({
-                url: '../login/login'　　// 页面 A
-              })
-            }
-          }
+          res = JSON.parse(res.data).data;
+          if(res.result == '200 OK'){
+            wx.showToast({
+              title: '修改成功',
+              icon: 'succes',
+              duration: 1000
+          })
+          };
+          setTimeout(function(){
+            wx.navigateBack({
+              delta: 1, // 回退前 delta(默认为1) 页面
+            })
+          },1000)
         })
     },
   getAccount(e){
@@ -42,30 +43,17 @@ Page({
    
   },
   register(){
-    var account = this.data.account;
-    var pwd = this.data.pwd;
-    wx.login({
-      success: function (loginRes) {
-        if (loginRes.code) {
-          // example: 081LXytJ1Xq1Y40sg3uJ1FWntJ1LXyth
-          console.log(loginRes.code)
-          wx.sendSocketMessage({
-            data: '{' +
-              '"cmd": "NETCMD_GETWECHATID",' +
-              '"WeChatId": "jwipc",' +
-              ' "MatterServerId": ' + app.MatterServerId+',' +
-              ' "RecorderId": ' + app.RecorderId +',' +
-              '"data": [{' +
-               +' "wechatId": "' + loginRes.code+'",'+
-              +' "account":"' + account + '", ' +
-              +' "pwd":"' + pwd+'" '+
-              '}'+
-              '}'
-          })
-
-        }
+    var data = {
+      "MysqlCmd": "NETCMD_WECHAT_USERS_UPDATE",
+      "data": {
+          "wechatId": app.wechatId,
+          "account":this.data.account,
+          "password": this.data.pwd
       }
-    });
-    
+  };
+  data = JSON.stringify(data);
+    wx.sendSocketMessage({
+      data: data,
+    })
   }
 })

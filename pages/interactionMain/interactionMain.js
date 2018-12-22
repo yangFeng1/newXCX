@@ -4,7 +4,8 @@ Page({
     data:{
       IP: app.IPaddress,
       location:0,
-      startLocation:0
+      startLocation:0,
+      secondPage:true
     },
     slide(move){
         var animation = wx.createAnimation({
@@ -37,7 +38,7 @@ Page({
         move>900 && (move = 900);
         move<-900 && (move = -900);
         if(move == this.data.location) return;
-        console.log(move)
+         console.log(move)
         this.slide(move);
     }
 })

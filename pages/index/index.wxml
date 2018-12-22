@@ -1,5 +1,9 @@
 
 <view>
+        <image src="{{IP}}loading.gif"  class="loading" wx:if='{{cover}}'/>
+        <view class="cover"  wx:if='{{cover}}'>
+            
+        </view>
     <view class="scan" bindtouchstart="scanTouch" bindtouchend="scanTouchEnd" bindtap="scanCode">
     <image src="{{scanSrc}}" />
     

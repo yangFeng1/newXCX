@@ -17,8 +17,10 @@ page{
     height: 32rpx;
 }
 .box{
+    width: 750rpx;
+    height: 480rpx;
     background: url('https://weixin.hd123.net.cn/myself_bg.png')no-repeat;
-    min-height: 1000rpx;
+    /* min-height: 1000rpx; */
 }
 .personalData{
     width: 606rpx;

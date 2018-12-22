@@ -1,14 +1,14 @@
 <view class="box">
     <view class="title item">
-        <text class="fl left">{{left}}</text>
-        <text class="fr right">{{right}}</text>
+        <text class="fl left" bindtap="back">{{left}}</text>
+        <text class="fr right" bindtap="save">{{right}}</text>
     </view>
     <view class="item">
         <text class="headline fl">名称</text>
-        <input type="" class="fl"/>
+        <input type="" class="fl" bindinput ="userNameInput" value="{{name}}"/>
     </view>
     <view class="item">
         <text class="headline fl">账号</text>
-        <input type="" class="fl"/>
+        <input type="" class="fl" bindinput ="userAccoutInput" value="{{account}}"/>
     </view>
 </view>

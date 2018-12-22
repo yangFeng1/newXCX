@@ -1,12 +1,12 @@
 {
   "pages":[
-    "pages/interactionMain/interactionMain",
-    "pages/interaction/interaction",
-    "pages/controlMain/controlMain",
-    "pages/myself/myself",
-    "pages/editAddress/editAddress",
-    "pages/addressList/addressList",
     "pages/index/index",  
+    "pages/editAddress/editAddress",
+    "pages/controlMain/controlMain",
+    "pages/addressList/addressList",
+    "pages/interaction/interaction",
+    "pages/interactionMain/interactionMain",
+    "pages/myself/myself",
      "pages/login/login"
     ],
     "window":{
@@ -15,5 +15,5 @@
       "navigationBarTitleText": "Account  Manage",
       "navigationBarTextStyle":"#fff",
       "disableScroll": true
-    }
+    } 
   }

@@ -12,12 +12,11 @@
             <input class="password_input fl" data-pwd="pwd" bindinput="getAccount"/>
             
         </view>
-        <text wx:if="{{errTips}}" class='errTips'>账号或密码错误</text>
     </view>
     <view class="bind" bindtap='register'>
-        绑定
+        修改
     </view> 
-    <view class="tips">
-        请输入校园云平台账号
-    </view>
+     <view class="tips">
+        每个账号仅可修改一次
+    </view> 
 </view>
