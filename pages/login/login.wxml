@@ -1,0 +1,26 @@
+<view>
+  <view class="coverBox"  wx:if='{{cover}}'>
+            <image src="{{IP}}loading.gif"  class="loading"/>
+            <view class="cover"></view>
+        </view>
+    <view class="handPortrait">
+        <open-data type="userAvatarUrl"></open-data>
+    </view>
+    <view>
+        <view class="account clearfix box">
+            <text class="account_text fl">账号：</text>
+            <input class="account_input fl" data-account='account'  bindinput="getAccount" maxlength='18'/>
+        </view>
+        <view class="password clearfix box">
+            <text class="password_text fl">密码：</text>
+            <input class="password_input fl" data-pwd="pwd" bindinput="getAccount" maxlength='18'/>
+            
+        </view>
+    </view>
+    <view class="bind" bindtap='register'>
+        修改
+    </view> 
+     <view class="tips">
+        每个账号仅可修改一次
+    </view> 
+</view>

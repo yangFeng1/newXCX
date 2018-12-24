@@ -1,0 +1,75 @@
+.box{
+    height: 104rpx;
+    width: 100%;
+    position: relative;
+}
+.listTitle .name{
+    width: 92%;
+    height: 104rpx;
+    line-height: 104rpx;
+    padding: 0 32rpx;
+    background: #f2f5fb;
+}
+.listTitle .name .left{
+    font-size: 26rpx;
+    color: #555;
+}
+.listTitle .name .right{
+    font-size: 22rpx;
+    color: #999;
+}
+.operation{
+    width: 320rpx;
+    height: 104rpx;
+    position: absolute;
+    right: -320rpx;
+}
+.operation view{
+    width: 160rpx;
+    line-height: 104rpx;
+    font-size: 26rpx;
+    text-align: center;
+    color: #fff;
+}
+.operation .edit{
+    background: #c9ccd4;
+}
+.operation .del{
+    background: #f85669;
+}
+
+.listTitle .item .title{
+    padding-left: 32rpx;
+    height: 40rpx;
+    background: #d5d8e0;
+    font-size: 30rpx;
+    color: #999;
+    line-height: 40rpx;
+}
+page{
+    background: #e6eaf3;
+}
+.addAddress{
+    height: 104rpx;
+    padding: 0 32rpx;
+    background: #f2f5fb;
+    position: relative;
+}
+.addAddress view{
+    height: 104rpx;
+    height: 100rpx;
+    position: absolute;
+    top: 0rpx;
+    right: 0rpx;
+}
+.addAddress text{
+    line-height: 104rpx;
+    font-size: 30rpx;
+    color: #555;
+}
+.addAddress image{
+    width: 40rpx;
+    height: 40rpx;
+    margin-top: 28rpx;
+    margin-right: 40rpx;
+}

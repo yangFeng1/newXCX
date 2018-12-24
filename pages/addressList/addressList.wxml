@@ -1,0 +1,64 @@
+
+<view>
+    <!-- <view class="box" bindtouchstart="touchStart" bindtouchmove="TouchMove" bindtouchend="touchEnd">
+        <view class="box1" style="left:{{left1}}px"  bindtouchcancel="">
+            
+        </view>
+        <view class="box2" style="right:{{left2}}px" animation="{{ani}}">
+            
+        </view>        
+    </view>     -->
+   
+        <view class="addAddress">
+            <text>添加通讯录</text>
+            <navigator url="/pages/editAddress/editAddress?data=add">
+                <view>
+                    <image src="{{IP}}address_add_default.png" />
+                </view>
+            </navigator>
+           
+        </view>
+
+        <view class="listTitle">
+            <view class="item" >
+                   <view class="title">A</view>
+                   <!-- <view class="box" animation="{{ani}}" data-name='ani'   bindtouchstart="touchStart" bindtouchmove="TouchMove" bindtouchend="touchEnd">
+                    <view class="name fl" data-userId="{{item.usersId}}" >
+                        <text class="left fl">111</text>
+                        <text class="right fr" >111</text>
+                    </view>
+                    <view class="operation fl">
+                         <navigator  url="/pages/editAddress/editAddress?data=edit&Address_book_id={{item.Address_book_id}}">
+                        <view class="edit fl">
+                            编辑
+                        </view>
+                     </navigator>
+                             <view class="del fl" data-Address_book_id="{{item.Address_book_id}}" bindtap="delect">
+                                     删除
+                             </view>
+                    </view>
+                </view>  -->
+                   <view class="box"  wx:for="{{addresList}}" animation="{{arr[index]}}" data-test='{{index}}' bindtouchstart="touchStart" bindtouchmove="TouchMove" bindtouchend="touchEnd">
+                       <view class="name fl" data-userId="{{item.usersId}}" >
+                           <text class="left fl">{{item.remarksName}}</text>
+                           <text class="right fr" >{{item.accountNumber}}</text>
+                       </view>
+                       <view class="operation fl">
+                            <navigator  url="/pages/editAddress/editAddress?data=edit&Address_book_id={{item.Address_book_id}}&account={{item.accountNumber}}&name={{item.remarksName}}">
+                           <view class="edit fl">
+                               编辑
+                           </view>
+                        </navigator>
+                                <view class="del fl" data-Address_book_id="{{item.Address_book_id}}" bindtap="delect">
+                                        删除
+                                </view>
+                       </view>
+                   </view> 
+
+            </view>
+        </view> 
+
+        <import   src="/pages/commonTabar/commonTabar.wxml" />
+         <template is="msgItem" data="{{IP:IP,flag:'home'}}"/>
+    
+</view>

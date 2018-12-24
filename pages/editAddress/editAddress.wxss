@@ -1,0 +1,29 @@
+page{
+    background: #e6eaf3;
+    font-size: 30rpx;
+    line-height: 96rpx;
+}
+.box{
+    padding: 50rpx 56rpx;
+    background: #f2f5fb;
+    padding-bottom: 84rpx;
+}
+.box .left{
+    color: #f85669;
+}
+.box .right{
+    color: #4b94fa;
+}
+.box .item{
+    height: 96rpx;
+    border-bottom:1px solid #ced1d9;
+}
+.box .headline{
+    color: #999;
+    font-size: 26rpx;
+}
+.box input{
+    margin-left: 40rpx;
+    height: 96rpx;
+    width: 500rpx;
+}

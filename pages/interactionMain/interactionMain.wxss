@@ -1,0 +1,211 @@
+page{
+    background: #e6eaf3;
+}
+.bg{
+    width: 100%;
+    height: 280rpx;
+    position: absolute;
+}
+.personData{
+    width: 100%;
+    height: 160rpx;
+    position: absolute;
+    z-index: 999;
+}
+.personData .headPortrait{
+    width: 96rpx;
+    height: 96rpx;
+    margin: 24rpx 24rpx 0rpx 72rpx;
+}
+.personData .data{
+    font-size: 24rpx;
+    color: #fff;
+    margin-top: 35rpx;
+}
+.personData .data text{
+    display: block;
+    margin-bottom: 16rpx;
+}
+.personData .operation{
+    width: 156rpx;
+    height: 64rpx;
+    margin-top: 40rpx;
+}
+.facilityBox{
+    width: 590rpx;
+    height: 866rpx;
+    background: #f2f5fb;
+    border-radius: 8rpx;
+    box-shadow: 10rpx rgba(6,40,88,0.1);
+    position: absolute;
+    top: 160rpx;
+    left: 40rpx;
+    z-index: 999;
+    padding: 40rpx;
+    /* overflow: hidden; */
+}
+.facilityList{
+    width: 100%;
+    height: 100%;
+    border: 1rpx solid #4b94fa;
+    overflow: scroll;
+}
+.facilityList .item{
+    height: 110rpx;
+    border-bottom: 1rpx solid #ced1d9;
+    position: relative;
+}
+.facilityList .item .left{
+    margin: 20rpx 0rpx 0rpx 32rpx;
+}
+
+.black{
+    font-size: 24rpx;
+    color: #555;
+}
+.gray{
+    color: #999;
+    font-size: 22rpx;
+    margin-top: 16rpx;
+}
+.facilityList .item .right{
+    margin: 20rpx 32rpx 0rpx 0rpx;
+}
+.facilityList .item .right image{
+    width: 72rpx;
+    height: 72rpx;
+    margin-left: 24rpx;
+}
+.facilityList .online{
+    width: 8rpx;
+    height: 100%;
+    background: #35d898;
+    position: absolute;
+    top: 0rpx;
+    left: 0rpx;
+}
+.facilityAdd{
+    width: 108rpx;
+    height: 108rpx;
+    position: absolute;
+    right: 0rpx;
+    bottom: -60rpx;
+}
+.mybody{
+    height: 866rpx;
+    position: relative;
+}
+.switchPicture{
+    width: 606rpx;
+    height: 866rpx;
+    border: 1rpx solid #4b94fa;
+    position: absolute;
+    top: 0rpx;
+    left: 900px;
+}
+.switchPage{
+    width: 481rpx;
+    height: 132rpx;
+    background: #d3e1fa;
+    margin-top: 335rpx;
+    border-top-right-radius: 100rpx;
+    border-bottom-right-radius: 100rpx;
+    padding: 32rpx;
+    position: relative;
+}
+.switchPage .layout{
+    font-size: 26rpx;
+    color: #555;
+}
+.switchPage .clip{
+    margin-top: 20rpx;
+}
+.switchPage .clip view{
+    width: 128rpx;
+    height: 88rpx;
+    background: #a0c3f6;
+    line-height: 88rpx;
+    text-align: center;
+    color: #fff;
+    margin-right: 16rpx;
+    font-size: 26rpx;
+}
+.switchPage .switchPageButton{
+    width: 172rpx;
+    height: 172rpx;
+    position: absolute;
+    top: 12rpx;
+    right: 12rpx;
+}
+.switchPage .selected{
+    background: #4b94fa !important;
+} 
+
+
+.viewLayout{
+    width: 564rpx;
+    height: 364rpx;
+    border: 1rpx solid #4b94fa;
+    position: absolute;
+    top: 0rpx;
+    left: -900px;
+    padding: 24rpx 8rpx 32rpx 24rpx;
+}
+.viewLayout .title{
+    margin-top: 24rpx;
+    font-size: 30rpx;
+    color: #555;
+    margin-bottom: 20rpx;
+}
+.viewLayout image{
+    width: 125rpx;
+    height: 88rpx;
+    margin-right: 14rpx;
+
+}
+
+
+.chooseAccount{
+    position: absolute;
+    top: 0rpx;
+    left: 0rpx;
+    border: 1px solid #4b94fa;
+    height:746rpx;
+    width: 100%;
+}
+.chooseAccount input{
+    border-bottom: 1px solid #4b94fa;
+    width: 100%;
+    height: 80rpx;
+    color: #a0c3f6;
+    line-height: 80rpx;
+    font-size: 24rpx;
+    padding-left: 32rpx;
+    box-sizing: border-box;
+}
+.chooseAccount .item{
+    box-sizing: border-box;
+    padding: 0rpx 32rpx;
+    width: 100%;
+    height: 104rpx;
+    border-bottom: 1px solid #ced1d9;
+    line-height: 104rpx;
+}
+.chooseAccount .item .left{
+    font-size:24rpx;
+    color:#555; 
+}
+.chooseAccount .item .right{
+    font-size: 22rpx;
+    color:#999;
+}
+.chooseAccount .selected{
+    background: #d7edfc;
+}
+.chooseAccount .dial{
+    width: 96rpx;
+    height: 96rpx;
+    position: absolute;
+    left: 287rpx;
+    bottom: -120rpx;
+}

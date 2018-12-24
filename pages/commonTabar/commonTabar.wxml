@@ -1,0 +1,24 @@
+<template  name="msgItem">
+    <view class="commonTabar">
+         <view>
+         <navigator url="../index/index" open-type="reLaunch">
+            <image src="{{IP}}home_homepage_default.png" wx:if="{{flag !='index'}}"  />
+            <image src="{{IP}}home_homepage_selected.png" wx:if="{{flag =='index'}}"  />
+         </navigator>
+        </view>
+        <view>
+         <navigator url="../addressList/addressList" open-type="reLaunch">
+            <image src="{{IP}}home_address_default.png" wx:if="{{flag !='home'}}" />
+            <image src="{{IP}}home_address_selected.png"  wx:if="{{flag =='home'}}" />
+         </navigator>
+        </view>
+   
+        
+        <view>
+         <navigator url="../myself/myself" open-type="reLaunch">
+            <image src="{{IP}}home_myself_default.png" wx:if="{{flag !='myself'}}"  />
+            <image src="{{IP}}home_myself_selected.png" wx:if="{{flag =='myself'}}"  />
+         </navigator>
+        </view>
+    </view>
+</template>

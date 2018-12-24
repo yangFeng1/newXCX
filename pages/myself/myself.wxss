@@ -1,0 +1,67 @@
+page{
+    background: #e6eaf3;
+}
+.headPortrait{
+    width: 116rpx;
+    height: 116rpx;
+    margin: 0rpx 317rpx 40rpx 317rpx;
+    padding-top: 48rpx;
+}
+.name{
+    padding-left: 300rpx;
+    font-size: 26rpx;
+    color: #fff;
+}
+.name text{
+  max-width: 300rpx;
+}
+.name image{
+    margin-left: 32rpx;
+    width: 26rpx;
+    height: 32rpx;
+}
+.box{
+    width: 750rpx;
+    height: 480rpx;
+    background: url('https://weixin.hd123.net.cn/myself_bg.png')no-repeat;
+    /* min-height: 1000rpx; */
+}
+.personalData{
+    width: 606rpx;
+    height: 572rpx;
+    background: #f2f5fb;
+    border-radius: 8rpx;
+    margin-top: 70rpx;
+    margin-left: 40rpx; 
+    padding: 32rpx;
+}
+.personalData .title{
+    height: 104rpx;
+    line-height: 104rpx;
+    
+}
+.personalData .title .left{
+    font-size: 26rpx;
+    color: #555;
+}
+.personalData .title .right{
+    font-size: 24rpx;
+    color: #777;
+}
+.personalData .border{
+    height: 104rpx;
+    border-bottom: 1px solid #ced1d9;
+}
+.personalData .top{
+    font-size: 22rpx;
+    color: #96c0fa;
+    margin-top: 22rpx;
+}
+.personalData .content{
+    margin-top: 16rpx;
+    font-size: 24rpx;
+    color: #777;
+}
+.personalData .save{
+    color: #4b94fa !important;
+}

@@ -1,0 +1,43 @@
+<import   src="/pages/commonTabar/commonTabar.wxml" />
+<view class="box">
+    <view class="headPortrait">
+        <open-data type="userAvatarUrl"></open-data>
+    </view>
+    <view class="name clearfix">
+        <text class="fl">{{userInfo.account}}</text>
+        <navigator  url="/pages/login/login?id={{zwechatId}}" class="fl">
+         <image src="{{IP}}myself_editor_default.png" wx:if="{{userInfo.flag == 0}}"/>
+        </navigator>
+    </view>
+    <view class="personalData ">
+        <view class="title border">
+            <text class="fl left">个人资料</text>
+            <text class="fr right {{inputState?'':'save'}}" bindtap="edit">{{editText}}</text>
+        </view>
+        <view class="personalName border">
+            <view class="top">
+                名称
+            </view>
+            <input class="content" value="{{userInfo.name}}" disabled="{{inputState}}" data-name='name' bindinput="bindInput"/>
+        </view>
+        <view class="gender border">
+            <view  class="top">
+                性别
+            </view>
+             <input class="content" value="{{userInfo.gender}}" disabled="{{inputState}}" data-name='gender' bindinput="bindInput"/>
+        </view>
+        <view class="school border">
+            <view  class="top">
+                学校
+            </view>
+            <input class="content" value="{{userInfo.school}}" disabled="{{inputState}}" data-name='school' bindinput="bindInput"/>
+        </view>
+        <view class="remake">
+            <view  class="top">
+                备注
+            </view>
+             <input class="content" value="{{userInfo.gender}}" disabled="{{inputState}}" data-name='remark' bindinput="bindInput"/>
+        </view>
+    </view>
+    <template is="msgItem" data="{{IP:IP,flag:'myself'}}"/>
+</view>
