@@ -1,29 +1,18 @@
 <view class="box">
-<<<<<<< HEAD
         <view class="coverBox"  wx:if='{{cover}}'>
                 <image src="{{IP}}loading.gif"  class="loading"/>
                 <view class="cover"></view>
             </view>
-=======
->>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
     <view class="title item">
         <text class="fl left" bindtap="back">{{left}}</text>
         <text class="fr right" bindtap="save">{{right}}</text>
     </view>
     <view class="item">
         <text class="headline fl">名称</text>
-<<<<<<< HEAD
         <input type="" class="fl" bindinput ="userNameInput" value="{{name}}" maxlength='18'/>
     </view>
     <view class="item">
         <text class="headline fl">账号</text>
         <input type="" class="fl" bindinput ="userAccoutInput" value="{{account}}" maxlength='18'/>
-=======
-        <input type="" class="fl" bindinput ="userNameInput" value="{{name}}"/>
-    </view>
-    <view class="item">
-        <text class="headline fl">账号</text>
-        <input type="" class="fl" bindinput ="userAccoutInput" value="{{account}}"/>
->>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
     </view>
 </view>

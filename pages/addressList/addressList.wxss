@@ -55,7 +55,6 @@ page{
     background: #f2f5fb;
     position: relative;
 }
-<<<<<<< HEAD
 .addAddress view{
     height: 104rpx;
     height: 100rpx;
@@ -63,8 +62,6 @@ page{
     top: 0rpx;
     right: 0rpx;
 }
-=======
->>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
 .addAddress text{
     line-height: 104rpx;
     font-size: 30rpx;
@@ -73,12 +70,6 @@ page{
 .addAddress image{
     width: 40rpx;
     height: 40rpx;
-<<<<<<< HEAD
     margin-top: 28rpx;
     margin-right: 40rpx;
-=======
-    position: absolute;
-    top: 28rpx;
-    right: 40rpx;
->>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
 }

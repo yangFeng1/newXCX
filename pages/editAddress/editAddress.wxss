@@ -24,10 +24,6 @@ page{
 }
 .box input{
     margin-left: 40rpx;
-<<<<<<< HEAD
     height: 96rpx;
     width: 500rpx;
-=======
-    margin-top: 25rpx;
->>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
 }

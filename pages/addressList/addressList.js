@@ -1,8 +1,5 @@
 const app = getApp();
-<<<<<<< HEAD
 var util = require('../../utils/util.js');
-=======
->>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
 Page({
     data:{
         IP: app.IPaddress,
@@ -17,7 +14,6 @@ Page({
         wx.setNavigationBarTitle({
             title: '通讯录' 
           });
-<<<<<<< HEAD
     },
     onShow(){
       var _this = this;
@@ -28,19 +24,6 @@ Page({
         })
       });
       this.socket();
-=======
-        
-          
-        //  wx.onSocketOpen(function() {
-            // callback
-            
-
-        
-        //   })
-    },
-    onShow(){
-        var _this = this;
->>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
         // console.log('show');
         var data = {
             "MysqlCmd": "NETCMD_WECHAT_ADDRESS_BOOK_QUERY",
@@ -54,7 +37,6 @@ Page({
           wx.sendSocketMessage({
             data: data
           })
-<<<<<<< HEAD
           
       },
       socket(){
@@ -90,39 +72,6 @@ Page({
               break;
           }
           // console.log(data);
-=======
-          wx.onSocketMessage(function(data) {
-            // data
-            console.log(data);
-            data = JSON.parse(data.data);
-            switch(data.MysqlCmd){
-                case 'NETCMD_WECHAT_ADDRESS_BOOK_QUERY'://获取通讯录
-                _this.setData({
-                    addresList:data.data
-                })
-                break;
-                case 'NETCMD_WECHAT_ADDRESS_BOOK_DELETE'://删除返回
-                wx.showToast({
-                    title: '删除成功',
-                    icon: 'succes',
-                    duration: 1000
-                })
-                setTimeout(function(){
-                    var data = {
-                        "MysqlCmd": "NETCMD_WECHAT_ADDRESS_BOOK_QUERY",
-                        "data":{
-                        "usersId":app.userInfo.users_id
-                        }
-                    }
-                    data=JSON.stringify(data);
-                    wx.sendSocketMessage({
-                        data: data
-                    })
-                },1000)
-                break;
-            }
-            // console.log(data);
->>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
         })
       },
     touchStart(e){

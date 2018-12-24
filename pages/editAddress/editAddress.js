@@ -9,12 +9,8 @@ Page({
       name:'',
       account:'',
       titleName:'',
-<<<<<<< HEAD
       Address_book_id:'',
       cover:false
-=======
-      Address_book_id:''
->>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
     },
     onLoad(option){
       var _this =this;
@@ -54,12 +50,9 @@ Page({
       });
       wx.onSocketMessage(function(data) {
         // data
-<<<<<<< HEAD
         _this.setData({
           cover:false
         })
-=======
->>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
         console.log(JSON.parse(data.data).data.result);
         if(JSON.parse(data.data).data.result == '200 OK'){
           wx.showToast({
@@ -81,7 +74,6 @@ Page({
             }
           })
         },1000)
-<<<<<<< HEAD
         }else{
           wx.showToast({
             title: '操作失败',
@@ -95,13 +87,6 @@ Page({
       this.setData({
         cover:true
       })
-=======
-        }
-      })
-    },
-    
-    save(){//增加通讯录
->>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
       var user;
       console.log(this.data.titleName);
       if(this.data.titleName == 'add'){//添加

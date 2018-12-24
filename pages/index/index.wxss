@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .scan{
     margin-top:416rpx;
     margin-left:218rpx;
@@ -30,52 +29,3 @@ page{
   margin-top: 60rpx;
 }
 
-=======
-.scan{
-    margin-top:416rpx;
-    margin-left:218rpx;
-}
-.scan image{
-    width:314rpx;
-    height:314rpx;
-}
-.collect{
-  width: 100%;
-  background: #fff;
-  height: 98rpx;
-  text-align: center;
-  font-size: 28rpx;
-  color: #555;
-  line-height: 98rpx;
-  position: absolute;
-  bottom:0rpx;
-  box-shadow: 10rpx rgba(0, 0, 0, 0.2);
-}
-page{
-  background: #e6eaf3;
-}
-.tips{
-  font-size: 30rpx;
-  color: #555;
-  text-align: center;
-  width: 100%;
-  margin-top: 60rpx;
-}
-.loading{
-  position: absolute;
-  width: 250rpx;
-  height: 250rpx;
-  top:350rpx;
-  left: 275rpx;
-  z-index: 666666;
-}
-.cover{
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top:0rpx;
-  left: 0rpx;
-  z-index: 66666;
-  background: rgba(0, 0, 0, 0.5);
-}
->>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e

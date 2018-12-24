@@ -1,12 +1,5 @@
-<<<<<<< HEAD
 {
     "pages": [
       "pages/login/login"
     ]
-=======
-{
-    "pages": [
-      "pages/login/login"
-    ]
->>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
 }
