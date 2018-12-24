@@ -1,5 +1,9 @@
 const app = getApp();
+<<<<<<< HEAD
 var util = require('../../utils/util.js');
+=======
+
+>>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
 Page({
     data:{
       IP: app.IPaddress,
@@ -20,6 +24,7 @@ Page({
     },
     onShow(){ 
         var _this = this;
+<<<<<<< HEAD
       util.monitorSocketClose(this, function () {
         wx.onSocketOpen(function () {
           // callback
@@ -27,12 +32,16 @@ Page({
         })
       });
       this.socket();
+=======
+        console.log('show');
+>>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
         var getUser = {
             "MysqlCmd": "NETCMD_WECHAT_USERS_QUERY",
             "data":{
             "wechatId":this.data.wechatId
             }
           }
+<<<<<<< HEAD
           wx.sendSocketMessage({
             data:JSON.stringify(getUser)
           });
@@ -77,6 +86,49 @@ Page({
             break;
         }
       })
+=======
+
+          wx.sendSocketMessage({
+            data:JSON.stringify(getUser)
+          });
+            wx.onSocketMessage(function(data) {
+                console.log(data);
+                data = JSON.parse(data.data);
+                console.log(data.data)
+                // if(data.MysqlCmd == 'NETCMD_WECHAT_USERS_QUERY'){
+                //     _this.setData({
+                //         userInfo:data.data
+                //     })
+                // }
+                switch(data.MysqlCmd){
+                    case 'NETCMD_WECHAT_USERS_QUERY':
+                        _this.setData({
+                            userInfo:data.data
+                        });
+                    break;
+                    case 'NETCMD_WECHAT_USERS_UPDATE':
+                    console.log(data);
+                        if(data.data.result == '200 OK'){
+                            wx.showToast({
+                                title: '更改成功',
+                                icon: 'succes',
+                                duration: 1000
+                            });
+                            _this.setData({
+                                inputState:true,
+                                editText:'编辑'
+                            });
+                        }else{
+                            wx.showToast({
+                                title: '更改失败',
+                                icon: 'fail',
+                                duration: 1000
+                            });
+                        }
+                    break;
+                }
+            })
+>>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
     },
     edit(e){
         // var state = this.data.editText=="编辑"?false:true;

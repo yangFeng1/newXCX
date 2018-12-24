@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <view class="Box">
         <view class="coverBox"  wx:if='{{cover}}'>
@@ -16,4 +17,23 @@
         <import   src="/pages/commonTabar/commonTabar.wxml" />
     <template is="msgItem" data="{{IP:IP,flag:'index'}}"/>
 </view>
+=======
+
+<view>
+        <image src="{{IP}}loading.gif"  class="loading" wx:if='{{cover}}'/>
+        <view class="cover"  wx:if='{{cover}}'>
+            
+        </view>
+    <view class="scan" bindtouchstart="scanTouch" bindtouchend="scanTouchEnd" bindtap="scanCode">
+    <image src="{{scanSrc}}" />
+    
+</view>
+<view class="tips">
+        扫码进入课堂
+</view>
+<view>
+        <import   src="/pages/commonTabar/commonTabar.wxml" />
+    <template is="msgItem" data="{{IP:IP,flag:'index'}}"/>
+</view>
+>>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
 </view>

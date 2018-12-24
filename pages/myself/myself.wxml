@@ -1,9 +1,14 @@
 <import   src="/pages/commonTabar/commonTabar.wxml" />
 <view class="box">
+<<<<<<< HEAD
     <view class="headPortrait">
         <open-data type="userAvatarUrl"></open-data>
     </view>
     <view class="name clearfix">
+=======
+    <image src="{{IP}}home_stop_default.png" class="headPortrait" />
+    <view class="name">
+>>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
         <text class="fl">{{userInfo.account}}</text>
         <navigator  url="/pages/login/login?id={{zwechatId}}" class="fl">
          <image src="{{IP}}myself_editor_default.png" wx:if="{{userInfo.flag == 0}}"/>

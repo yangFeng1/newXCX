@@ -12,9 +12,13 @@
         <view class="addAddress">
             <text>添加通讯录</text>
             <navigator url="/pages/editAddress/editAddress?data=add">
+<<<<<<< HEAD
                 <view>
                     <image src="{{IP}}address_add_default.png" />
                 </view>
+=======
+                <image src="{{IP}}address_add_default.png" />
+>>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
             </navigator>
            
         </view>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "pages": [
     "pages/index/index"
@@ -8,4 +9,16 @@
     "navigationBarTitleText": "aaaa",
     "navigationBarTextStyle": "#fff"
   }
+=======
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#0387FE",
+    "navigationBarTitleText": "aaaa",
+    "navigationBarTextStyle": "#fff"
+  }
+>>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
 }

@@ -4,6 +4,7 @@ page{
 .headPortrait{
     width: 116rpx;
     height: 116rpx;
+<<<<<<< HEAD
     margin: 0rpx 317rpx 40rpx 317rpx;
     padding-top: 48rpx;
 }
@@ -15,6 +16,15 @@ page{
 .name text{
   max-width: 300rpx;
 }
+=======
+    margin: 48rpx 317rpx 40rpx 317rpx;
+}
+.name{
+    padding-left: 317rpx;
+    font-size: 26rpx;
+    color: #fff;
+}
+>>>>>>> 887be145af2dbc7e4e1176f3877bb94bd838813e
 .name image{
     margin-left: 32rpx;
     width: 26rpx;
