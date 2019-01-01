@@ -1,3 +1,4 @@
+
 const app = getApp();
 var util = require('../../utils/util.js');
 Page({
@@ -33,7 +34,6 @@ Page({
         "pwd": b
       })
     }
-   
   },
   socket(){
     var _this = this;
@@ -80,4 +80,4 @@ Page({
       data: data,
     })
   }
-})
+  })

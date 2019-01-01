@@ -1,5 +1,9 @@
 page{
     background: #e6eaf3;
+    height: 100%;
+}
+.mybody{
+  height: 100%;
 }
 .tabar view{
     height: 98rpx;

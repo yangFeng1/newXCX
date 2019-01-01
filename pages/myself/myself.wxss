@@ -51,15 +51,16 @@ page{
 .personalData .border{
     height: 104rpx;
     border-bottom: 1px solid #ced1d9;
+    
 }
 .personalData .top{
-    font-size: 22rpx;
+    font-size: 24rpx;
     color: #96c0fa;
     margin-top: 22rpx;
 }
 .personalData .content{
     margin-top: 16rpx;
-    font-size: 24rpx;
+    font-size: 26rpx;
     color: #777;
 }
 .personalData .save{

@@ -7,7 +7,7 @@ App({
   wechatIdUrl:'',
   wechatId:false,
   userInfo:'',
-  cover:true,
+  cover:false,
   socketLinste:true,
   onLaunch: function () {
     var _this = this;
@@ -31,27 +31,31 @@ App({
           success: function(res){
             console.log(res);
           }
-        })
+        }) 
       }
     })
   },
   linkSocket(){
     var _this = this;
     wx.connectSocket({
-      url: "wss://weixin.hd123.net.cn/ws",
+      url: "ws://172.16.1.90:9000/ajaxchattest",
       fail(err){
         console.log('socket链接失败,重新链接')
         _this.linkSocket();
       },
       success(){
         wx.onSocketOpen(function (res) {
-          util.monitorSocketClose(this);
+          util.monitorSocketClose(_this);
           console.log('WebSocket连接已打开！');
         _this.getWeChatId();
         wx.onSocketMessage(function(data) {
           // data
           console.log(data);
-          data = JSON.parse(data.data);
+          try{
+            data = JSON.parse(data.data);
+          }catch(e){
+            return;
+          }
           switch(data.MysqlCmd){
             case 'NETCMD_WECHAT_USERS_QUERY'://返回用户信息
               _this.userInfo = data.data;
@@ -61,18 +65,21 @@ App({
             break;
             case 'NETCMD_WECHAT_GET_WECHATID'://返回微信ID
               _this.wechatId = data.data.wechatId;
-              if(_this.wechatId == ''){//为空代表请求失败重新请求微信id
+              if (_this.result == '200 OK'){//为空代表请求失败重新请求微信id
                 _this.getWeChatId();
                 break;
               }
-              var getUser = {
+              var getUser = {//获取用户信息
                 "MysqlCmd": "NETCMD_WECHAT_USERS_QUERY",
                 "data":{
-                "wechatId":_this.wechatId
+                "wechatId":_this.wechatId 
                 }
               }
               wx.sendSocketMessage({
-                data:JSON.stringify(getUser)
+                data:JSON.stringify(getUser),
+                success:function(){
+                  console.log('success');
+                }
               })
             break;
           }

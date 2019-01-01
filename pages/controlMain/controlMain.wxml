@@ -5,10 +5,12 @@
             <view class="school">学校：{{schoolName}}</view>
             <view>班级：{{className}}</view>
         </view>
-        <image src="{{IP}}home_interactive_on_default.png"  class="fr"/>
+       <navigator url="../interaction/interaction">
+         <image src="{{IP}}home_interactive_on_default.png"  class="fr"/>
+       </navigator>
     </view>
     <view class="record">
-        <image src="{{IP}}home_video_selected.png" class="fl"/>
+        <image src="{{IP}}{{recordImage}}" class="fl" data-name="record" bindtap='operation'/>
         <view class="fl contant">
             <view class="title controlTitle">录像</view>
             <view class="time controlTime">
@@ -18,7 +20,7 @@
     </view>
     <view class="live">
         <text class="text_one controlTitle fl">直播</text>
-        <image src="{{IP}}home_live_on.png" class="fl"/>
+        <image src="{{IP}}{{liveImage}}" class="fl" data-name="live"  bindtap='operation'/>
         <text class="text_tow controlTime fl">直播时间：</text>
         <text class="text_thr fl living">{{liveTime}}</text>
     </view>

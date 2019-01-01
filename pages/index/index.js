@@ -4,7 +4,7 @@ Page({
   data:{
     scanSrc: app.IPaddress+"scan-default.png",
     IP:app.IPaddress,
-    cover:true
+    cover:false
   },
   onLoad(options){
     var _this = this;
@@ -33,8 +33,8 @@ Page({
         wx.onSocketMessage(function(data) {
             // data
           // console.log(data);
-          data = JSON.parse(data.data);
-          // console.log(_this);
+          // data = JSON.parse(data.data);
+          // console.log(_this); 
           console.log(data);
         })  
       }
@@ -51,31 +51,33 @@ Page({
     })
   },
   scanCode(){
-    wx.scanCode({
-      success: function(res) {
-        console.log( res.result);
-        var data = JSON.parse(res.result);
-        app.MatterServerId = data.MatterServerId;
-        app.RecorderId = data.RecorderId;
-        if (data.MatterServerId && data.RecorderId){
-         wx.login({
-           success:function(res){
-             wx.sendSocketMessage({
-               data: '{'+
-                 '"cmd": "NETCMD_WECHATLOGIN",'+
-                 '"MatterServerId": "'+data.MatterServerId+'" ,'+
-                 '"RecorderId": "'+data.RecorderId+'" ,'+
-                 '"data": {'+
-                   '"WeChatId": "'+res.code+'"'+
-                 '}'+
-               '}'
-             })
-           }
-         })
-        }
-        
-      }
+    wx.navigateTo({
+      url: '../controlMain/controlMain'
     })
+    // wx.scanCode({
+    //   success: function(res) {
+    //     console.log( res.result);
+    //     var data = JSON.parse(res.result);
+    //     app.MatterServerId = data.MatterServerId;
+    //     app.RecorderId = data.RecorderId;
+    //     if (data.MatterServerId && data.RecorderId){
+    //      wx.login({
+    //        success:function(res){
+    //          wx.sendSocketMessage({
+    //            data: '{'+
+    //              '"cmd": "NETCMD_WECHATLOGIN",'+
+    //              '"MatterServerId": "'+data.MatterServerId+'" ,'+
+    //              '"RecorderId": "'+data.RecorderId+'" ,'+
+    //              '"data": {'+
+    //                '"WeChatId": "'+res.code+'"'+
+    //              '}'+
+    //            '}'
+    //          })
+    //        }
+    //      })
+    //     }
+    //   }
+    // })
   },
   collect(){
     wx.navigateTo({

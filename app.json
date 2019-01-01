@@ -1,10 +1,10 @@
 {
   "pages":[
-    "pages/index/index",  
+    "pages/index/index", 
+    "pages/interaction/interaction",
     "pages/editAddress/editAddress",
     "pages/controlMain/controlMain",
     "pages/addressList/addressList",
-    "pages/interaction/interaction",
     "pages/interactionMain/interactionMain",
     "pages/myself/myself",
      "pages/login/login"

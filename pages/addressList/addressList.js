@@ -17,7 +17,7 @@ Page({
     },
     onShow(){
       var _this = this;
-      util.monitorSocketClose(this, function () {
+      util.monitorSocketClose(this,function () {
         wx.onSocketOpen(function () {
           // callback
           _this.socket();
