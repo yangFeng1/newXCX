@@ -1,4 +1,8 @@
 <view bindtouchstart="touchStart" bindtouchend="touchEnd">
+        <view class="coverBox"  wx:if='{{cover}}'>
+                <image src="{{IP}}loading.gif"  class="loading"/>
+                <view class="cover"></view>
+            </view>
     <image src="{{IP}}speaker_bg.png" class=" bg" /> 
     <view class="personData">
         <image src="{{IP}}speaker_call_big_selected.png" class="headPortrait fl"/>

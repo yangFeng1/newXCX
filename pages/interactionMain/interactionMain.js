@@ -6,7 +6,8 @@ Page({
       location:0,
       startLocation:0,
       secondPage:true,
-      member:false
+      member:false,
+      cover:false
     },
     onLoad(option){
         if(option.member){
@@ -17,6 +18,7 @@ Page({
         
     },
     onShow(option){
+        var _this = this;
         wx.onSocketMessage(function(res) {
             if(JSON.parse(res.data).cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE") return;//不处理录播直播消息
             console.log(res);
@@ -38,12 +40,16 @@ Page({
                 break;
             }
         });
-        if(this.data.member){
-            var data = {"cmd": "NETCMD_WECHAT_INTERACTION_ADD","RecorderId": app.RecorderId,"data": {"cmd":"kickStrangers","param":this.data.member}};
-            data = JSON.stringify(data);
-            wx.sendSocketMessage({data:data,
-            success:function(){console.log(123)}})
-        }
+        setTimeout(function(){
+            if(_this.data.member){
+                // var data = {"cmd": "NETCMD_WECHAT_INTERACTION_ADD","RecorderId": app.RecorderId,"data": {"cmd":"kickStrangers","param":_this.data.member}};
+                var data = {"cmd": "NETCMD_WECHAT_INTERACTION_ADD","RecorderId": app.RecorderId,"data": {"cmd":"addStrangers","param":["W@10000126"]}};
+                data = JSON.stringify(data);
+                console.log(data);
+                wx.sendSocketMessage({data:data,
+                success:function(){console.log(123)}})
+            }
+        },5000)
     },
     slide(move){
         var animation = wx.createAnimation({

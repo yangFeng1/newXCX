@@ -3,7 +3,7 @@ var util = require('./utils/util.js');
 App({
     IPaddress:'https://weixin.hd123.net.cn/',
   MatterServerId:"",
-  RecorderId:"0101236da6139170f4ee",
+  RecorderId:"01012311af05390fccee",
   wechatIdUrl:'',
   wechatId:false,
   userInfo:'',

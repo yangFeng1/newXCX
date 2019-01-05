@@ -169,6 +169,7 @@ Page({
             }
     }
     call = JSON.stringify(call);
+    console.log(call);
     wx.sendSocketMessage({
       data: call,
       success:function(){
