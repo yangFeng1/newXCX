@@ -3,7 +3,7 @@ var util = require('./utils/util.js');
 App({
     IPaddress:'https://weixin.hd123.net.cn/',
   MatterServerId:"",
-  RecorderId:"",
+  RecorderId:"0101236da6139170f4ee",
   wechatIdUrl:'',
   wechatId:false,
   userInfo:'',
@@ -38,9 +38,10 @@ App({
   linkSocket(){
     var _this = this;
     wx.connectSocket({
+      // url: "wss://weixin.hd123.net.cn/ws",
       url: "ws://172.16.1.90:9000/ajaxchattest",
       fail(err){
-        console.log('socket链接失败,重新链接')
+        console.error('socket链接失败,重新链接')
         _this.linkSocket();
       },
       success(){
@@ -54,6 +55,7 @@ App({
           try{
             data = JSON.parse(data.data);
           }catch(e){
+            console.log('返回数据不是一个json格式');
             return;
           }
           switch(data.MysqlCmd){

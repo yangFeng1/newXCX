@@ -10,17 +10,15 @@ Page({
         arr:[],
         index:''
     },
-    onLoad(){
+    onShow(){
         wx.setNavigationBarTitle({
             title: '通讯录' 
           });
-    },
-    onShow(){
       var _this = this;
       util.monitorSocketClose(this,function () {
         wx.onSocketOpen(function () {
           // callback
-          _this.socket();
+          _this.socket();   
         })
       });
       this.socket();
@@ -28,7 +26,7 @@ Page({
         var data = {
             "MysqlCmd": "NETCMD_WECHAT_ADDRESS_BOOK_QUERY",
             "data":{
-            "usersId":app.userInfo.users_id
+            "usersId":app.userInfo.users_id+''
             }
         }
         data = JSON.stringify(data);
@@ -60,7 +58,7 @@ Page({
               setTimeout(function () {
                 var data = {
                   "MysqlCmd": "NETCMD_WECHAT_ADDRESS_BOOK_QUERY",
-                  "data": {
+                  "data": { 
                     "usersId": app.userInfo.users_id
                   }
                 }

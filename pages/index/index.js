@@ -4,7 +4,8 @@ Page({
   data:{
     scanSrc: app.IPaddress+"scan-default.png",
     IP:app.IPaddress,
-    cover:false
+    cover:false,
+    timer:false
   },
   onLoad(options){
     var _this = this;
@@ -15,30 +16,32 @@ Page({
       })
     });
     this.socket();
-    wx.setNavigationBarTitle({
-      title: '个人ID：15616' 
-    });
-    
   },
   socket(){
     var _this = this;
+    this.data.timer && clearInterval(this.data.timer);//防止启动多个定时器
     var timer = setInterval(function(){//等待app.js的 onSocketMessage 数据处理完之后再由当前页面接手
-      // console.log(1);
+       console.log(1);
       if(!app.socketLinste){
         // console.log(2);
-        clearInterval(timer);
+        clearInterval(_this.data.timer);
         _this.setData({
           cover:app.cover
         })
+        wx.setNavigationBarTitle({
+          title: app.userInfo.name 
+        });
         wx.onSocketMessage(function(data) {
-            // data
-          // console.log(data);
-          // data = JSON.parse(data.data);
-          // console.log(_this); 
           console.log(data);
         })  
       }
-    },20)
+    },20);
+    this.setData({
+      timer:timer
+    });
+  },
+  onHide(){
+    clearInterval(this.data.timer);//在退出页面时销毁定时器
   },
   scanTouch(){
     this.setData({

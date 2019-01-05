@@ -6,7 +6,7 @@
             <text>课堂ID：132131</text>
             <text>密码ID：132131</text>
         </view>
-        <image src="{{IP}}speaker_end_default.png" class="operation fr"/>
+        <image src="{{IP}}speaker_end_default.png" class="operation fr" bindtap="close"/>
     </view>
         <view class="facilityBox">
          <view class="mybody"  animation="{{ani}}" >

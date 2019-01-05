@@ -10,10 +10,14 @@ Page({
       recordImage:'',
       recordStatus:'',
       liveImage:'',
-      liveStatus:''
+      liveStatus:'',
+      cover:false
     },
     onShow(){
-      var _this = this;
+      wx.setNavigationBarTitle({
+        title: app.userInfo.name 
+      });
+      var _this = this;       
       util.monitorSocketClose(this,function () {
         wx.onSocketOpen(function () {
           // callback
@@ -23,11 +27,11 @@ Page({
       this.socket();
       var getRecordStatus = {//获取录播状态
         "cmd": "NETCMD_WECHAT_GET_RECORD_STATE",
-        "RecorderId": "8049D24D-A85C-4BCA-A239-094ADF990004"
+        "RecorderId": app.RecorderId
       }
       var getLiveStatus = {//获取直播状态
         "cmd": "NETCMD_WECHAT_GET_LIVE_STATE",
-        "RecorderId": "8049D24D-A85C-4BCA-A239-094ADF990004"
+        "RecorderId": app.RecorderId
       }
       getRecordStatus = JSON.stringify(getRecordStatus);
       this.setData({
@@ -71,7 +75,7 @@ Page({
     cmd += op += type;
     var obj = {
       "cmd":cmd,
-      "RecorderId": "8049D24D-A85C-4BCA-A239-094ADF990004"
+      "RecorderId": app.RecorderId
     };
     obj = JSON.stringify(obj);
     wx.sendSocketMessage({
@@ -91,47 +95,49 @@ Page({
           console.log('JSON解析失败');
         }
         console.log(res);
-        if(res.cmd =="NETCMD_WECHAT_BROADCAST_MESSAGE"){//录播机主动推送的消息
-          var recordStatus;//录制状态
-          var lveStatus//直播状态
-          var recordTime;//录制时间
-          if(res.data.indexOf('startRecord') == -1){//录制关闭
-            console.log('录播关闭');
-            _this.setData({
-                      recordImage: 'home_video_default.png',
-                      recordStatus:false
-            })
-          }else{//录制开启
-            console.log('录制开启');
-            _this.setData({
-                     recordImage: 'home_stop_default.png',
-                     recordStatus: true
-                   })
-                   recordTime = res.data.split('<recordTime[')[1].split(']')[0];
-                   console.log(recordTime);
-                   this.setData({
-                    recordTime:recordTime
-                   })
+        if(res.cmd =="NETCMD_WECHAT_BROADCAST_MESSAGE" || res.cmd =="NETCMD_WECHAT_GET_LIVE_STATE" || res.cmd =="NETCMD_WECHAT_GET_RECORD_STATE"){//录播机主动推送的消息
+          if (res.data.indexOf('<recordTime[') != -1) {//录播消息
+            var time = res.data.split('<recordTime[')[1].split(']')[0];
+            console.log(time);
+            if (time == '00:00:00') {//停止录播
+              console.log('录播关闭');
+              _this.setData({
+                recordImage: 'home_video_default.png',
+                recordStatus: false,
+                recordTime:'00:00:00'
+              })
+            } else {//正在录播
+              console.log('录制开启');
+              _this.setData({
+                recordImage: 'home_stop_default.png',
+                recordStatus: true,
+                recordTime: time
+              })
+            }
           }
-          if(res.data.indexOf('stopLive') == -1){//直播开启
-            _this.setData({
-                     liveImage: 'home_live_on.png',
-                     liveStatus:true
-                   })
-                   console.log('直播开启');
-          }else{//直播关闭
-            console.log('直播关闭');
-            _this.setData({
-                     liveImage: 'home_live_off.png',
-                     liveStatus:false
-                   })
+          if (res.data.indexOf('<liveTime[') != -1){//直播状态
+            var time = res.data.split('<liveTime[')[1].split(']')[0];
+            console.log(time);
+            if (time == '00:00:00') {//直播关闭
+              console.log('直播关闭');
+              _this.setData({
+                liveImage: 'home_live_off.png',
+                liveStatus: false,
+                liveTime:'00:00:00'
+              })
+            } else {//直播开启
+              _this.setData({
+                liveImage: 'home_live_on.png',
+                liveStatus: true,
+                liveTime:time
+              })
+              console.log('直播开启');
+            }
           }
         }
       })
     }
 });
-
-
 // switch (res.cmd+res.data) {
 //   case 'NETCMD_WECHAT_GET_RECORD_STATErecordTopic[stopRecord]':
 //       _this.setData({

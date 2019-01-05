@@ -1,14 +1,18 @@
 <view bindtap='allClick' class='clearfix mybody'>
+        <view class="coverBox"  wx:if='{{cover}}'>
+                <image src="{{IP}}loading.gif"  class="loading"/>
+                <view class="cover"></view>
+            </view>
     <view class="tabar">
         <view class="fl" data-name="startClass" data-index="0" bindtap="switch">
            <text>启动课堂</text>
            <image src="{{IP}}interactive_openClass_bg_default.png" wx:if="!{{tabarList[0]}}"/>
            <image src="{{IP}}interactive_openClass_bg_selected.png" wx:if="{{tabarList[0]}}"/>
            <view class="hide" wx:if="{{choose}}">
-               <view class="beginClass">
+               <view class="beginClass" data-name="1" bindtap="chooseModel">
                    启动课堂
                </view>
-               <view class="beginMeeting">
+               <view class="beginMeeting" data-name="2" bindtap="chooseModel">
                    启动会议
                </view>
            </view>
@@ -25,15 +29,19 @@
 
     <view class="startClass" wx:if="{{tabar=='startClass'}}">
         <input type="" placeholder="输入成员账号"/>
-        <view data-index='0' class="item {{startClassList[0]?'selected':''}}" bindtap="chooseClass">
+        <!-- <view data-index='0' class="item {{startClassList[0]?'selected':''}}" bindtap="chooseClass">
             <text class="fl black">互动设备</text>
             <text class="fr gray">123456</text>
         </view>
         <view data-index='1' class="item {{startClassList[1]?'selected':''}}"  bindtap="chooseClass">
             <text class="fl black">互动设备</text>
             <text class="fr gray">123456</text>
+        </view> -->
+        <view wx:for="{{addresList}}" data-index='{{index}}' class="item {{startClassList[index]?'selected':''}}"  bindtap="chooseClass">
+            <text class="fl black">{{item.remarksName}}</text>
+            <text class="fr gray">{{item.accountNumber}}</text>
         </view>
-        <view class="call">
+        <view class="call" bindtap="call">
             呼叫
         </view>
     </view>

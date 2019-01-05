@@ -19,6 +19,9 @@ Page({
         });
     },
     onShow(){ 
+      wx.setNavigationBarTitle({
+        title: app.userInfo.name 
+      });
         var _this = this;
       util.monitorSocketClose(this, function () {
         wx.onSocketOpen(function () {
