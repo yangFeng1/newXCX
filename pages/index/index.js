@@ -4,11 +4,20 @@ Page({
   data:{
     scanSrc: app.IPaddress+"scan-default.png",
     IP:app.IPaddress,
-    cover:false,
+    cover:true,
     timer:false
   },
-  onLoad(options){
+  onShow(options){
     var _this = this;
+    console.log('SHOW');
+    // if(app.RecorderId){
+    //   wx.navigateTo({
+    //     url: '../controlMain/controlMain',
+    //     success:function(e){console.log(e)},
+    //     fail:function(e){console.log(e)}
+    //   })
+    //   return;
+    // }
     util.monitorSocketClose(this,function(){
       wx.onSocketOpen(function() {
         // callback
@@ -16,12 +25,13 @@ Page({
       })
     });
     this.socket();
+    console.log('最新版');
   },
   socket(){
     var _this = this;
     this.data.timer && clearInterval(this.data.timer);//防止启动多个定时器
     var timer = setInterval(function(){//等待app.js的 onSocketMessage 数据处理完之后再由当前页面接手
-       console.log(1);
+      //  console.log(1);
       if(!app.socketLinste){
         // console.log(2);
         clearInterval(_this.data.timer);
@@ -53,10 +63,10 @@ Page({
       scanSrc: app.IPaddress + "scan-default.png"
     })
   },
-  scanCode(){
-    wx.navigateTo({
-      url: '../controlMain/controlMain'
-    })
+  scanCode(){//扫码
+    // wx.navigateTo({
+    //   url: '../controlMain/controlMain'
+    // })
     // wx.scanCode({
     //   success: function(res) {
     //     console.log( res.result);
@@ -81,10 +91,23 @@ Page({
     //     }
     //   }
     // })
-  },
-  collect(){
-    wx.navigateTo({
-      url: '../schoolList/schoolList'　　// 页面 A
+    wx.scanCode({
+      success: function(res){
+        // success
+        console.log(res);
+        try{
+         app.RecorderId = res.result.split('RecorderId=')[1].split('&')[0];
+          wx.navigateTo({
+            url: '../controlMain/controlMain'
+          })
+        }catch(e){
+          wx.showToast({
+            title: '二维码错误',
+            icon: 'none',
+            duration: 1000
+        })
+        }
+      }
     })
   }
 })

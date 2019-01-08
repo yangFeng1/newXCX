@@ -59,14 +59,17 @@ Page({
                 var data = {
                   "MysqlCmd": "NETCMD_WECHAT_ADDRESS_BOOK_QUERY",
                   "data": { 
-                    "usersId": app.userInfo.users_id
+                    "usersId": app.userInfo.users_id+""
                   }
                 }
                 data = JSON.stringify(data);
+                console.log(data);
                 wx.sendSocketMessage({
-                  data: data
-                })
-              }, 1000)
+                  data: data,
+                  success:function(){console.log(11)
+                }
+               })
+              }, 10)
               break;
           }
           // console.log(data);
@@ -102,8 +105,8 @@ Page({
             delay: 0
           });
         var newIndex = e.currentTarget.dataset.test;
-        console.log(newIndex)
-        console.log(this.data.index)
+        // console.log(newIndex)
+        // console.log(this.data.index)
         if(newIndex != this.data.index){//当移动另一个item时，将上一个item复原
             // var newStep = this.data.step;
             // var newShow = this.data.show;
@@ -137,6 +140,7 @@ Page({
             }
         }
         delUser = JSON.stringify(delUser);
+        console.log(delUser);
         wx.sendSocketMessage({
             data: delUser
         })

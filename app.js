@@ -3,17 +3,17 @@ var util = require('./utils/util.js');
 App({
     IPaddress:'https://weixin.hd123.net.cn/',
   MatterServerId:"",
-  RecorderId:"01012311af05390fccee",
+  RecorderId:"",
   wechatIdUrl:'',
   wechatId:false,
   userInfo:'',
   cover:false,
   socketLinste:true,
-  onLaunch: function () {
+  onLaunch: function (options) {
     var _this = this;
-    console.log(this);
+    console.log(options);
     this.linkSocket();
-    
+    this.options = options;
   },
   getWeChatId(){
     wx.login({
@@ -38,8 +38,8 @@ App({
   linkSocket(){
     var _this = this;
     wx.connectSocket({
-      // url: "wss://weixin.hd123.net.cn/ws",
-      url: "ws://172.16.1.90:9000/ajaxchattest",
+      url: "wss://weixin.hd123.net.cn/ws",
+      // url: "ws://172.16.1.90:9000/ajaxchattest",
       fail(err){
         console.error('socket链接失败,重新链接')
         _this.linkSocket();
@@ -49,8 +49,9 @@ App({
           util.monitorSocketClose(_this);
           console.log('WebSocket连接已打开！');
         _this.getWeChatId();
+        
         wx.onSocketMessage(function(data) {
-          // data
+          // data 
           console.log(data);
           try{
             data = JSON.parse(data.data);
@@ -63,7 +64,26 @@ App({
               _this.userInfo = data.data;
               _this.socketLinste = false;//结束onSocketMessage监听，交由下一页面监听
               _this.cover = false;//关闭遮罩层
-              // console.log(_this)
+              if (_this.options.query.q !== undefined) {//扫码进入小程序 直接进入录播机控制页面
+                // console.log(options.query.q+'15');
+                  try{
+                    _this.RecorderId = _this.options.query.q.split('RecorderId%3D')[1].split('%26')[0];
+                    // console.log(_this.options.query.q.split('RecorderId%3D')[1].split('%26')[0]);
+                    wx.navigateTo({
+                      url: '../controlMain/controlMain',
+                      success:function(e){console.log(e)},
+                      fail:function(e){console.log(e)}
+                    },
+                    )
+                  }catch(e){
+                    wx.showToast({
+                      title: '二维码错误',
+                      icon: 'none',
+                      duration: 1000
+                  })
+                  }
+                }
+              console.log(_this)
             break;
             case 'NETCMD_WECHAT_GET_WECHATID'://返回微信ID
               _this.wechatId = data.data.wechatId;

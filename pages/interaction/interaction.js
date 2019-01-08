@@ -12,10 +12,17 @@ Page({
       addresList:[],
       selectedAddress:'',
       pattern:'1',
-      cover:false
+      cover:false,
+      memberName:false
+    },
+    onUnload(){
+      console.log('123');
     },
     onShow(){
       var _this = this;
+      this.setData({
+        startClassList:[]
+      })
       this.socket();
       util.monitorSocketClose(this,function(){
         wx.onSocketOpen(function() {
@@ -47,10 +54,21 @@ Page({
         title: '互动'
       })
     },
+    memberName(e){
+      this.setData({
+        memberName:e.detail.value
+      })
+    },
     socket(){
       var _this = this;
       wx.onSocketMessage(function(data) {
         //  console.log(data);
+        try{
+          JSON.parse(data.data)
+        }catch(e){
+          console.log('JSON解析错误');
+          return;
+        }
         if(JSON.parse(data.data).cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE") return;//不处理录播直播消息
         console.log(JSON.parse(data.data));
           data = JSON.parse(data.data);
@@ -63,25 +81,44 @@ Page({
           }
           switch(data.cmd){
            case 'NETCMD_WECHAT_INTERACTION_OPEN'://开启互动回复
-           var res = data.data.split('"code": "')[1].split('"')[0];
+           _this.setData({
+            cover:false
+          });
+          var res
+          try{
+             res = data.data.split('"code": "')[1].split('"')[0];
+          }catch(e){
+            wx.showToast({
+              title:'互动开启失败',
+              icon: 'none',
+               duration: 1000
+            })
+            return;
+          }
            if(res == 200){//开启成功
             var member = [];
             var flag = false;
             _this.data.addresList.forEach(function(i,v){
               if(i.flag){
-                member.push(i.accountNumber);
+                member.push('W@'+i.accountNumber);
                 flag =true;
               } 
             });
+            if(_this.data.memberName){
+              flag = true;
+              member.push('W@'+_this.data.memberName);
+            }
             if(flag){
               member = JSON.stringify(member);
               wx.navigateTo({
                 url: '../interactionMain/interactionMain?member='+member　　// 页面 A
               })
+            }else{
+              wx.navigateTo({
+                url: '../interactionMain/interactionMain'　　// 页面 A
+              })
             }
-            wx.navigateTo({
-              url: '../interactionMain/interactionMain'　　// 页面 A
-            })
+            
            }else{//开启失败
             wx.showToast({
               title:'互动开启失败',
@@ -89,7 +126,6 @@ Page({
                duration: 1000
             })
            }
-           
            break;
            case 'NETCMD_WECHAT_INTERACTION_STOP'://关闭互动回复
            break;
@@ -154,6 +190,7 @@ Page({
       }
     },
     call(){//开启互动
+      var _this = this;
       var pattern = this.data.pattern;
       var call = {
         "cmd": "NETCMD_WECHAT_INTERACTION_OPEN",
@@ -168,19 +205,26 @@ Page({
                     }
             }
     }
+    // this.setData({
+    //   cover:true
+    // })
     call = JSON.stringify(call);
     console.log(call);
     wx.sendSocketMessage({
       data: call,
       success:function(){
-        console.log(call);
+        console.log(1);
       },
       fail: function() {
+        _this.setData({
+          cover:false
+        });
         wx.showToast({
           title: '开启失败',
           icon: 'none',
           duration: 1000
         })
+       
       }
     })
     },

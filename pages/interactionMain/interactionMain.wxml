@@ -1,3 +1,4 @@
+<wxs module="m1">function getAccount (account){return account.split('W@')[1]};module.exports.getAccount = getAccount;</wxs>
 <view bindtouchstart="touchStart" bindtouchend="touchEnd">
         <view class="coverBox"  wx:if='{{cover}}'>
                 <image src="{{IP}}loading.gif"  class="loading"/>
@@ -14,152 +15,24 @@
     </view>
         <view class="facilityBox">
          <view class="mybody"  animation="{{ani}}" >
-            <view class="facilityList clearfix" wx:if="{{!secondPage}}">
-                <view class="item">
+            <view class="facilityList clearfix" wx:if="{{!secondPage}}" >
+                
+                <view class="item" wx:for="{{interactionMemberList}}" wx:if="{{item.online}}">
                     <view class="left fl">
-                        <view class="online">
-                            
-                        </view>
                         <view class="black">
-                            互动设备四栋302
+                            {{m1.getAccount(item.id)}}
                         </view>
                         <view class="gray">
-                            123456
+                            {{item.name}}
                         </view>
                     </view>
                     <view class="right fr">
-                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
-                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
-                    </view>
-                </view>
-                <view class="item">
-                    <view class="left fl">
-                        <view class="black">
-                            互动设备四栋302
-                        </view>
-                        <view class="gray">
-                            123456
-                        </view>
-                    </view>
-                    <view class="right fr">
-                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
-                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
-                    </view>
-                </view>
-                <view class="item">
-                    <view class="left fl">
-                        <view class="black">
-                            互动设备四栋302
-                        </view>
-                        <view class="gray">
-                            123456
-                        </view>
-                    </view>
-                    <view class="right fr">
-                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
-                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
-                    </view>
-                </view>
-                <view class="item">
-                    <view class="left fl">
-                        <view class="black">
-                            互动设备四栋302
-                        </view>
-                        <view class="gray">
-                            123456
-                        </view>
-                    </view>
-                    <view class="right fr">
-                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
-                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
-                    </view>
-                </view>
-                <view class="item">
-                    <view class="left fl">
-                        <view class="black">
-                            互动设备四栋302
-                        </view>
-                        <view class="gray">
-                            123456
-                        </view>
-                    </view>
-                    <view class="right fr">
-                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
-                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
-                    </view>
-                </view>
-                <view class="item">
-                    <view class="left fl">
-                        <view class="black">
-                            互动设备四栋302
-                        </view>
-                        <view class="gray">
-                            123456
-                        </view>
-                    </view>
-                    <view class="right fr">
-                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
-                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
-                    </view>
-                </view>
-                <view class="item">
-                    <view class="left fl">
-                        <view class="black">
-                            互动设备四栋302
-                        </view>
-                        <view class="gray">
-                            123456
-                        </view>
-                    </view>
-                    <view class="right fr">
-                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
-                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
-                    </view>
-                </view>
-                <view class="item">
-                    <view class="left fl">
-                        <view class="black">
-                            互动设备四栋302
-                        </view>
-                        <view class="gray">
-                            123456
-                        </view>
-                    </view>
-                    <view class="right fr">
-                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
-                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
-                    </view>
-                </view>
-                <view class="item">
-                    <view class="left fl">
-                        <view class="black">
-                            互动设备四栋302
-                        </view>
-                        <view class="gray">
-                            123456
-                        </view>
-                    </view>
-                    <view class="right fr">
-                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
-                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
-                    </view>
-                </view>
-                <view class="item">
-                    <view class="left fl">
-                        <view class="black">
-                            互动设备四栋302
-                        </view>
-                        <view class="gray">
-                            123456
-                        </view>
-                    </view>
-                    <view class="right fr">
-                            <image src="{{IP}}speaker_kick_default.png" class="fl"/>
+                            <image src="{{IP}}speaker_kick_default.png" class="fl"  data-name=" {{m1.getAccount(item.id)}}" bindtap="kickStrangers"/>
                             <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
                     </view>
                 </view>
             </view>
-            <image src="{{IP}}speaker_add_default.png" class="facilityAdd"/>
+            <image src="{{IP}}speaker_add_default.png" class="facilityAdd" bindtap="addMemberBtn"/>
          <view class="switchPicture">
              <view class="switchPage">
                  <view class="layout">
@@ -192,8 +65,8 @@
              <image src="{{IP}}speaker_FM_default.png" />
          </view>
          <view class="chooseAccount"  wx:if="{{secondPage}}">
-             <input type="" placeholder="输入成员账号"/>
-             <view class="item">
+             <input type="" placeholder="输入成员账号" bindinput="addMemberName"/>
+             <!-- <view class="item">
                  <view class="fl left">
                      互动设备四栋
                  </view>
@@ -216,8 +89,8 @@
                  <view class="fr right">
                      123456
                  </view>
-             </view>
-             <image src="{{IP}}speaker_call_small_default.png"  class="dial"/>
+             </view> -->
+             <image src="{{IP}}speaker_call_small_default.png"  class="dial" bindtap="addMember"/>
          </view>
         </view>
      </view>

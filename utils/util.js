@@ -24,11 +24,11 @@ const monitorSocketClose = (obj,callback)=>{//处理socket意外关闭
     // callback
     console.error('socket意外关闭，正在重连');
     if(obj.data){//非app.js
-      obj.setData({
-        cover:true
-      });
+      // obj.setData({
+      //   cover:true
+      // });
     }else{//app.js
-      obj.cover = true;
+      // obj.cover = true;
     }
     linkSocket();
     callback && callback();
@@ -38,6 +38,7 @@ const monitorSocketClose = (obj,callback)=>{//处理socket意外关闭
 const linkSocket = ()=>{//链接socket
   wx.connectSocket({
     url: "wss://weixin.hd123.net.cn/ws",
+    // url: "ws://172.16.1.90:9000/ajaxchattest",
     fail(){
       linkSocket();
     }

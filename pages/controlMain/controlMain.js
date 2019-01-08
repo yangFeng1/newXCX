@@ -66,6 +66,9 @@ Page({
         title: '个人ID：15616'
       });
     },
+    onUnload(){
+      app.RecorderId = '';//退出录播控制界面时清除recoreid
+    },
   operation(e){
     var cmd ='NETCMD_WECHAT';
     var op = e.currentTarget.dataset.name == 'record' ? '_RECORD_' : '_LIVE_';

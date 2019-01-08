@@ -28,7 +28,7 @@
     </view>
 
     <view class="startClass" wx:if="{{tabar=='startClass'}}">
-        <input type="" placeholder="输入成员账号"/>
+        <input type="" placeholder="输入成员账号" bindinput="memberName"/>
         <!-- <view data-index='0' class="item {{startClassList[0]?'selected':''}}" bindtap="chooseClass">
             <text class="fl black">互动设备</text>
             <text class="fr gray">123456</text>
