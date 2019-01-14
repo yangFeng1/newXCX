@@ -50,6 +50,7 @@ Page({
       });
       wx.onSocketMessage(function(data) {
         // data
+        if(JSON.parse(data.data).cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE") return;//不处理录播直播消息
         _this.setData({
           cover:false
         })

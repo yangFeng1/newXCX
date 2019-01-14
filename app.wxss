@@ -26,7 +26,7 @@
     height: 250rpx;
     top:350rpx;
     left: 275rpx;
-    z-index: 99;
+    z-index: 99999;
   }
   .coverBox .cover{
     position: absolute;

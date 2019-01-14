@@ -1,15 +1,17 @@
 <wxs module="m1">function getAccount (account){return account.split('W@')[1]};module.exports.getAccount = getAccount;</wxs>
-<view bindtouchstart="touchStart" bindtouchend="touchEnd">
-        <view class="coverBox"  wx:if='{{cover}}'>
-                <image src="{{IP}}loading.gif"  class="loading"/>
-                <view class="cover"></view>
-            </view>
+<!-- <view bindtouchstart="touchStart" bindtouchend="touchEnd"> -->
+        <view>
+       
     <image src="{{IP}}speaker_bg.png" class=" bg" /> 
+    <view class="coverBox"  wx:if='{{cover}}'>
+            <image src="{{IP}}loading.gif"  class="loading"/>
+            <view class="cover"></view>
+    </view>
     <view class="personData">
         <image src="{{IP}}speaker_call_big_selected.png" class="headPortrait fl"/>
         <view class="fl data">
-            <text>课堂ID：132131</text>
-            <text>密码ID：132131</text>
+            <text>课堂ID：{{meetingId}}</text>
+            <text>密码ID：{{password}}</text>
         </view>
         <image src="{{IP}}speaker_end_default.png" class="operation fr" bindtap="close"/>
     </view>
@@ -28,7 +30,7 @@
                     </view>
                     <view class="right fr">
                             <image src="{{IP}}speaker_kick_default.png" class="fl"  data-name=" {{m1.getAccount(item.id)}}" bindtap="kickStrangers"/>
-                            <image src="{{IP}}speaker_talk_default.png"  class="fl"/>
+                            <!-- <image src="{{IP}}speaker_talk_default.png"  class="fl"/> -->
                     </view>
                 </view>
             </view>

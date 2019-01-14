@@ -49,7 +49,7 @@
                                编辑
                            </view>
                         </navigator>
-                                <view class="del fl" data-Address_book_id="{{item.Address_book_id}}" bindtap="delect">
+                                <view class="del fl" data-Address_book_id="{{item.Address_book_id}}" bindtap="delect" data-test='{{index}}'>
                                         删除
                                 </view>
                        </view>

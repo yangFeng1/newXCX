@@ -3,6 +3,10 @@
                 <image src="{{IP}}loading.gif"  class="loading"/>
                 <view class="cover"></view>
             </view>
+        <view class="coverBox"  wx:if='{{cover}}'>
+                <image src="{{IP}}loading.gif"  class="loading"/>
+                <view class="cover"></view>
+            </view>
     <view class="background"></view>
     <view class="interaction">
         <view class="left fl">

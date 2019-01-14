@@ -18,22 +18,22 @@ const formatNumber = n => {
  * 
  */
 const monitorSocketClose = (obj,callback)=>{//处理socket意外关闭
-  // this.cover
- 
-  wx.onSocketClose(function() {
-    // callback
-    console.error('socket意外关闭，正在重连');
-    if(obj.data){//非app.js
-      // obj.setData({
-      //   cover:true
-      // });
-    }else{//app.js
-      // obj.cover = true;
-    }
-    linkSocket();
-    callback && callback();
-  })
-}
+  // this.coverl
+    wx.onSocketClose(function() {
+      console.error('socket意外关闭，正在重连');
+      if(obj.data){//非app.js
+        obj.setData({
+          cover:true
+        });
+      }else{//app.js
+        obj.cover = true;
+      }
+      linkSocket();
+      callback && callback();
+    })
+    
+  }
+
 
 const linkSocket = ()=>{//链接socket
   wx.connectSocket({

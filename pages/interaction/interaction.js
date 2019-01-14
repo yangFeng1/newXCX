@@ -11,18 +11,52 @@ Page({
       hideFlag:false,
       addresList:[],
       selectedAddress:'',
-      pattern:'1',
-      cover:false,
-      memberName:false
+      pattern:'0',
+      cover:true,
+      memberName:false,
+      namea:'启动会议'
     },
     onUnload(){
-      console.log('123');
+      if(this.data.flag){
+        app.flag = true;
+        this.setData({
+          flag:false
+        })
+      }else{
+        app.flag = false;
+      }
+    },
+    onHide(){
+      this.setData({
+        flag:true
+      })
     },
     onShow(){
+      this.setData({
+        cover:true
+      })
+      app.flag = true;
       var _this = this;
       this.setData({
         startClassList:[]
       })
+      var data = {//获取是否在开启互动
+        "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
+        "RecorderId": app.RecorderId,
+        "data":  {
+          "cmd":"getIsInClass"
+      }
+    }
+    data = JSON.stringify(data);
+    console.log(data);
+        setTimeout(function(){
+          wx.sendSocketMessage({
+            data: data,
+            success: function(res){
+                console.log(123);   // success
+            }
+         })
+        },200)
       this.socket();
       util.monitorSocketClose(this,function(){
         wx.onSocketOpen(function() {
@@ -42,12 +76,29 @@ Page({
         success:function(){
           console.log('获取通讯录');
         },
-        fail: function() {
+        fail: function(e) {
+          console.log(e);
           wx.showToast({
             title: '通讯录获取失败',
             icon: 'none',
             duration: 1000
-        })
+        });
+        console.log(e);
+              wx.closeSocket();
+              console.log('发送失败，重新链接')
+              wx.connectSocket({
+                url: "wss://weixin.hd123.net.cn/ws",
+                // url: "ws://172.16.1.90:9000/ajaxchattest",
+                success:function(){
+                  _this.socket();
+                  wx.onSocketOpen(function() {
+                    console.log('重新打开')
+                    wx.sendSocketMessage({
+                      data: addressList
+                    })
+                  })
+                }
+              })
         }
       })
       wx.setNavigationBarTitle({
@@ -66,6 +117,7 @@ Page({
         try{
           JSON.parse(data.data)
         }catch(e){
+          console.log(data);
           console.log('JSON解析错误');
           return;
         }
@@ -76,6 +128,9 @@ Page({
             case 'NETCMD_WECHAT_ADDRESS_BOOK_QUERY'://获取通讯录
               _this.setData({
                 addresList: data.data
+              })
+              _this.setData({
+                cover:false
               })
               break;
           }
@@ -128,6 +183,19 @@ Page({
            }
            break;
            case 'NETCMD_WECHAT_INTERACTION_STOP'://关闭互动回复
+           break;
+           case "NETCMD_WECHAT_INTERACTION_STAFF":
+            console.log(data);
+            console.log(app.interactionIsOver);
+            if(data.data.split('"code": "')[1].split('"')[0] == 200 && app.interactionIsOver){
+              wx.navigateBack({
+                delta: 1　
+              })
+            }else if(data.data.split('"code": "')[1].split('"')[0] == 200){
+              wx.navigateTo({
+                url: '../interactionMain/interactionMain'　　// 页面 A
+              })
+            }
            break;
           }
       })
@@ -205,9 +273,9 @@ Page({
                     }
             }
     }
-    // this.setData({
-    //   cover:true
-    // })
+    this.setData({
+      cover:true
+    })
     call = JSON.stringify(call);
     console.log(call);
     wx.sendSocketMessage({
@@ -230,7 +298,8 @@ Page({
     },
     chooseModel(e){
       this.setData({
-        pattern: e.currentTarget.dataset.name
+        pattern: e.currentTarget.dataset.name,
+        namea:e.currentTarget.dataset.namea
       })
     }
 });

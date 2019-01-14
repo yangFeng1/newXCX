@@ -11,65 +11,114 @@ Page({
       recordStatus:'',
       liveImage:'',
       liveStatus:'',
-      cover:false
+      cover:app.cover,
+      recordOver:true,
+      liveOver:true
+    },
+    onLoad(){
+      app.once  = false;
     },
     onShow(){
-      wx.setNavigationBarTitle({
-        title: app.userInfo.name 
-      });
-      var _this = this;       
-      util.monitorSocketClose(this,function () {
-        wx.onSocketOpen(function () {
-          // callback
-          _this.socket();
-        })
-      });
-      this.socket();
-      var getRecordStatus = {//获取录播状态
-        "cmd": "NETCMD_WECHAT_GET_RECORD_STATE",
-        "RecorderId": app.RecorderId
-      }
-      var getLiveStatus = {//获取直播状态
-        "cmd": "NETCMD_WECHAT_GET_LIVE_STATE",
-        "RecorderId": app.RecorderId
-      }
-      getRecordStatus = JSON.stringify(getRecordStatus);
+      app.flag = true;
+      app.interactionIsOver = false;
+      var _this = this;
       this.setData({
-        getRecordStatus: getRecordStatus,
-        getLiveStatus: getLiveStatus
-      })
-      getLiveStatus = JSON.stringify(getLiveStatus);
-      console.log(getRecordStatus);
-      console.log(getLiveStatus);
-      wx.sendSocketMessage({//获取录播状态
-        data: getLiveStatus ,
-        success:function(){
-          console.log('success');
-          
-        },
-        fail:function(){
-          console.log('fail')
-        }
-      })
-     setTimeout(function(){
-       wx.sendSocketMessage({//获取直播状态
-         data: getRecordStatus,
-         success: function () {
-           console.log('success');
-         },
-         fail: function () {
-           console.log('fail');
-         }
-       })
-     },300)
-      wx.setNavigationBarTitle({
-        title: '个人ID：15616'
+        flag:false
       });
+    this.data.timer && clearInterval(this.data.timer);//防止启动多个定时器
+      var timer1 = setInterval(function(){//等待初始化完成
+          if(!app.socketLinste){//
+            console.log('监听开始');
+          clearInterval(_this.data.timer);
+          wx.setNavigationBarTitle({
+            title: app.userInfo.name 
+          });   
+          util.monitorSocketClose(_this,function () {
+            wx.onSocketOpen(function () {
+              // callback
+              __this.socket();
+            })
+          });
+          _this.socket();
+          var getRecordStatus = {//获取录播状态
+            "cmd": "NETCMD_WECHAT_GET_RECORD_STATE",
+            "RecorderId": app.RecorderId
+          }
+          var getLiveStatus = {//获取直播状态
+            "cmd": "NETCMD_WECHAT_GET_LIVE_STATE",
+            "RecorderId": app.RecorderId
+          }
+          getRecordStatus = JSON.stringify(getRecordStatus);
+          _this.setData({
+            getRecordStatus: getRecordStatus,
+            getLiveStatus: getLiveStatus
+          })
+          getLiveStatus = JSON.stringify(getLiveStatus);
+          console.log(getRecordStatus);
+          console.log(getLiveStatus);
+          wx.sendSocketMessage({//获取录播状态
+            data: getLiveStatus ,
+            success:function(){
+              console.log('success');
+            },
+            fail:function(e){
+              console.log(e);
+              wx.closeSocket();
+              console.log('发送失败，重新链接')
+              wx.connectSocket({
+                url: "wss://weixin.hd123.net.cn/ws",
+                // url: "ws://172.16.1.90:9000/ajaxchattest",
+                success:function(){
+                  _this.socket();
+                  wx.onSocketOpen(function() {
+                    console.log('重新打开')
+                    wx.sendSocketMessage({
+                      data: getLiveStatus
+                    })
+                  })
+                }
+              })
+            }
+          })
+        //  setTimeout(function(){
+        //    wx.sendSocketMessage({//获取直播状态
+        //      data: getRecordStatus,
+        //      success: function () {
+        //        console.log('success');
+        //      },
+        //      fail: function () {
+        //        console.log('fail');
+        //      }
+        //    })
+        //  },300)
+          wx.setNavigationBarTitle({
+            title: '个人ID：15616'
+          });
+        }
+      },20)
+      this.setData({
+        timer : timer1
+      })
+    },
+    onHide(){
+      console.error('hide');
+      this.setData({
+        flag:true
+      })
     },
     onUnload(){
-      app.RecorderId = '';//退出录播控制界面时清除recoreid
+      if(this.data.flag){
+        app.flag = true;
+        this.setData({
+          flag:false
+        })
+      }else{
+        app.flag = false;
+      }
+      console.log(app.flag);
+      console.error('onUnload');
     },
-  operation(e){
+  operation(e){//录制直播开启和关闭
     var cmd ='NETCMD_WECHAT';
     var op = e.currentTarget.dataset.name == 'record' ? '_RECORD_' : '_LIVE_';
     var opa = e.currentTarget.dataset.name == 'record' ? 'recordStatus' :'liveStatus';
@@ -84,7 +133,12 @@ Page({
     wx.sendSocketMessage({
       data: obj,
       success:function(){
-        console.log('success')
+        console.log('success');
+        wx.showToast({
+          title:'操作成功',
+          icon:'none',
+          duration:1000
+        })
       }
     })
   },
@@ -141,69 +195,3 @@ Page({
       })
     }
 });
-// switch (res.cmd+res.data) {
-//   case 'NETCMD_WECHAT_GET_RECORD_STATErecordTopic[stopRecord]':
-//       _this.setData({
-//         recordImage: 'home_video_default.png',
-//         recordStatus:false
-//       })
-//   break;
-//   case 'NETCMD_WECHAT_GET_RECORD_STATErecordTopic[startRecord]': 
-//     _this.setData({
-//       recordImage: 'home_stop_default.png',
-//       recordStatus: true
-//     })
-//   break;
-//   case 'NETCMD_WECHAT_GET_LIVE_STATEliveTopic[stopLive]':
-//     _this.setData({
-//       liveImage: 'home_live_off.png',
-//       liveStatus:false
-//     })
-//   break;
-//   case 'NETCMD_WECHAT_GET_LIVE_STATEliveTopic[startLive]':
-//     _this.setData({
-//       liveImage: 'home_live_on.png',
-//       liveStatus:true
-//     })
-//   break;
-//   case 'NETCMD_WECHAT_LIVE_START403':
-//     wx.sendSocketMessage({//开始直播失败
-//       data: _this.data.getLiveStatus
-//     })
-//     break;
-//   case 'NETCMD_WECHAT_LIVE_START200':
-//     wx.sendSocketMessage({//开始直播成功
-//       data: _this.data.getLiveStatus
-//     })
-//     break;
-//   case 'NETCMD_WECHAT_LIVE_STOP200':
-//     wx.sendSocketMessage({//关闭直播成功
-//       data: _this.data.getLiveStatus
-//     })
-//     break;
-//   case 'NETCMD_WECHAT_LIVE_STOP403':
-//     wx.sendSocketMessage({//关闭直播失败
-//       data: _this.data.getLiveStatus
-//     })
-//     break;    
-//   case 'NETCMD_WECHAT_RECORD_STOP200':
-//     wx.sendSocketMessage({//停止录播成功
-//       data: _this.data.getRecordStatus
-//     })
-//     break;
-//   case 'NETCMD_WECHAT_RECORD_STOP403':
-//     wx.sendSocketMessage({//停止录播失败
-//       data: _this.data.getRecordStatus
-//     })
-//     break;
-//   case 'NETCMD_WECHAT_RECORD_START200':
-//     wx.sendSocketMessage({//开始录播成功
-//       data: _this.data.getRecordStatus
-//     })
-//     break;
-//   case 'NETCMD_WECHAT_RECORD_START200':
-//     wx.sendSocketMessage({//开始录播失败
-//       data: _this.data.getRecordStatus
-//     })
-//     break;
-// }

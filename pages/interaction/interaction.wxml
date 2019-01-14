@@ -5,14 +5,14 @@
             </view>
     <view class="tabar">
         <view class="fl" data-name="startClass" data-index="0" bindtap="switch">
-           <text>启动课堂</text>
+           <text>{{namea}}</text>
            <image src="{{IP}}interactive_openClass_bg_default.png" wx:if="!{{tabarList[0]}}"/>
            <image src="{{IP}}interactive_openClass_bg_selected.png" wx:if="{{tabarList[0]}}"/>
            <view class="hide" wx:if="{{choose}}">
-               <view class="beginClass" data-name="1" bindtap="chooseModel">
+               <view class="beginClass" data-name="1" data-namea="启动课堂" bindtap="chooseModel">
                    启动课堂
                </view>
-               <view class="beginMeeting" data-name="2" bindtap="chooseModel">
+               <view class="beginMeeting" data-name="0" data-namea="启动会议" bindtap="chooseModel">
                    启动会议
                </view>
            </view>
