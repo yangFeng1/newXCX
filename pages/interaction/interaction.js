@@ -14,7 +14,9 @@ Page({
       pattern:'0',
       cover:true,
       memberName:false,
-      namea:'启动会议'
+      namea:'启动会议',
+      joinAcc:false,
+      joinPwd:false
     },
     onUnload(){
       if(this.data.flag){
@@ -113,7 +115,7 @@ Page({
     socket(){
       var _this = this;
       wx.onSocketMessage(function(data) {
-        //  console.log(data);
+         console.log(data);
         try{
           JSON.parse(data.data)
         }catch(e){
@@ -121,36 +123,15 @@ Page({
           console.log('JSON解析错误');
           return;
         }
-        if(JSON.parse(data.data).cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE") return;//不处理录播直播消息
-        console.log(JSON.parse(data.data));
-          data = JSON.parse(data.data);
-          switch (data.MysqlCmd) {
-            case 'NETCMD_WECHAT_ADDRESS_BOOK_QUERY'://获取通讯录
-              _this.setData({
-                addresList: data.data
-              })
-              _this.setData({
-                cover:false
-              })
-              break;
-          }
-          switch(data.cmd){
-           case 'NETCMD_WECHAT_INTERACTION_OPEN'://开启互动回复
+        var TopicType = JSON.parse(data.data).data.indexOf('interactRespondEventTopic') == -1?true:false;//判断录播机主动推送是否是互动消息
+        if(JSON.parse(data.data).cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE" && !TopicType){
+          console.log(JSON.parse(data.data).data)
            _this.setData({
             cover:false
           });
-          var res
-          try{
-             res = data.data.split('"code": "')[1].split('"')[0];
-          }catch(e){
-            wx.showToast({
-              title:'互动开启失败',
-              icon: 'none',
-               duration: 1000
-            })
-            return;
-          }
-           if(res == 200){//开启成功
+          var res = JSON.parse(JSON.parse(data.data).data.split('<')[1].split('>')[0]);
+          
+           if(res.code == 200 && res.name == 'createMeeting'){//开启成功
             var member = [];
             var flag = false;
             _this.data.addresList.forEach(function(i,v){
@@ -181,6 +162,67 @@ Page({
                duration: 1000
             })
            }
+        }
+        if(JSON.parse(data.data).cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE") return;//不处理录播直播消息
+        console.log(JSON.parse(data.data));
+          data = JSON.parse(data.data);
+          switch (data.MysqlCmd) {
+            case 'NETCMD_WECHAT_ADDRESS_BOOK_QUERY'://获取通讯录
+              _this.setData({
+                addresList: data.data
+              })
+              _this.setData({
+                cover:false
+              })
+              break;
+          }
+          switch(data.cmd){
+           case 'NETCMD_WECHAT_INTERACTION_OPEN'://开启互动回复
+           _this.setData({
+            cover:false
+          });
+          var res
+          try{
+             res = data.data.split('"code": "')[1].split('"')[0];
+          }catch(e){
+            // wx.showToast({
+            //   title:'互动开启失败',
+            //   icon: 'none',
+            //    duration: 1000
+            // })
+            return;
+          }
+           if(res == 200){//开启成功
+            var member = [];
+            var flag = false;
+            _this.data.addresList.forEach(function(i,v){
+              if(i.flag){
+                member.push('W@'+i.accountNumber);
+                flag =true;
+              } 
+            });
+            if(_this.data.memberName){
+              flag = true;
+              member.push('W@'+_this.data.memberName);
+            }
+            // if(flag){
+            //   member = JSON.stringify(member);
+            //   wx.navigateTo({
+            //     url: '../interactionMain/interactionMain?member='+member　　// 页面 A
+            //   })
+            // }else{
+            //   wx.navigateTo({
+            //     url: '../interactionMain/interactionMain'　　// 页面 A
+            //   })
+            // }
+            
+           }else{//开启失败
+            // wx.showToast({
+            //   title:'互动开启失败',
+            //   icon: 'none',
+            //    duration: 1000
+            // })
+           }
            break;
            case 'NETCMD_WECHAT_INTERACTION_STOP'://关闭互动回复
            break;
@@ -197,8 +239,47 @@ Page({
               })
             }
            break;
+           case 'NETCMD_WECHAT_INTERACTION_JOIN'://加入互动回复
+              // if(data.data)
+           break;
           }
       })
+    },
+    joinClass(e){
+      var name = e.currentTarget.dataset.name;
+      var value = e.detail.value;
+      if(name == 'account'){
+        this.setData({
+            joinAcc:value
+        })
+      }else{
+        this.setData({
+            joinPwd:value
+        })
+      }
+    },
+    enterClass(){//加入课堂
+        var data = {
+                        "cmd": "NETCMD_WECHAT_INTERACTION_JOIN",
+                        "RecorderId": app.RecorderId,
+                        "data":   {
+                        "cmd": "JoinClass",
+                        "param": {
+                          "classId": this.data.joinAcc,
+                          "password": this.data.joinPwd
+                        }
+                      }
+                    }
+        data = JSON.stringify(data);
+        wx.sendSocketMessage({
+          data:data,
+          success:function(){
+            console.log('success');
+          },
+          fail:function(){
+            console.log('fail')
+          }
+        })
     },
     allClick(e){
       // console.log(!this.data.hideFlag);

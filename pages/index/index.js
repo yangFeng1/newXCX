@@ -133,6 +133,9 @@ Page({
             duration: 1000
         })
         }
+      },
+      fail:function(e){
+        console.log(e);
       }
     })
   }

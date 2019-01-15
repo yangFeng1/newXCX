@@ -42,7 +42,7 @@ App({
     var _this = this;
     wx.connectSocket({
       url: "wss://weixin.hd123.net.cn/ws",
-      // url: "ws://172.16.1.90:9000/ajaxchattest", 
+       //url: "ws://172.16.1.90:9000/ajaxchattest", 
       fail(err){
         console.error('socket链接失败,重新链接')
         _this.linkSocket();
@@ -65,28 +65,9 @@ App({
           switch(data.MysqlCmd){
             case 'NETCMD_WECHAT_USERS_QUERY'://返回用户信息
               _this.userInfo = data.data;
+              _this.cover = false;//关闭遮罩层
               _this.socketLinste = false;//结束onSocketMessage监听，交由下一页面监听
               console.log('监听结束')
-              _this.cover = false;//关闭遮罩层
-              if (_this.options.query.q !== undefined) {//扫码进入小程序 直接进入录播机控制页面
-                // console.log(options.query.q+'15');
-                  try{
-                    _this.RecorderId = _this.options.query.q.split('RecorderId%3D')[1].split('%26')[0];
-                    // console.log(_this.options.query.q.split('RecorderId%3D')[1].split('%26')[0]);
-                    // wx.navigateTo({
-                    //   url: '../controlMain/controlMain',
-                    //   success:function(e){console.log(e)},
-                    //   fail:function(e){console.log(e)}
-                    // },
-                    // )
-                  }catch(e){
-                  //   wx.showToast({
-                  //     title: '二维码错误',
-                  //     icon: 'none',
-                  //     duration: 1000
-                  // })
-                  }
-                }
               console.log(_this)
             break;
             case 'NETCMD_WECHAT_GET_WECHATID'://返回微信ID

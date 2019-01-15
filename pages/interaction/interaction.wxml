@@ -47,9 +47,9 @@
     </view>
 
     <view class="insert" wx:if="{{tabar=='insert'}}">
-        <input type="text" placeholder="账号"/>
-        <input type="" placeholder="密码" password />
-        <view>
+        <input type="text" placeholder="账号" data-name="account" bindinput="joinClass"/>
+        <input type="" placeholder="密码" password data-name="password"  bindinput="joinClass"/>
+        <view bindtap="enterClass">
             加入课堂
         </view>
     </view>
