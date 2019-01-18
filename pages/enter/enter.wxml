@@ -1,0 +1,6 @@
+<view>
+    <view class="coverBox"  wx:if='{{cover}}'>
+    <image src="{{IP}}loading.gif"  class="loading"/>
+    <view class="cover"></view>
+</view>
+</view>

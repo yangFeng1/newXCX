@@ -1,6 +1,8 @@
 {
   "pages":[
     "pages/index/index", 
+    "pages/interactionminor/interactionminor", 
+    "pages/enter/enter",
     "pages/interactionMain/interactionMain",
     "pages/controlMain/controlMain",
     "pages/interaction/interaction",

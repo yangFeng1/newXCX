@@ -1,0 +1,17 @@
+page{
+    background: #e6eaf3;
+}
+.speak{
+    width: 256rpx;
+    height: 256rpx;
+    margin: 403rpx 0rpx 56rpx 247rpx;
+}
+ image{
+    width: 100%;
+    height: 100%
+}
+.close{
+    margin-left: 230rpx;
+    width: 292rpx;
+    height: 88rpx;
+}

@@ -34,7 +34,6 @@ const monitorSocketClose = (obj,callback)=>{//处理socket意外关闭
     
   }
 
-
 const linkSocket = ()=>{//链接socket
   wx.connectSocket({
     url: "wss://weixin.hd123.net.cn/ws",
@@ -44,7 +43,55 @@ const linkSocket = ()=>{//链接socket
     }
   })
 }
+const sendSocketMessage = (obj)=>{//通过socket发送数据
+  console.log(obj.data);
+     wx.sendSocketMessage({
+       data: obj.data,
+       success: function(res){
+         // success
+         console.log('success');
+         obj.success && obj.success();
+       },
+       fail: function() {
+         // fail
+         wx.showToast({
+          title: '连接断开，重新连接',
+          icon: 'none',
+          duration: 1000
+         })
+         obj.that && obj.that.setData({
+           cover:true
+         })
+         console.log('fail---util');
+         wx.closeSocket();
+         wx.connectSocket({
+          url: "wss://weixin.hd123.net.cn/ws",
+          success:function(){
+            wx.onSocketOpen(function() {
+              // callback
+              console.log('重新打开成功');
+              obj.that && obj.that.setData({
+                cover:false
+              })
+              console.log('open');
+              wx.sendSocketMessage({
+                data: obj.data,
+                success: function(res){
+                  // success
+
+                }
+              })
+            })
+          }
+        })
+       },
+       complete: function() {
+         // complete
+       }
+     })
+}
 module.exports = {
   formatTime: formatTime,
-  monitorSocketClose:monitorSocketClose
+  monitorSocketClose:monitorSocketClose,
+  sendSocketMessage:sendSocketMessage
 }

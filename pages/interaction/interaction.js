@@ -19,25 +19,22 @@ Page({
       joinPwd:false
     },
     onUnload(){
-      if(this.data.flag){
-        app.flag = true;
-        this.setData({
-          flag:false
-        })
-      }else{
-        app.flag = false;
-      }
+      
     },
     onHide(){
-      this.setData({
-        flag:true
-      })
     },
     onShow(){
+      console.log(app.interactionIsOver);
+      if(app.interactionIsOver){//从互动页面返回到该页面（互动没有退出）直接返回到录播机控制页面
+        wx.navigateBack({
+                            delta: 1　
+                          })
+        return;
+      }
       this.setData({
         cover:true
       })
-      app.flag = true;
+      app.flag = true;//处理退出扫码
       var _this = this;
       this.setData({
         startClassList:[]
@@ -81,7 +78,7 @@ Page({
         fail: function(e) {
           console.log(e);
           wx.showToast({
-            title: '通讯录获取失败',
+            title: '通讯录发送失败重新连接',
             icon: 'none',
             duration: 1000
         });
@@ -115,11 +112,11 @@ Page({
     socket(){
       var _this = this;
       wx.onSocketMessage(function(data) {
-         console.log(data);
+         // console.log(data);
         try{
           JSON.parse(data.data)
         }catch(e){
-          console.log(data);
+          // console.log(data);
           console.log('JSON解析错误');
           return;
         }
@@ -130,8 +127,77 @@ Page({
             cover:false
           });
           var res = JSON.parse(JSON.parse(data.data).data.split('<')[1].split('>')[0]);
-          
-           if(res.code == 200 && res.name == 'createMeeting'){//开启成功
+            switch(res.name){
+              case 'recvSendEnter'://通过id加入课堂返回
+
+              break;
+            }
+            // if(res.name == 'createMeeting' || res.name == 'getIsInClass'){
+            //   if(res.code == 200 ){//开启成功
+            //   var member = [];
+            //   var flag = false;
+            //   _this.data.addresList.forEach(function(i,v){
+            //     if(i.flag){
+            //       member.push('W@'+i.accountNumber);
+            //       flag =true;
+            //     } 
+            //   });
+            //   if(_this.data.memberName){
+            //     flag = true;
+            //     member.push('W@'+_this.data.memberName);
+            //   }
+            //   if(flag){
+            //     member = JSON.stringify(member);
+            //     wx.navigateTo({
+            //       url: '../interactionMain/interactionMain?member='+member　　// 页面 A
+            //     })
+            //   }else{
+            //     wx.navigateTo({
+            //       url: '../interactionMain/interactionMain'　　// 页面 A
+            //     })
+            //   }
+              
+            //  }else{//开启失败
+            //   console.log('广播回复互动开启失败')
+            //   wx.showToast({
+            //     title:'互动开启失败',
+            //     icon: 'none',
+            //      duration: 1000
+            //   })
+            //  }
+            // }
+        }
+        if(JSON.parse(data.data).cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE") return;//不处理录播直播消息
+        console.log(JSON.parse(data.data));
+          data = JSON.parse(data.data);
+          switch (data.MysqlCmd) {
+            case 'NETCMD_WECHAT_ADDRESS_BOOK_QUERY'://获取通讯录
+              _this.setData({
+                addresList: data.data
+              })
+              _this.setData({
+                cover:false
+              })
+              break;
+          }
+          switch(data.cmd){
+           case 'NETCMD_WECHAT_INTERACTION_OPEN'://开启互动回复
+           _this.setData({
+            cover:false
+          });
+          var res
+          try{
+             res = data.data.split('"code":')[1].split('}')[0];
+          }catch(e){
+            console.log('解析互动回复消息错误')
+            wx.showToast({
+              title:'互动开启失败',
+              icon: 'none',
+               duration: 1000
+            })
+            return;
+          }
+           if(res == 200){//开启成功
             var member = [];
             var flag = false;
             _this.data.addresList.forEach(function(i,v){
@@ -156,87 +222,42 @@ Page({
             }
             
            }else{//开启失败
+            console.log('回复消息开启互动失败');
             wx.showToast({
               title:'互动开启失败',
               icon: 'none',
                duration: 1000
             })
            }
-        }
-        if(JSON.parse(data.data).cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE") return;//不处理录播直播消息
-        console.log(JSON.parse(data.data));
-          data = JSON.parse(data.data);
-          switch (data.MysqlCmd) {
-            case 'NETCMD_WECHAT_ADDRESS_BOOK_QUERY'://获取通讯录
-              _this.setData({
-                addresList: data.data
-              })
-              _this.setData({
-                cover:false
-              })
-              break;
-          }
-          switch(data.cmd){
-           case 'NETCMD_WECHAT_INTERACTION_OPEN'://开启互动回复
-           _this.setData({
-            cover:false
-          });
-          var res
-          try{
-             res = data.data.split('"code": "')[1].split('"')[0];
-          }catch(e){
-            // wx.showToast({
-            //   title:'互动开启失败',
-            //   icon: 'none',
-            //    duration: 1000
-            // })
-            return;
-          }
-           if(res == 200){//开启成功
-            var member = [];
-            var flag = false;
-            _this.data.addresList.forEach(function(i,v){
-              if(i.flag){
-                member.push('W@'+i.accountNumber);
-                flag =true;
-              } 
-            });
-            if(_this.data.memberName){
-              flag = true;
-              member.push('W@'+_this.data.memberName);
-            }
-            // if(flag){
-            //   member = JSON.stringify(member);
-            //   wx.navigateTo({
-            //     url: '../interactionMain/interactionMain?member='+member　　// 页面 A
-            //   })
-            // }else{
-            //   wx.navigateTo({
-            //     url: '../interactionMain/interactionMain'　　// 页面 A
-            //   })
-            // }
-            
-           }else{//开启失败
-            // wx.showToast({
-            //   title:'互动开启失败',
-            //   icon: 'none',
-            //    duration: 1000
-            // })
-           }
            break;
            case 'NETCMD_WECHAT_INTERACTION_STOP'://关闭互动回复
            break;
-           case "NETCMD_WECHAT_INTERACTION_STAFF":
+           case "NETCMD_WECHAT_INTERACTION_STAFF"://查看互动状态
             console.log(data);
             console.log(app.interactionIsOver);
-            if(data.data.split('"code": "')[1].split('"')[0] == 200 && app.interactionIsOver){
+            var result = data.data.split('"code":')[1].split(',')[0];
+            console.log(result);
+            if(result == 200 && app.interactionIsOver){
               wx.navigateBack({
                 delta: 1　
               })
-            }else if(data.data.split('"code": "')[1].split('"')[0] == 200){
-              wx.navigateTo({
-                url: '../interactionMain/interactionMain'　　// 页面 A
-              })
+            }else if(result == 200){
+              console.log(data.data);
+              var shortid = data.data.split('"shortId":"')[1].split('",')[0];
+              var meetingMode= data.data.split('"meetingMode":')[1].split(',')[0];
+              // console.log(shortid)
+              // console.log(meetingMode  == 1)
+              // console.log(shortid == "" && meetingMode == 1 );
+              if(!shortid && meetingMode == 1 ){//通过是否有shortid判断是否为听讲（课堂模式下听讲需要进入听讲页面）
+                wx.navigateTo({
+                  url: '../interactionminor/interactionminor'　　// 页面 A
+                })
+              }else{
+                wx.navigateTo({
+                  url: '../interactionMain/interactionMain'　　// 页面 A
+                })
+              }
+              
             }
            break;
            case 'NETCMD_WECHAT_INTERACTION_JOIN'://加入互动回复
@@ -245,7 +266,7 @@ Page({
           }
       })
     },
-    joinClass(e){
+    joinClass(e){//获取加入课堂账号密码
       var name = e.currentTarget.dataset.name;
       var value = e.detail.value;
       if(name == 'account'){
@@ -294,7 +315,7 @@ Page({
         choose:false,
         hideFlag: true
       })
-    }, 
+    },
     switch(e){
       var index = parseInt(e.currentTarget.dataset.index);
       if(index == 0){
@@ -377,7 +398,7 @@ Page({
       }
     })
     },
-    chooseModel(e){
+    chooseModel(e){//选择模式
       this.setData({
         pattern: e.currentTarget.dataset.name,
         namea:e.currentTarget.dataset.namea

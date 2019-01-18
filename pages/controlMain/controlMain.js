@@ -11,20 +11,18 @@ Page({
       recordStatus:'',
       liveImage:'',
       liveStatus:'',
-      cover:app.cover,
+      cover:false,
       recordOver:true,
       liveOver:true
     },
-    onLoad(){
+    onLoad(option){
+      console.log(option);
       app.once  = false;
     },
     onShow(){
       app.flag = true;
       app.interactionIsOver = false;
       var _this = this;
-      this.setData({
-        flag:false
-      });
     this.data.timer && clearInterval(this.data.timer);//防止启动多个定时器
       var timer1 = setInterval(function(){//等待初始化完成
           if(!app.socketLinste){//
@@ -36,7 +34,7 @@ Page({
           util.monitorSocketClose(_this,function () {
             wx.onSocketOpen(function () {
               // callback
-              __this.socket();
+              _this.socket();
             })
           });
           _this.socket();
@@ -56,30 +54,31 @@ Page({
           getLiveStatus = JSON.stringify(getLiveStatus);
           console.log(getRecordStatus);
           console.log(getLiveStatus);
-          wx.sendSocketMessage({//获取录播状态
-            data: getLiveStatus ,
-            success:function(){
-              console.log('success');
-            },
-            fail:function(e){
-              console.log(e);
-              wx.closeSocket();
-              console.log('发送失败，重新链接')
-              wx.connectSocket({
-                url: "wss://weixin.hd123.net.cn/ws",
-                // url: "ws://172.16.1.90:9000/ajaxchattest",
-                success:function(){
-                  _this.socket();
-                  wx.onSocketOpen(function() {
-                    console.log('重新打开')
-                    wx.sendSocketMessage({
-                      data: getLiveStatus
-                    })
-                  })
-                }
-              })
-            }
-          })
+          util.sendSocketMessage({data:getLiveStatus,that:_this});
+          // wx.sendSocketMessage({//获取录播状态
+          //   data: getLiveStatus ,
+          //   success:function(){
+          //     console.log('success');
+          //   },
+          //   fail:function(e){
+          //     console.log(e);
+          //     wx.closeSocket();
+          //     console.log('发送失败，重新链接')
+          //     wx.connectSocket({
+          //       url: "wss://weixin.hd123.net.cn/ws",
+          //       // url: "ws://172.16.1.90:9000/ajaxchattest",
+          //       success:function(){
+          //         _this.socket();
+          //         wx.onSocketOpen(function() {
+          //           console.log('重新打开')
+          //           wx.sendSocketMessage({
+          //             data: getLiveStatus
+          //           })
+          //         })
+          //       }
+          //     })
+          //   }
+          // })
         //  setTimeout(function(){
         //    wx.sendSocketMessage({//获取直播状态
         //      data: getRecordStatus,
@@ -101,10 +100,6 @@ Page({
       })
     },
     onHide(){
-      console.error('hide');
-      this.setData({
-        flag:true
-      })
     },
     onUnload(){
       if(this.data.flag){
@@ -130,17 +125,25 @@ Page({
       "RecorderId": app.RecorderId
     };
     obj = JSON.stringify(obj);
-    wx.sendSocketMessage({
-      data: obj,
-      success:function(){
-        console.log('success');
+    util.sendSocketMessage({data:obj,that:this,success: function() {
+      // console.log('success');
         wx.showToast({
           title:'操作成功',
           icon:'none',
           duration:1000
         })
-      }
-    })
+    }});
+    // wx.sendSocketMessage({
+    //   data: obj,
+    //   success:function(){
+    //     console.log('success');
+    //     wx.showToast({
+    //       title:'操作成功',
+    //       icon:'none',
+    //       duration:1000
+    //     })
+    //   }
+    // })
   },
     socket(){
       var _this = this;

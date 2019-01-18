@@ -6,17 +6,25 @@ App({
   RecorderId:false,
   wechatIdUrl:'',
   wechatId:false,
-  userInfo:'',
-  cover:false,             
+  userInfo:false,
+  cover:true,             
   isOut:false,
   flag:true,
   socketLinste:true,
   date:new Date().getTime(),
   onLaunch: function (options) {
-    var _this = this;
-    console.log(options);
     this.linkSocket();
-    this.options = options;
+  },
+  onShow(){
+    var _this = this;
+    console.log('小程序从后台进入');
+    // wx.connectSocket({
+    //   url: "wss://weixin.hd123.net.cn/ws",})
+  },
+  onHide(){
+    // this.cover = true;
+    console.log('小程序进入后台');
+    // wx.closeSocket();//退出后台是断开连接
   },
   getWeChatId(){
     wx.login({
@@ -67,8 +75,8 @@ App({
               _this.userInfo = data.data;
               _this.cover = false;//关闭遮罩层
               _this.socketLinste = false;//结束onSocketMessage监听，交由下一页面监听
-              console.log('监听结束')
-              console.log(_this)
+              console.log('监听结束');
+              console.log(_this);
             break;
             case 'NETCMD_WECHAT_GET_WECHATID'://返回微信ID
               _this.wechatId = data.data.wechatId;

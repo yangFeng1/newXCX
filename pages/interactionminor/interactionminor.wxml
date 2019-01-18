@@ -1,0 +1,12 @@
+<view>
+    <view class="coverBox"  wx:if='{{cover}}'>
+            <image src="{{IP}}loading.gif"  class="loading"/>
+            <view class="cover"></view>
+    </view>
+    <view class="speak">
+        <image src="{{IP}}listener_talk_default.png" bindtap="speak"/>
+    </view>
+    <view class="close">
+        <image src="{{IP}}closeListen.png" bindtap="outInteraction"/>
+    </view>
+</view>

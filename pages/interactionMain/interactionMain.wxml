@@ -10,8 +10,8 @@
     <view class="personData">
         <image src="{{IP}}speaker_call_big_selected.png" class="headPortrait fl"/>
         <view class="fl data">
-            <text>课堂ID：{{meetingId}}</text>
-            <text>密码ID：{{password}}</text>
+            <text>{{interactionMode}}ID：{{meetingId}}</text>
+            <text>密码：{{password}}</text>
         </view>
         <image src="{{IP}}speaker_end_default.png" class="operation fr" bindtap="close"/>
     </view>
@@ -30,7 +30,7 @@
                     </view>
                     <view class="right fr">
                             <image src="{{IP}}speaker_kick_default.png" class="fl"  data-name=" {{m1.getAccount(item.id)}}" bindtap="kickStrangers"/>
-                            <!-- <image src="{{IP}}speaker_talk_default.png"  class="fl"/> -->
+                            <image src="{{IP}}{{item.speakImg}}" data-id="{{item.id}}" data-sn='{{item.sn}}' data-state="{{item.state}}"  class="fl" wx:if='{{speak}}' bindtap="speak"/>
                     </view>
                 </view>
             </view>

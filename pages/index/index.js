@@ -4,13 +4,22 @@ Page({
   data:{
     scanSrc: app.IPaddress+"scan-default.png",
     IP:app.IPaddress,
-    cover:true,
+    cover:  true,
     timer:false
   },
-  onShow(options){
-    this.setData({
-      flag:false
-    })
+  onLoad(option){
+    var _app = app;
+    console.log('11');
+    console.log(decodeURIComponent(option.q));
+    if(option.q){//判断是否是扫码进入
+      var RecorderId = decodeURIComponent(option.q).split('RecorderId=')[1].split('&')[0];
+      app.RecorderId = RecorderId;
+      wx.navigateTo({
+        url: '../controlMain/controlMain'
+      })
+    }
+  },
+  onShow(){
     var _this = this;
     util.monitorSocketClose(this,function(){
       wx.onSocketOpen(function() {
@@ -26,21 +35,7 @@ Page({
     var timer = setInterval(function(){//等待app.js的 onSocketMessage 数据处理完之后再由当前页面接手
         // console.log(1);
       if(!app.socketLinste){
-        console.log(app.RecorderId);
-        console.log(app.isOut);
-        console.log(app.RecorderId && app.flag)
-        if(app.flag && app.RecorderId){
-            console.log('进入1');
-          app.isOut = true;
-          wx.navigateTo({
-            url:'../controlMain/controlMain',
-            success:function(e){console.log(e)},
-            fail:function(e){console.log(e)}
-          })
-          clearInterval(_this.data.timer);
-          return;
-        } 
-        // console.log(2);
+        console.log(app.cover);
         clearInterval(_this.data.timer);
         _this.setData({
           cover:app.cover
@@ -58,26 +53,10 @@ Page({
     });
   },
   onHide(){
-    clearInterval(this.data.timer);//在退出页面时销毁定时器
-    console.error('hide');
-    this.setData({
-      flag:true
-    })
+    clearInterval(this.data.timer);//在退出页面时销毁定时器 
   },
   onUnload(){
-    if(this.data.flag){
-      app.flag = true;
-      this.setData({
-        flag:false
-      })
-    }else{
-      this.setData({
-        flag:false
-      })
-      app.flag = false;
-    }
-    console.log(app.flag);
-    console.error('onUnload');
+ 
   },
   scanTouch(){
     this.setData({
