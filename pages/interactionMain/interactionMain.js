@@ -10,10 +10,12 @@ Page({
       secondPage:false,//true 添加成员界面  false 成员列表界面
       member:false,
       cover:false,
-      addMemberName:true,
+      addMemberName:'',
       interactionMemberList:[],
       meetingId:'',
       password:'',
+      startClassList:[],
+      addresList:app.addresList,//通讯录
       interactionMode:'',
       speak:false,//会议模式下不显示发言按钮
       interactionIsOvera:false////手动退出当前页面直接退出到controlMain页面
@@ -33,7 +35,7 @@ Page({
 
               app.interactionIsOver = false;
           }
-      },
+    },
     onUnload() {
         console.error('清除定时器-----' + this.data.timer);
         clearInterval(this.data.timer);//在退出页面时销毁定时器
@@ -50,9 +52,11 @@ Page({
             console.log('onUnload');
     },
     onShow(option){
+        
         this.setData({
             flag:false,
-            interactionIsOvera:false 
+            interactionIsOvera:false,
+            addresList:app.addresList
           });
           app.interactionIsOver = true;
           var data = {
@@ -148,10 +152,18 @@ Page({
                         data = JSON.stringify(data);
                         util.sendSocketMessage({data:data})
                     break;
-                    // case 'getInClassUsersState'://获取互动信息 
-                    //     console.log('获取互动信息');
-                    //     _this.getIsInClass(data);
-                    // break;       
+                    case 'getInClassUsersState'://互动消息发生变化
+                        console.log('获取互动信息');
+                        var data = {
+                            "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
+                            "RecorderId": app.RecorderId,
+                            "data":  {
+                              "cmd":"getIsInClass"
+                          }
+                        }
+                        data = JSON.stringify(data);
+                        util.sendSocketMessage({data:data})
+                    break;       
                     case 'recvByeAck' ://获取互动退出信息
                         console.log('退出互动消息');
                         _this.outInteraction(data);
@@ -168,6 +180,23 @@ Page({
                         _this.onSpeak(data)
                     break;
                     case 'recvRaiseHand'://有人申请发言
+                    break;
+                    case 'sameRejectTypeMsg'://有人退出互动
+                    console.log('有人退出互动');
+                    // wx.showToast({
+                    //     title:'有人退出互动',
+                    //     icon:'none',
+                    //     duration:1000
+                    // })
+                    var data = {
+                        "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
+                        "RecorderId": app.RecorderId,
+                        "data":  {
+                          "cmd":"getIsInClass"
+                      }
+                    }
+                    data = JSON.stringify(data);
+                    util.sendSocketMessage({data:data})
                     break;
                 }
             }
@@ -434,19 +463,31 @@ Page({
         memberList.forEach(function(v){
            var stateCode = parseInt(v.state) & 0x001000;//0为在线  1为被踢出成员
            var speak = parseInt(v.state) & 0x000001;//0为发言中
-           v.online = stateCode == 0?true:false;
+           var isOnline = parseInt(v.state) & 0x000800 //0为在会
+           v.online = !stateCode && !isOnline ?true:false;
            v.speakImg = speak == 0?'speaker_talk_default.png':'speaker_talk_talking.png';
         });
         return memberList;
     },
     addMemberBtn(){//切换添加成员和成员列表界面
         this.setData({
-            secondPage:!this.data.secondPage
+            secondPage:!this.data.secondPage,
+            startClassList:[]
         })
     },
     addMember(){//互动添加陌生人
-        if(this.data.addMemberName){
-            var data = {"cmd": "NETCMD_WECHAT_INTERACTION_ADD","RecorderId": app.RecorderId,"data": {"cmd":"addStrangers","param":['W@'+this.data.addMemberName]}};
+        var list = [];
+        var flag = false;
+         this.data.addresList.forEach(function(i,v){
+              if(i.flag){
+                list.push('W@'+i.accountNumber);
+                flag =true;
+              } 
+            });
+            console.log(this.data.addMemberName)
+        if(this.data.addMemberName) list.push('W@' + this.data.addMemberName);
+        if(list[0]){
+            var data = {"cmd": "NETCMD_WECHAT_INTERACTION_ADD","RecorderId": app.RecorderId,"data": {"cmd":"addStrangers","param":list}};
             data = JSON.stringify(data);
             console.log(data);
             this.setData({
@@ -554,7 +595,19 @@ Page({
         })
         data = JSON.stringify(data);
        util.sendSocketMessage({data:data});
-    }
+    },
+    chooseClass(e){//选择互动成员
+        var index = parseInt(e.currentTarget.dataset.index);
+        var array = this.data.startClassList;
+        var status = array[index]?false: true;
+        array[index] = status;
+        var newArr = this.data.addresList;//将选中的item的数据更换成选中状态
+        newArr[index].flag = status;
+        this.setData({
+          startClassList:array,
+          addresList:newArr
+        })
+      }
 })
 
 

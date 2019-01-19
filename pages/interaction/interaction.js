@@ -123,13 +123,33 @@ Page({
         var TopicType = JSON.parse(data.data).data.indexOf('interactRespondEventTopic') == -1?true:false;//判断录播机主动推送是否是互动消息
         if(JSON.parse(data.data).cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE" && !TopicType){
           console.log(JSON.parse(data.data).data)
-           _this.setData({
-            cover:false
-          });
+         
           var res = JSON.parse(JSON.parse(data.data).data.split('<')[1].split('>')[0]);
             switch(res.name){
               case 'recvSendEnter'://通过id加入课堂返回
-
+                if(res.reason == 'success'){//加入成功
+                  var msg = {//获取是否在开启互动
+                    "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
+                    "RecorderId": app.RecorderId,
+                    "data":  {
+                      "cmd":"getIsInClass"
+                  }
+                }
+                msg = JSON.stringify(msg);
+                console.log(msg);
+                 setTimeout(function(){
+                  _this.setData({
+                    cover:false
+                  });
+                  util.sendSocketMessage({data:msg,that:_this})
+                 },3000)
+                }else{
+                  wx.showToast({
+                    title:"加入课堂失败",
+                    icon:'none',
+                    duration:1000
+                  })
+                }
               break;
             }
             // if(res.name == 'createMeeting' || res.name == 'getIsInClass'){
@@ -175,6 +195,7 @@ Page({
               _this.setData({
                 addresList: data.data
               })
+              app.addresList = data.data;
               _this.setData({
                 cover:false
               })
@@ -280,6 +301,9 @@ Page({
       }
     },
     enterClass(){//加入课堂
+      this.setData({
+        cover:true
+      })
         var data = {
                         "cmd": "NETCMD_WECHAT_INTERACTION_JOIN",
                         "RecorderId": app.RecorderId,

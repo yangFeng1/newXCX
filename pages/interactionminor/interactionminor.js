@@ -19,7 +19,7 @@ Page({
         console.error('清除定时器-----' + this.data.timer);
         if(this.data.flag){
             app.flag = true;
-            this.setData({
+            this.setData({                                                          
                 flag:false
             })
         }else{
