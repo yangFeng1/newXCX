@@ -1,6 +1,6 @@
 <wxs module="m1">function getAccount (account){return account.split('W@')[1]};module.exports.getAccount = getAccount;</wxs>
-<!-- <view bindtouchstart="touchStart" bindtouchend="touchEnd"> -->
-        <view>
+<view bindtouchstart="touchStart" bindtouchend="touchEnd">
+        <!-- <view> -->
        
     <image src="{{IP}}speaker_bg.png" class=" bg" /> 
     <view class="coverBox"  wx:if='{{cover}}'>
@@ -30,7 +30,7 @@
                     </view>
                     <view class="right fr">
                             <image src="{{IP}}speaker_kick_default.png" class="fl"  data-name=" {{m1.getAccount(item.id)}}" bindtap="kickStrangers"/>
-                            <image src="{{IP}}{{item.speakImg}}" data-id="{{item.id}}" data-sn='{{item.sn}}' data-state="{{item.state}}"  class="fl" wx:if='{{speak}}' bindtap="speak"/>
+                            <image src="{{IP}}{{item.speakImg}}" data-id="{{item.id}}" data-sn='{{item.order}}' data-state="{{item.state}}"  class="fl" wx:if='{{speak}}' bindtap="speak"/>
                     </view>
                 </view>
             </view>
@@ -52,7 +52,7 @@
              </view>
          </view>
          <view class="viewLayout">
-             <view class="title">
+             <!-- <view class="title">
                  视频画面
              </view>
              <image src="{{IP}}speaker_FM_default.png" />
@@ -64,15 +64,26 @@
              <image src="{{IP}}speaker_FM_default.png" />
              <image src="{{IP}}speaker_FM_default.png" />
              <image src="{{IP}}speaker_FM_default.png" />
-             <image src="{{IP}}speaker_FM_default.png" />
+             <image src="{{IP}}speaker_FM_default.png" /> -->
+             <view class="viewLayoutBox">
+                 <view class="item" wx:for="{{interactionMemberList}}" wx:if="{{item.raiseHand}}">
+                    <text>成员{{item.name}}申请发言</text>
+                    <view class="agree"  data-sn='{{item.order}}' data-id="{{item.id}}" data-flag="1"  data- bindtap="speak">
+                        接受
+                    </view>
+                    <view class="refuse"  data-sn='{{item.order}}' data-id="{{item.id}}" data-flag="0"  data- bindtap="speak">
+                        拒绝
+                    </view>  
+                </view>
+             </view>
          </view>
          <view class="chooseAccount"  wx:if="{{secondPage}}">
              <input type="" placeholder="输入成员账号" bindinput="addMemberName"/>
              <view class="item" wx:for="{{addresList}}" data-index='{{index}}' class="item {{startClassList[index]?'selected':''}}"  bindtap="chooseClass">
-                 <view class="fl left">
+                 <view class="fl left" >
                     {{item.remarksName}}
                  </view>
-                 <view class="fr right">
+                 <view class="fr right" bindtap="speak">
                     {{item.accountNumber}}
                  </view>
              </view>

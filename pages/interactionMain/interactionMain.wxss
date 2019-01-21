@@ -144,7 +144,7 @@ page{
 
 .viewLayout{
     width: 564rpx;
-    height: 364rpx;
+    min-height: 364rpx;
     border: 1rpx solid #4b94fa;
     position: absolute;
     top: 0rpx;
@@ -208,4 +208,48 @@ page{
     position: absolute;
     left: 287rpx;
     bottom: -120rpx;
+}
+
+/*申请发言列表*/
+.viewLayout {
+    box-sizing: border-box;
+    max-height: 866rpx;
+    overflow: scroll;
+}
+
+.viewLayout .item{
+    box-sizing: border-box;
+    padding: 24rpx;
+    position: relative;
+    height: 198rpx;
+    width: 524rpx;
+    background: #fcf6f1;
+    border: 1px solid #ffaa67;
+    margin-bottom: 24rpx;
+}
+.viewLayout .item text{
+    font-size: 24rpx;
+    color: #555;
+}
+.viewLayout .item view{
+    border: 4rpx;
+    font-size: 24rpx;
+    text-align: center;
+    width: 108rpx;
+    height: 56rpx;
+    line-height: 56rpx;
+    position: absolute;
+    color: #fb687a;
+}
+.viewLayout .item .agree{
+    border: 1px solid #ffaa67;
+    background: #fcf6f1;
+    right: 24rpx;
+    bottom: 24rpx;
+}
+.viewLayout .item .refuse{
+    border: 1px solid #fb687a;
+    background: #fcf6f1;
+    right: 156rpx;
+    bottom: 24rpx;
 }

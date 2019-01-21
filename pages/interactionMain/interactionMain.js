@@ -180,6 +180,11 @@ Page({
                         _this.onSpeak(data)
                     break;
                     case 'recvRaiseHand'://有人申请发言
+                        wx.showToast({
+                            title:'有成员申请发言',
+                            icon:'none',
+                            duration:1000
+                        })
                     break;
                     case 'sameRejectTypeMsg'://有人退出互动
                     console.log('有人退出互动');
@@ -425,6 +430,7 @@ Page({
     },
     addStrangers(result){//处理互动拉人回复
         var _this = this;
+       
         if(result.code == 200){//拉人成功
                     var data = {
                         "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
@@ -433,11 +439,16 @@ Page({
                           "cmd":"getIsInClass"
                       }
                     }
+                   if(this.data.addToast){//在本界面操作的才弹出提示框
                     wx.showToast({
-                        title:'操作成功',
+                        title:'添加人员成功',
                         icon:'none',
                         duration:1000
-                    })
+                    });
+                    this.setData({
+                        addToast:true
+                    });
+                   }
                     _this.setData({
                         secondPage:false
                     })
@@ -452,20 +463,28 @@ Page({
                         })
                     },2000)
                 }else{//拉人失败
-                    wx.showToast({
-                        title:'操作失败',
-                        icon: 'none',
-                         duration: 1000
-                      })
+                    if(this.data.addToast){//在本界面操作的才弹出提示框
+                        wx.showToast({
+                            title:'添加人员失败',
+                            icon: 'none',
+                             duration: 1000
+                          });
+                          this.setData({
+                            addToast:true
+                        });
+                    }
+                    
                 }
     },
     getMemberState(memberList){//获取互动成员状态
-        memberList.forEach(function(v){
+        memberList.forEach(function(v,i){
            var stateCode = parseInt(v.state) & 0x001000;//0为在线  1为被踢出成员
            var speak = parseInt(v.state) & 0x000001;//0为发言中
            var isOnline = parseInt(v.state) & 0x000800 //0为在会
            v.online = !stateCode && !isOnline ?true:false;
            v.speakImg = speak == 0?'speaker_talk_default.png':'speaker_talk_talking.png';
+           v.raiseHand = (parseInt(v.state) & 0x000002) == 0?false:true;//0为未申请发言
+           v.order = ++i;
         });
         return memberList;
     },
@@ -487,6 +506,9 @@ Page({
             console.log(this.data.addMemberName)
         if(this.data.addMemberName) list.push('W@' + this.data.addMemberName);
         if(list[0]){
+            this.setData({
+                addToast:true
+            })
             var data = {"cmd": "NETCMD_WECHAT_INTERACTION_ADD","RecorderId": app.RecorderId,"data": {"cmd":"addStrangers","param":list}};
             data = JSON.stringify(data);
             console.log(data);
@@ -563,6 +585,7 @@ Page({
         move<-900 && (move = -900);
         if(move == this.data.location) return;
         //  console.log(move)
+        if(move == -900)return;//暂时屏蔽选择视屏画页面  
         this.slide(move);
     },
     close(){//结束互动
@@ -575,8 +598,14 @@ Page({
     },
     speak(e){//指定或取消发言
         var id = e.currentTarget.dataset.id;
-        var order = e.currentTarget.dataset.order;
-        var state = (e.currentTarget.dataset.state & 0x000001) == 0?true:false;//0为未发言 
+        var order = e.currentTarget.dataset.sn;
+        var flag = e.currentTarget.dataset.flag;//flag不为空代表的是判断申请发言操作
+        var state;
+        if(flag){
+            state = !!parseInt(flag);
+        }else{
+            state = (e.currentTarget.dataset.state & 0x000001) == 0?true:false;//0为未发言
+        }
         console.log(e.currentTarget.dataset.state);
         var data = {
             "cmd": "NETCMD_WECHAT_INTERACTION_SPEAK",
@@ -607,7 +636,7 @@ Page({
           startClassList:array,
           addresList:newArr
         })
-      }
+    }
 })
 
 

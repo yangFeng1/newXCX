@@ -45,8 +45,30 @@ Page({
     socket(){
         var _this = this;
         wx.onSocketMessage(function(res) {
-            console.log(res.data);
             res = JSON.parse(res.data);
+            var TopicType = res.data.indexOf('interactRespondEventTopic') == -1?true:false;//判断录播机主动推送是否是互动消息
+            if(res.cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE" && !TopicType){
+                var data = JSON.parse(res.data.split('<')[1].split('>')[0]);
+                if(data.name ==  'transStatus')return;
+                console.log(data);
+                console.log(data.name);
+                switch(data.name){
+                    case 'recvByeAck' ://获取互动退出信息
+                        console.log('退出互动消息');
+                        _this.outInteractiona(data);
+                    break;
+                    case 'quitClass'://获取互动退出信息
+                        console.log('退出互动消息');
+                        _this.outInteractiona(data);
+                    break;   
+                    case 'recvOver'://获取互动退出信息
+                        console.log('退出互动消息');
+                        _this.outInteractiona(data);
+                    break;  
+                }
+            }
+            if(res.cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE" && TopicType) return;//不处理录播直播消息
+            console.log(res.data);
             switch(res.cmd){
                 case 'NETCMD_WECHAT_INTERACTION_APPLY_SPEECH'://申请发言回复
                 if(res.data.split('"code":')[1].split('}')[0] == 200){
@@ -111,5 +133,18 @@ Page({
         // wx.sendSocketMessage({data:data,success:function(){console.log(123)}}
         // );
         util.sendSocketMessage({data:data,that:this});
-    }
+    },
+    outInteractiona(result){//处理互动退出信息回复
+        var _this = this;
+            _this.setData({
+                    cover:false
+                })
+                    if(result.code == 200){//关闭成功
+                        app.interactionIsOver = true;//手动退出当前页面直接退出到controlMain页面
+                        _this.interactionIsOvera = true;//判断 是否是手动退出的 true为关闭互动退出
+                        wx.navigateBack({
+                            delta: 1　
+                          })
+                    }
+    },
 })
