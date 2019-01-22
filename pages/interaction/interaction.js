@@ -16,7 +16,8 @@ Page({
       memberName:false,
       namea:'启动会议',
       joinAcc:false,
-      joinPwd:false
+      joinPwd:false,
+      creatMeetingFlag:true
     },
     onUnload(){
       
@@ -152,40 +153,44 @@ Page({
                 }
               break;
             }
-            // if(res.name == 'createMeeting' || res.name == 'getIsInClass'){
-            //   if(res.code == 200 ){//开启成功
-            //   var member = [];
-            //   var flag = false;
-            //   _this.data.addresList.forEach(function(i,v){
-            //     if(i.flag){
-            //       member.push('W@'+i.accountNumber);
-            //       flag =true;
-            //     } 
-            //   });
-            //   if(_this.data.memberName){
-            //     flag = true;
-            //     member.push('W@'+_this.data.memberName);
-            //   }
-            //   if(flag){
-            //     member = JSON.stringify(member);
-            //     wx.navigateTo({
-            //       url: '../interactionMain/interactionMain?member='+member　　// 页面 A
-            //     })
-            //   }else{
-            //     wx.navigateTo({
-            //       url: '../interactionMain/interactionMain'　　// 页面 A
-            //     })
-            //   }
+            if(res.name == 'createMeeting' || res.name == 'getIsInClass'){
+              _this.setData({
+                cover:false,
+                creatMeetingFlag:true
+              })
+              if(res.code == 200 ){//开启成功
+              var member = [];
+              var flag = false;
+              _this.data.addresList.forEach(function(i,v){
+                if(i.flag){
+                  member.push('W@'+i.accountNumber);
+                  flag =true;
+                } 
+              });
+              if(_this.data.memberName){
+                flag = true;
+                member.push('W@'+_this.data.memberName);
+              }
+              if(flag){
+                member = JSON.stringify(member);
+                wx.navigateTo({
+                  url: '../interactionMain/interactionMain?member='+member　　// 页面 A
+                })
+              }else{
+                wx.navigateTo({
+                  url: '../interactionMain/interactionMain'　　// 页面 A
+                })
+              }
               
-            //  }else{//开启失败
-            //   console.log('广播回复互动开启失败')
-            //   wx.showToast({
-            //     title:'互动开启失败',
-            //     icon: 'none',
-            //      duration: 1000
-            //   })
-            //  }
-            // }
+             }else{//开启失败
+              console.log('广播回复互动开启失败')
+              wx.showToast({
+                title:'互动开启失败',
+                icon: 'none',
+                 duration: 1000
+              })
+             }
+            }
         }
         if(JSON.parse(data.data).cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE") return;//不处理录播直播消息
         console.log(JSON.parse(data.data));
@@ -196,14 +201,14 @@ Page({
                 addresList: data.data
               })
               app.addresList = data.data;
-              _this.setData({
+              _this.data.creatMeetingFlag && _this.setData({
                 cover:false
               })
               break;
           }
           switch(data.cmd){
            case 'NETCMD_WECHAT_INTERACTION_OPEN'://开启互动回复
-           _this.setData({
+           _this.data.creatMeetingFlag && _this.setData({
             cover:false
           });
           var res
@@ -231,16 +236,16 @@ Page({
               flag = true;
               member.push('W@'+_this.data.memberName);
             }
-            if(flag){
-              member = JSON.stringify(member);
-              wx.navigateTo({
-                url: '../interactionMain/interactionMain?member='+member　　// 页面 A
-              })
-            }else{
-              wx.navigateTo({
-                url: '../interactionMain/interactionMain'　　// 页面 A
-              })
-            }
+            // if(flag){
+            //   member = JSON.stringify(member);
+            //   wx.navigateTo({
+            //     url: '../interactionMain/interactionMain?member='+member　　// 页面 A
+            //   })
+            // }else{
+            //   wx.navigateTo({
+            //     url: '../interactionMain/interactionMain'　　// 页面 A
+            //   })
+            // }
             
            }else{//开启失败
             console.log('回复消息开启互动失败');
@@ -269,7 +274,7 @@ Page({
               // console.log(shortid)
               // console.log(meetingMode  == 1)
               // console.log(shortid == "" && meetingMode == 1 );
-              if(!shortid && meetingMode == 1 ){//通过是否有shortid判断是否为听讲（课堂模式下听讲需要进入听讲页面）
+              if(!shortid){//通过是否有shortid判断是否为听讲
                 wx.navigateTo({
                   url: '../interactionminor/interactionminor'　　// 页面 A
                 })
@@ -400,7 +405,8 @@ Page({
             }
     }
     this.setData({
-      cover:true
+      cover:true,
+      creatMeetingFlag:false
     })
     call = JSON.stringify(call);
     console.log(call);

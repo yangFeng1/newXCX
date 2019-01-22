@@ -172,6 +172,7 @@ page{
     border: 1px solid #4b94fa;
     height:746rpx;
     width: 100%;
+    overflow: scroll;
 }
 .chooseAccount input{
     border-bottom: 1px solid #4b94fa;
@@ -202,12 +203,12 @@ page{
 .chooseAccount .selected{
     background: #d7edfc;
 }
-.chooseAccount .dial{
+ .dial{
     width: 96rpx;
     height: 96rpx;
     position: absolute;
     left: 287rpx;
-    bottom: -120rpx;
+    bottom: 0rpx;
 }
 
 /*申请发言列表*/

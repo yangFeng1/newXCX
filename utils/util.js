@@ -44,7 +44,7 @@ const linkSocket = ()=>{//链接socket
   })
 }
 const sendSocketMessage = (obj)=>{//通过socket发送数据
-  console.log(obj.data);
+  console.log(obj);
      wx.sendSocketMessage({
        data: obj.data,
        success: function(res){

@@ -4,9 +4,12 @@
             <view class="cover"></view>
     </view>
     <view class="speak">
-        <image src="{{IP}}listener_talk_default.png" bindtap="speak"/>
+        <image src="{{IP}}listener_talk_default.png" bindtap="speak" wx:if="{{speakStatus == 0 && meetingMode==1}}"/>
+        <image src="{{IP}}proposer.png" bindtap="speak"  wx:if="{{speakStatus == 1 && meetingMode==1}}"/>
+        <image src="{{IP}}closeSpeak.png" bindtap="speak"  wx:if="{{speakStatus == 2 && meetingMode==1}}"/>
+        <image src="{{IP}}closeInteaction.png" wx:if="{{meetingMode==0}}"  bindtap="outInteraction" />
     </view>
     <view class="close">
-        <image src="{{IP}}closeListen.png" bindtap="outInteraction"/>
+        <image src="{{IP}}closeListen.png" bindtap="outInteraction" wx:if="{{meetingMode==1}}"/>
     </view>
 </view>

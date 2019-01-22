@@ -52,7 +52,7 @@ Page({
             console.log('onUnload');
     },
     onShow(option){
-        
+        var _this = this;
         this.setData({
             flag:false,
             interactionIsOvera:false,
@@ -68,18 +68,19 @@ Page({
         }
         data = JSON.stringify(data);
         console.log(data);
-        var getInfoTimer = setTimeout(function(){
-            wx.sendSocketMessage({
-                data: data,
-                success: function(res){
-                    console.log(123);   // success
-                }
-            })
-        },2000)
-        this.setData({
-            getInfoTimer:getInfoTimer
-        })
-        var _this = this;
+        // var getInfoTimer = setTimeout(function(){
+            // wx.sendSocketMessage({
+            //     data: data,
+            //     success: function(res){
+            //         console.log(123);   // success
+            //     }
+            // })
+            util.sendSocketMessage({data:data,that:_this});
+        // },2000)
+        // this.setData({
+        //     getInfoTimer:getInfoTimer
+        // })
+        
         this.socket();
         util.monitorSocketClose(this,function(){
           wx.onSocketOpen(function() {
@@ -88,19 +89,21 @@ Page({
           })
         });
         this.data.timer || clearTimeout(this.data.timer);
-        var a =  setTimeout(function(){
+        // var a =  setTimeout(function(){
+            console.log(_this.data.member);
             if(_this.data.member){
                 var data = {"cmd": "NETCMD_WECHAT_INTERACTION_ADD","RecorderId": app.RecorderId,"data": {"cmd":"addStrangers","param":_this.data.member}};
                 // var data = {"cmd": "NETCMD_WECHAT_INTERACTION_ADD","RecorderId": app.RecorderId,"data": {"cmd":"addStrangers","param":["W@10000126"]}};
                 data = JSON.stringify(data);
                 console.log(data);
-                wx.sendSocketMessage({data:data,
-                success:function(){console.log(123)}})
+                // wx.sendSocketMessage({data:data,
+                // success:function(){console.log(123)}})
+                util.sendSocketMessage({data:data,that:_this});
             }
-        }, 5000);
-        this.setData({
-            timer:a
-        })
+        // }, 5000);
+        // this.setData({
+        //     timer:a
+        // })
     },
     socket(){
         var _this = this;
@@ -184,7 +187,17 @@ Page({
                             title:'有成员申请发言',
                             icon:'none',
                             duration:1000
-                        })
+                        });
+                        var data = {
+                            "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
+                            "RecorderId": app.RecorderId,
+                            "data":  {
+                              "cmd":"getIsInClass"
+                          }
+                        }
+                        data = JSON.stringify(data);
+                        console.log(data);
+                        util.sendSocketMessage({data:data})
                     break;
                     case 'sameRejectTypeMsg'://有人退出互动
                     console.log('有人退出互动');
@@ -603,6 +616,20 @@ Page({
         var state;
         if(flag){
             state = !!parseInt(flag);
+            var hand = {
+                "cmd":"NETCMD_WECHAT_INTERACTION_ANSWER_RAISEHAND",
+                "RecorderId": app.RecorderId,
+                "data":  {
+                    "cmd":"answerRaisehand",
+                    "param":
+                    {
+                        "id":id,
+                        "flag":true/false
+                    }
+                }
+            }
+            hand = JSON.stringify(hand);
+            util.sendSocketMessage({data:hand,that:this});
         }else{
             state = (e.currentTarget.dataset.state & 0x000001) == 0?true:false;//0为未发言
         }

@@ -3,7 +3,10 @@ var util = require('../../utils/util.js');
 Page({
     data:{
         IP: app.IPaddress,
-        cover:false
+        cover:false,
+        loactionData:false,
+        speakStatus:0,//0为未申请发言 1申请发言 2正在发言
+        meetingMode:0//0为会议 1为课堂
     },
     onHide(){
         this.setData({
@@ -34,6 +37,15 @@ Page({
             interactionIsOvera:false 
           });
           this.socket();
+          var loactionData = {
+            "cmd": "NETCMD_WECHAT_INTERACTION_getLocalUserInfo",
+            "RecorderId": app.RecorderId,
+            "data":   {
+                "cmd":"getLocalUserInfo"
+                }
+        }
+          loactionData = JSON.stringify(loactionData);
+          util.sendSocketMessage({data:loactionData,that:this});
           app.interactionIsOver = true;
           util.monitorSocketClose(this,function(){
             wx.onSocketOpen(function() {
@@ -65,6 +77,9 @@ Page({
                         console.log('退出互动消息');
                         _this.outInteractiona(data);
                     break;  
+                    case 'raisehandfeedback'://申请发言回复
+                        console.log('申请发言回复');
+                    break;   
                 }
             }
             if(res.cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE" && TopicType) return;//不处理录播直播消息
@@ -109,8 +124,46 @@ Page({
                           })
                     }
                 break;
+                case 'NETCMD_WECHAT_INTERACTION_getLocalUserInfo'://获取本地互动信息
+                    console.log('获取本地互动信息');
+                    var id = res.data.split('"id":"')[1].split('",')[0];
+                    _this.setData({
+                        addressId:id
+                    });
+                    var data = {
+                        "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
+                        "RecorderId": app.RecorderId,
+                        "data":  {
+                          "cmd":"getIsInClass"
+                      }
+                    }
+                    util.sendSocketMessage({data:JSON.stringify(data),that:_this});
+                break;
+                case 'NETCMD_WECHAT_INTERACTION_STAFF'://获取去互动在会信息
+                    console.log('获取去互动在会信息');
+                    var id = _this.data.addressId;
+                    var state = res.data.split(id)[1].split('"state":')[1].split(',')[0];
+                    var meetingMode = parseInt(res.data.split('"meetingMode":')[1].split(',')[0]);
+                    console.log(res.data.split('"meetingMode":')[1]);
+                    _this.setData({
+                        meetingMode:meetingMode
+                    })
+                    _this.getStatus(state);
+                break;
             }
         })
+    },
+    getStatus(state){//判定发言状态
+        if((parseInt(state) & 0x000001) != 0){//0为在发言中
+            this.setData({
+                speakStatus:2
+            })
+        }else if((parseInt(state) & 0x000002) != 0){//是否举手   0为未申请发言
+            this.setData({
+                speakStatus:1
+            })
+        };
+        console.log(this.data.speakStatus);
     },
     speak(){//申请发言
         var data = {
@@ -147,4 +200,5 @@ Page({
                           })
                     }
     },
+
 })

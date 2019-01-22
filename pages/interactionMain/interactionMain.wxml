@@ -66,7 +66,7 @@
              <image src="{{IP}}speaker_FM_default.png" />
              <image src="{{IP}}speaker_FM_default.png" /> -->
              <view class="viewLayoutBox">
-                 <view class="item" wx:for="{{interactionMemberList}}" wx:if="{{item.raiseHand}}">
+                 <view class="item" wx:for="{{interactionMemberList}}" wx:if="{{item.raiseHand && item.online}}">
                     <text>成员{{item.name}}申请发言</text>
                     <view class="agree"  data-sn='{{item.order}}' data-id="{{item.id}}" data-flag="1"  data- bindtap="speak">
                         接受
@@ -87,9 +87,8 @@
                     {{item.accountNumber}}
                  </view>
              </view>
-             
-             <image src="{{IP}}speaker_call_small_default.png"  class="dial" bindtap="addMember"/>
-         </view>
+            </view>
+            <image src="{{IP}}speaker_call_small_default.png"  class="dial" bindtap="addMember" wx:if="{{secondPage}}"/>
         </view>
      </view>
 </view>
