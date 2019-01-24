@@ -21,6 +21,9 @@ Page({
       interactionIsOvera:false////手动退出当前页面直接退出到controlMain页面
     },
     onLoad(option){
+        wx.setNavigationBarTitle({
+            title: '互动'
+          });
         if(option.member){
             this.setData({//获取添加成员
                 member:JSON.parse(option.member)
@@ -98,7 +101,9 @@ Page({
                 console.log(data);
                 // wx.sendSocketMessage({data:data,
                 // success:function(){console.log(123)}})
+            //    setTimeout(function(){
                 util.sendSocketMessage({data:data,that:_this});
+            //    })
             }
         // }, 5000);
         // this.setData({
@@ -183,11 +188,11 @@ Page({
                         _this.onSpeak(data)
                     break;
                     case 'recvRaiseHand'://有人申请发言
-                        wx.showToast({
-                            title:'有成员申请发言',
-                            icon:'none',
-                            duration:1000
-                        });
+                        // wx.showToast({
+                        //     title:'有成员申请发言',
+                        //     icon:'none',
+                        //     duration:1000
+                        // });
                         var data = {
                             "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
                             "RecorderId": app.RecorderId,
@@ -624,7 +629,7 @@ Page({
                     "param":
                     {
                         "id":id,
-                        "flag":true/false
+                        "flag":state
                     }
                 }
             }

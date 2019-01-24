@@ -31,21 +31,19 @@ Page({
             console.log(app.flag);
             console.log('onUnload');
     },
+    onLoad(){
+        wx.setNavigationBarTitle({
+            title: '互动'
+          });
+    },
     onShow(){
+      
         this.setData({
             flag:false,
             interactionIsOvera:false 
           });
           this.socket();
-          var loactionData = {
-            "cmd": "NETCMD_WECHAT_INTERACTION_getLocalUserInfo",
-            "RecorderId": app.RecorderId,
-            "data":   {
-                "cmd":"getLocalUserInfo"
-                }
-        }
-          loactionData = JSON.stringify(loactionData);
-          util.sendSocketMessage({data:loactionData,that:this});
+          this.getloactionStatis();
           app.interactionIsOver = true;
           util.monitorSocketClose(this,function(){
             wx.onSocketOpen(function() {
@@ -71,15 +69,22 @@ Page({
                     break;
                     case 'quitClass'://获取互动退出信息
                         console.log('退出互动消息');
-                        _this.outInteractiona(data);
+                        _this.outInteractiona(data);    
                     break;   
                     case 'recvOver'://获取互动退出信息
                         console.log('退出互动消息');
                         _this.outInteractiona(data);
                     break;  
                     case 'raisehandfeedback'://申请发言回复
+                    _this.getloactionStatis();
                         console.log('申请发言回复');
                     break;   
+                    case 'recvRaiseHand'://申请举手回复
+                    _this.getloactionStatis();
+                    break;
+                    case 'recvSelected'://被指定发言
+                        _this.getloactionStatis();
+                    break;
                 }
             }
             if(res.cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE" && TopicType) return;//不处理录播直播消息
@@ -87,11 +92,11 @@ Page({
             switch(res.cmd){
                 case 'NETCMD_WECHAT_INTERACTION_APPLY_SPEECH'://申请发言回复
                 if(res.data.split('"code":')[1].split('}')[0] == 200){
-                    wx.showToast({
-                        title:'申请成功',
-                        icon: 'none',
-                         duration: 1000
-                      })
+                    // wx.showToast({
+                    //     title:'申请成功',
+                    //     icon: 'none',
+                    //      duration: 1000
+                    //   })
                 }else{
                     wx.showToast({
                         title:'申请失败',
@@ -131,7 +136,7 @@ Page({
                         addressId:id
                     });
                     var data = {
-                        "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
+                        "cmd": "NETCMD_WECHAT_INTERACTION_STAFF", 
                         "RecorderId": app.RecorderId,
                         "data":  {
                           "cmd":"getIsInClass"
@@ -146,12 +151,24 @@ Page({
                     var meetingMode = parseInt(res.data.split('"meetingMode":')[1].split(',')[0]);
                     console.log(res.data.split('"meetingMode":')[1]);
                     _this.setData({
-                        meetingMode:meetingMode
+                        meetingMode:meetingMode,
+                        speakId:res.data.split('[{"id":"')[1].split('",')[0]
                     })
                     _this.getStatus(state);
                 break;
             }
         })
+    },
+    getloactionStatis(){//获取本地互动状态
+        var loactionData = {
+            "cmd": "NETCMD_WECHAT_INTERACTION_getLocalUserInfo",
+            "RecorderId": app.RecorderId,
+            "data":   {
+                "cmd":"getLocalUserInfo"
+                }
+        }
+          loactionData = JSON.stringify(loactionData);
+          util.sendSocketMessage({data:loactionData,that:this});
     },
     getStatus(state){//判定发言状态
         if((parseInt(state) & 0x000001) != 0){//0为在发言中
@@ -161,6 +178,10 @@ Page({
         }else if((parseInt(state) & 0x000002) != 0){//是否举手   0为未申请发言
             this.setData({
                 speakStatus:1
+            })
+        }else{//为发言未申请
+            this.setData({
+                speakStatus:0
             })
         };
         console.log(this.data.speakStatus);
@@ -200,5 +221,31 @@ Page({
                           })
                     }
     },
-
+    closeRaiseHang(){//取消申请发言
+        var data = {
+            "cmd": "NETCMD_WECHAT_INTERACTION_APPLY_SPEECH",
+            "RecorderId": app.RecorderId,
+            "data":     {
+            "cmd": "raiseHand",
+            "param": "false"
+          }
+        }
+        data = JSON.stringify(data);
+        util.sendSocketMessage({data:data,that:this});
+    },
+    outSpeak(){//结束发言（结束发言调用指定发言接口，传主讲id）
+        var data = {
+            "cmd": "NETCMD_WECHAT_INTERACTION_SPEAK",
+            "RecorderId":app.RecorderId,
+            "data":   {
+            "cmd":"selectSpeaker",
+            "param":{
+                "id":this.data.speakId,
+                "order":0,
+                "flag":true
+                    }
+            }
+        };
+        util.sendSocketMessage({data:JSON.stringify(data),that:this})
+    }
 })

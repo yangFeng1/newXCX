@@ -1,3 +1,4 @@
+const app = getApp();
 const formatTime = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -44,7 +45,7 @@ const linkSocket = ()=>{//链接socket
   })
 }
 const sendSocketMessage = (obj)=>{//通过socket发送数据
-  console.log(obj);
+  console.log(obj.data);
      wx.sendSocketMessage({
        data: obj.data,
        success: function(res){
@@ -90,8 +91,19 @@ const sendSocketMessage = (obj)=>{//通过socket发送数据
        }
      })
 }
+const getInteractionStatus = (that,app)=>{//发送获取互动状态
+  var data = {
+      "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
+      "RecorderId": app.RecorderId,
+      "data":  {
+        "cmd":"getIsInClass"
+    }
+  }
+  sendSocketMessage({data:JSON.stringify(data),that:that});
+}
 module.exports = {
   formatTime: formatTime,
   monitorSocketClose:monitorSocketClose,
-  sendSocketMessage:sendSocketMessage
+  sendSocketMessage:sendSocketMessage,
+  getInteractionStatus:getInteractionStatus
 }

@@ -18,6 +18,9 @@ Page({
     onLoad(option){
       console.log(option);
       app.once  = false;
+      wx.setNavigationBarTitle({
+        title: app.userInfo.name 
+      });
     },
     onShow(){
       app.flag = true;
@@ -28,9 +31,7 @@ Page({
           if(!app.socketLinste){//
             console.log('监听开始');
           clearInterval(_this.data.timer);
-          wx.setNavigationBarTitle({
-            title: app.userInfo.name 
-          });   
+            
           util.monitorSocketClose(_this,function () {
             wx.onSocketOpen(function () {
               // callback
@@ -90,9 +91,6 @@ Page({
         //      }
         //    })
         //  },300)
-          wx.setNavigationBarTitle({
-            title: '个人ID：15616'
-          });
         }
       },20)
       this.setData({

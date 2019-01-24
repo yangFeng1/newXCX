@@ -68,10 +68,10 @@
              <view class="viewLayoutBox">
                  <view class="item" wx:for="{{interactionMemberList}}" wx:if="{{item.raiseHand && item.online}}">
                     <text>成员{{item.name}}申请发言</text>
-                    <view class="agree"  data-sn='{{item.order}}' data-id="{{item.id}}" data-flag="1"  data- bindtap="speak">
+                    <view class="agree"  data-sn='{{item.order}}' data-id="{{item.id}}" data-flag="1"  bindtap="speak">
                         接受
                     </view>
-                    <view class="refuse"  data-sn='{{item.order}}' data-id="{{item.id}}" data-flag="0"  data- bindtap="speak">
+                    <view class="refuse"  data-sn='{{item.order}}' data-id="{{item.id}}" data-flag="0"  bindtap="speak">
                         拒绝
                     </view>  
                 </view>
@@ -83,7 +83,7 @@
                  <view class="fl left" >
                     {{item.remarksName}}
                  </view>
-                 <view class="fr right" bindtap="speak">
+                 <view class="fr right">
                     {{item.accountNumber}}
                  </view>
              </view>

@@ -25,6 +25,9 @@ Page({
     onHide(){
     },
     onShow(){
+      this.setData({
+        cover:true
+      })
       console.log(app.interactionIsOver);
       if(app.interactionIsOver){//从互动页面返回到该页面（互动没有退出）直接返回到录播机控制页面
         wx.navigateBack({
@@ -32,9 +35,7 @@ Page({
                           })
         return;
       }
-      this.setData({
-        cover:true
-      })
+      
       app.flag = true;//处理退出扫码
       var _this = this;
       this.setData({
@@ -159,8 +160,17 @@ Page({
                 creatMeetingFlag:true
               })
               if(res.code == 200 ){//开启成功
+                var shortid = res.meeting.shortId;//判断是否为加入互动
+                console.log(shortid);
+                if(!shortid){//没有shortid为加入课堂
+                  wx.navigateTo({
+                    url: '../interactionminor/interactionminor'　　// 页面 A
+                  })
+                  return;
+                };
               var member = [];
               var flag = false;
+              console.log(_this.data.addresList);
               _this.data.addresList.forEach(function(i,v){
                 if(i.flag){
                   member.push('W@'+i.accountNumber);
@@ -171,6 +181,7 @@ Page({
                 flag = true;
                 member.push('W@'+_this.data.memberName);
               }
+              console.log(flag)
               if(flag){
                 member = JSON.stringify(member);
                 wx.navigateTo({
@@ -270,7 +281,7 @@ Page({
             }else if(result == 200){
               console.log(data.data);
               var shortid = data.data.split('"shortId":"')[1].split('",')[0];
-              var meetingMode= data.data.split('"meetingMode":')[1].split(',')[0];
+              // var meetingMode= data.data.split('"meetingMode":')[1].split(',')[0];
               // console.log(shortid)
               // console.log(meetingMode  == 1)
               // console.log(shortid == "" && meetingMode == 1 );
@@ -321,15 +332,16 @@ Page({
                       }
                     }
         data = JSON.stringify(data);
-        wx.sendSocketMessage({
-          data:data,
-          success:function(){
-            console.log('success');
-          },
-          fail:function(){
-            console.log('fail')
-          }
-        })
+        // wx.sendSocketMessage({
+        //   data:data,
+        //   success:function(){
+        //     console.log('success');
+        //   },
+        //   fail:function(){
+        //     console.log('fail')
+        //   }
+        // })
+        util.sendSocketMessage({data:data,that:this});
     },
     allClick(e){
       // console.log(!this.data.hideFlag);
