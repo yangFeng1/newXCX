@@ -62,53 +62,25 @@ Page({
             addresList:app.addresList
           });
           app.interactionIsOver = true;
-          var data = {
-            "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
-            "RecorderId": app.RecorderId,
-            "data":  {
-              "cmd":"getIsInClass"
-          }
-        }
-        data = JSON.stringify(data);
-        console.log(data);
-        // var getInfoTimer = setTimeout(function(){
-            // wx.sendSocketMessage({
-            //     data: data,
-            //     success: function(res){
-            //         console.log(123);   // success
-            //     }
-            // })
-            util.sendSocketMessage({data:data,that:_this});
-        // },2000)
-        // this.setData({
-        //     getInfoTimer:getInfoTimer
-        // })
-        
         this.socket();
+        this.getIsInClassStatus();//获取互动状态
         util.monitorSocketClose(this,function(){
           wx.onSocketOpen(function() {
-            // callback
             _this.socket();
           })
         });
         this.data.timer || clearTimeout(this.data.timer);
-        // var a =  setTimeout(function(){
-            console.log(_this.data.member);
-            if(_this.data.member){
-                var data = {"cmd": "NETCMD_WECHAT_INTERACTION_ADD","RecorderId": app.RecorderId,"data": {"cmd":"addStrangers","param":_this.data.member}};
+        this.whetherAddMember();//在会议开始时是否添加人员    
+    },
+    whetherAddMember(){//在会议开始时是否添加人员
+        console.log(this.data.member);
+            if(this.data.member){
+                var data = {"cmd": "NETCMD_WECHAT_INTERACTION_ADD","RecorderId": app.RecorderId,"data": {"cmd":"addStrangers","param":this.data.member}};
                 // var data = {"cmd": "NETCMD_WECHAT_INTERACTION_ADD","RecorderId": app.RecorderId,"data": {"cmd":"addStrangers","param":["W@10000126"]}};
                 data = JSON.stringify(data);
                 console.log(data);
-                // wx.sendSocketMessage({data:data,
-                // success:function(){console.log(123)}})
-            //    setTimeout(function(){
-                util.sendSocketMessage({data:data,that:_this});
-            //    })
+                util.sendSocketMessage({data:data,that:this});
             }
-        // }, 5000);
-        // this.setData({
-        //     timer:a
-        // })
     },
     socket(){
         var _this = this;
@@ -256,7 +228,6 @@ Page({
                 break;
                 case "NETCMD_WECHAT_INTERACTION_DELETE"://互动踢人
                      var result = res.data.split('"code":')[1].split(',')[0];
-                    
                      if(result == 1){//踢人成功
                         // var data = {
                         //     "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
@@ -304,7 +275,6 @@ Page({
                     interactionMode:res.data.split('"meetingMode":')[1].split(',')[0] == 0?'会议':'课堂',
                     speak:res.data.split('"meetingMode":')[1].split(',')[0] == '0'?false:true
                 })
-              
                     interactionMemberList = JSON.parse(interactionMemberList).splice(1);
                     interactionMemberList = _this.getMemberState(interactionMemberList) //获取当前成员状态
 
@@ -374,6 +344,18 @@ Page({
                 duration:1000
             })
         }
+    },
+    getIsInClassStatus(){//获取互动状态
+        var data = {
+            "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
+            "RecorderId": app.RecorderId,
+            "data":  {
+              "cmd":"getIsInClass"
+          }
+        }
+        data = JSON.stringify(data);
+        console.log(data);
+        util.sendSocketMessage({data:data,that:this});
     },
     outInteraction(result){//处理互动退出信息回复
         var _this = this;

@@ -113,19 +113,23 @@
                  <view class="top">
                      <view class=" clearfix">
                          <text class="fl">讲师名字</text>
-                         <input type="" class="fl"/>
+                         <input type="" class="fl" bindinput="appointment"/>
                      </view>
                      <view class=" clearfix">
                          <text class="fl">开始时间</text>
-                         <input type=""  class="fl"/>
+                         <picker mode="multiSelector"range="{{dateTime}}" bindcolumnchange='columnchange' >
+                            <input type=""  class="fl" bindinput="appointment" disabled/>
+                         </picker>
                      </view>
                      <view class=" clearfix">
                          <text class="fl">结束时间</text>
-                         <input type="" class="fl"/>
+                         <picker mode="multiSelector"range="{{dateTime}}" bindcolumnchange='columnchange' >
+                             <input type="" class="fl" bindinput="appointment" disabled/>
+                         </picker>
                      </view>
                      <view class=" clearfix">
                          <text class="fl">课程主题</text>
-                         <input type="" class="fl"/>
+                         <input type="" class="fl" bindinput="appointment"/>
                      </view>
                  </view>
                  <view class="bottom">

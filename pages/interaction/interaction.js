@@ -17,7 +17,8 @@ Page({
       namea:'启动会议',
       joinAcc:false,
       joinPwd:false,
-      creatMeetingFlag:true
+      creatMeetingFlag:true,
+      dateTime:[]
     },
     onUnload(){
       
@@ -25,22 +26,39 @@ Page({
     onHide(){
     },
     onShow(){
+      var _this = this;
       this.setData({
         cover:true
       })
       console.log(app.interactionIsOver);
       if(app.interactionIsOver){//从互动页面返回到该页面（互动没有退出）直接返回到录播机控制页面
         wx.navigateBack({
-                            delta: 1　
-                          })
+            delta: 1　
+        })
         return;
       }
-      
       app.flag = true;//处理退出扫码
-      var _this = this;
       this.setData({
         startClassList:[]
       })
+      this.socket();
+      util.monitorSocketClose(this,function(){
+        wx.onSocketOpen(function() {
+          // callback
+          _this.socket();
+        })
+      });
+      this.getinteraction();//获取互动状态;
+      this.getAddress();//获取通讯录
+      wx.setNavigationBarTitle({
+        title: '互动'
+      });
+      this.dateTime();
+    },
+    getappointment(){//获取课堂预约信息
+      var data = {};
+    },
+    getinteraction(){//获取互动状态
       var data = {//获取是否在开启互动
         "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
         "RecorderId": app.RecorderId,
@@ -58,13 +76,8 @@ Page({
             }
          })
         },200)
-      this.socket();
-      util.monitorSocketClose(this,function(){
-        wx.onSocketOpen(function() {
-          // callback
-          _this.socket();
-        })
-      });
+    },
+    getAddress(){//获取通讯录消息
       var addressList = {
         "MysqlCmd": "NETCMD_WECHAT_ADDRESS_BOOK_QUERY",
         "data":{
@@ -102,16 +115,13 @@ Page({
               })
         }
       })
-      wx.setNavigationBarTitle({
-        title: '互动'
-      })
     },
     memberName(e){
       this.setData({
         memberName:e.detail.value
       })
     },
-    socket(){
+    socket(){//处理socket返回消息
       var _this = this;
       wx.onSocketMessage(function(data) {
          // console.log(data);
@@ -125,82 +135,17 @@ Page({
         var TopicType = JSON.parse(data.data).data.indexOf('interactRespondEventTopic') == -1?true:false;//判断录播机主动推送是否是互动消息
         if(JSON.parse(data.data).cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE" && !TopicType){
           console.log(JSON.parse(data.data).data)
-         
           var res = JSON.parse(JSON.parse(data.data).data.split('<')[1].split('>')[0]);
             switch(res.name){
               case 'recvSendEnter'://通过id加入课堂返回
-                if(res.reason == 'success'){//加入成功
-                  var msg = {//获取是否在开启互动
-                    "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
-                    "RecorderId": app.RecorderId,
-                    "data":  {
-                      "cmd":"getIsInClass"
-                  }
-                }
-                msg = JSON.stringify(msg);
-                console.log(msg);
-                 setTimeout(function(){
-                  _this.setData({
-                    cover:false
-                  });
-                  util.sendSocketMessage({data:msg,that:_this})
-                 },3000)
-                }else{
-                  wx.showToast({
-                    title:"加入课堂失败",
-                    icon:'none',
-                    duration:1000
-                  })
-                }
+                 _this.joinClassResult(res);
               break;
-            }
-            if(res.name == 'createMeeting' || res.name == 'getIsInClass'){
-              _this.setData({
-                cover:false,
-                creatMeetingFlag:true
-              })
-              if(res.code == 200 ){//开启成功
-                var shortid = res.meeting.shortId;//判断是否为加入互动
-                console.log(shortid);
-                if(!shortid){//没有shortid为加入课堂
-                  wx.navigateTo({
-                    url: '../interactionminor/interactionminor'　　// 页面 A
-                  })
-                  return;
-                };
-              var member = [];
-              var flag = false;
-              console.log(_this.data.addresList);
-              _this.data.addresList.forEach(function(i,v){
-                if(i.flag){
-                  member.push('W@'+i.accountNumber);
-                  flag =true;
-                } 
-              });
-              if(_this.data.memberName){
-                flag = true;
-                member.push('W@'+_this.data.memberName);
-              }
-              console.log(flag)
-              if(flag){
-                member = JSON.stringify(member);
-                wx.navigateTo({
-                  url: '../interactionMain/interactionMain?member='+member　　// 页面 A
-                })
-              }else{
-                wx.navigateTo({
-                  url: '../interactionMain/interactionMain'　　// 页面 A
-                })
-              }
-              
-             }else{//开启失败
-              console.log('广播回复互动开启失败')
-              wx.showToast({
-                title:'互动开启失败',
-                icon: 'none',
-                 duration: 1000
-              })
-             }
+              case 'createMeeting'://开启互动回复
+                _this.creatMeetingResult();
+              break;
+              case 'getIsInClass'://开启互动回复
+                _this.creatMeetingResult();
+              break;
             }
         }
         if(JSON.parse(data.data).cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE") return;//不处理录播直播消息
@@ -208,13 +153,13 @@ Page({
           data = JSON.parse(data.data);
           switch (data.MysqlCmd) {
             case 'NETCMD_WECHAT_ADDRESS_BOOK_QUERY'://获取通讯录
-              _this.setData({
-                addresList: data.data
-              })
-              app.addresList = data.data;
-              _this.data.creatMeetingFlag && _this.setData({
-                cover:false
-              })
+                _this.setData({
+                  addresList: data.data
+                })
+                app.addresList = data.data;
+                _this.data.creatMeetingFlag && _this.setData({
+                  cover:false
+                })
               break;
           }
           switch(data.cmd){
@@ -302,6 +247,81 @@ Page({
            break;
           }
       })
+    },
+    creatMeetingResult(){//广播回复互动开启结果
+      var _this = this;
+      _this.setData({
+        cover:false,
+        creatMeetingFlag:true
+      })
+      if(res.code == 200 ){//开启成功
+        var shortid = res.meeting.shortId;//判断是否为加入互动
+        console.log(shortid);
+        if(!shortid){//没有shortid为加入课堂
+          wx.navigateTo({
+            url: '../interactionminor/interactionminor'　　// 页面 A
+          })
+          return;
+        };
+      var member = [];
+      var flag = false;
+      console.log(_this.data.addresList);
+      _this.data.addresList.forEach(function(i,v){
+        if(i.flag){
+          member.push('W@'+i.accountNumber);
+          flag =true;
+        } 
+      });
+      if(_this.data.memberName){
+        flag = true;
+        member.push('W@'+_this.data.memberName);
+      }
+      console.log(flag)
+      if(flag){
+        member = JSON.stringify(member);
+        wx.navigateTo({
+          url: '../interactionMain/interactionMain?member='+member　　// 页面 A
+        })
+      }else{
+        wx.navigateTo({
+          url: '../interactionMain/interactionMain'　　// 页面 A
+        })
+      }
+      
+     }else{//开启失败
+      console.log('广播回复互动开启失败')
+      wx.showToast({
+        title:'互动开启失败',
+        icon: 'none',
+         duration: 1000
+      })
+     }
+    },
+    joinClassResult(res){//加入课堂返回结果
+      var _this = this;
+      if(res.reason == 'success'){//加入成功
+        var msg = {//获取是否在开启互动
+          "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
+          "RecorderId": app.RecorderId,
+          "data":  {
+            "cmd":"getIsInClass"
+        }
+      }
+      msg = JSON.stringify(msg);
+      console.log(msg);
+       setTimeout(function(){
+        _this.setData({
+          cover:false
+        });
+        util.sendSocketMessage({data:msg,that:_this})
+       },3000)
+      }else{
+        wx.showToast({
+          title:"加入课堂失败",
+          icon:'none',
+          duration:1000
+        })
+      }
     },
     joinClass(e){//获取加入课堂账号密码
       var name = e.currentTarget.dataset.name;
@@ -445,5 +465,41 @@ Page({
         pattern: e.currentTarget.dataset.name,
         namea:e.currentTarget.dataset.namea
       })
+    },
+    appointment(){//添加课堂
+
+    },
+    dateTime(){//初始化选择时间框
+      var monthArr = [31,29,31,30,31,30,31,31,30,31,30,31];
+      var date = new Date().toLocaleString();
+      var year = parseInt(date.split('/')[0]);
+      var month = parseInt(date.split('/')[1].split('/')[0]);
+      var day = parseInt(date.split('/')[2].split(' ')[0]);
+      var text = date.indexOf('上午') == '-1'?'下午':'上午';
+      var H = parseInt(date.split(text)[1].split(':')[0]);
+      H = text == '上午'?H:H + 12;
+      var M = parseInt(date.split(text)[1].split(':')[1]);
+      var S = parseInt(date.split(text)[1].split(':')[2]);
+      var arr = [[year+'年',year+1+'年',year+2+'年']];
+      arr[1] = this.circulation(month,13,'月');
+      arr[2] = this.circulation(day,monthArr[month]+1,'日');
+      arr[3] = this.circulation(H,24,'时');
+      arr[4] = this.circulation(M,60,'分');
+      arr[5] = this.circulation(S,60,'秒');
+      this.setData({
+        dateTime:arr
+      });
+      console.log(arr);
+    },
+    circulation(mun,mun2,text){
+      var arr = [];
+      for(var i = mun;i<mun2;i++){
+        arr.push(i+text);
+      };
+      return arr;
+    },
+    columnchange(e){//改变时间选择器
+      console.log(e.column);
+      console.log(e.value);
     }
 });

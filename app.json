@@ -1,11 +1,11 @@
 {
   "pages":[
     "pages/index/index", 
+    "pages/interaction/interaction",
     "pages/interactionMain/interactionMain",
     "pages/controlMain/controlMain",
     "pages/interactionminor/interactionminor", 
     "pages/enter/enter",
-    "pages/interaction/interaction",
     "pages/editAddress/editAddress",
     "pages/addressList/addressList",
     "pages/myself/myself",
@@ -15,7 +15,6 @@
       "backgroundTextStyle":"light",
       "navigationBarBackgroundColor": "#4b94fa",
       "navigationBarTitleText": "Account  Manage",
-      "navigationBarTextStyle":"#fff",
-      "disableScroll": true
+      "navigationBarTextStyle":"white"
     } 
   }
