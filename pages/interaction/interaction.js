@@ -53,7 +53,9 @@ Page({
       wx.setNavigationBarTitle({
         title: '互动'
       });
-      this.dateTime();
+      this.setData({
+        dateTime:this.dateTime()
+      });
     },
     getappointment(){//获取课堂预约信息
       var data = {};
@@ -470,26 +472,23 @@ Page({
 
     },
     dateTime(){//初始化选择时间框
-      var monthArr = [31,29,31,30,31,30,31,31,30,31,30,31];
       var date = new Date().toLocaleString();
       var year = parseInt(date.split('/')[0]);
       var month = parseInt(date.split('/')[1].split('/')[0]);
       var day = parseInt(date.split('/')[2].split(' ')[0]);
       var text = date.indexOf('上午') == '-1'?'下午':'上午';
       var H = parseInt(date.split(text)[1].split(':')[0]);
-      H = text == '上午'?H:H + 12;
+      H == 12?H:text == '上午'?H:H + 12;
       var M = parseInt(date.split(text)[1].split(':')[1]);
       var S = parseInt(date.split(text)[1].split(':')[2]);
       var arr = [[year+'年',year+1+'年',year+2+'年']];
+      var monthArr = this.nyuern(year);
       arr[1] = this.circulation(month,13,'月');
       arr[2] = this.circulation(day,monthArr[month]+1,'日');
       arr[3] = this.circulation(H,24,'时');
       arr[4] = this.circulation(M,60,'分');
       arr[5] = this.circulation(S,60,'秒');
-      this.setData({
-        dateTime:arr
-      });
-      console.log(arr);
+      return arr;
     },
     circulation(mun,mun2,text){
       var arr = [];
@@ -498,8 +497,82 @@ Page({
       };
       return arr;
     },
+    nyuern(y){//判断是否为闰年
+      var rn=((y%4==0&&y%100!=0)||y%400==0)?29:28;
+      return [31,rn,31,30,31,30,31,31,30,31,30,31];
+    },
     columnchange(e){//改变时间选择器
-      console.log(e.column);
-      console.log(e.value);
+      console.log(e);
+      var flag = false;//判断选择的时间否是比现在的时间大;
+      var monthArr = this.nyuern();
+      var oldArr = this.dateTime();
+      var column = parseInt(e.detail.column);//移动的第几行
+      var value = parseInt(e.detail.value);//移动到的值所在改数组的索引
+      var newArr = this.data.dateTime;
+      var month = 1;
+      for(var i = column;i< 6;i++){
+        switch(i){
+          case 0://月
+            var res = parseInt(oldArr[0][value]) > parseInt(newArr[0][0]);  
+            var K = res?1:oldArr[1][0];//开始时间
+            if(res){
+              flag = true;
+            }else{
+              month = 1;
+            }
+            newArr[1]  = this.circulation(parseInt(K),13,'月');
+          break;
+          case 1://日
+          var K;
+          if(column == 1){
+            var res = parseInt(oldArr[1][value]) > parseInt(newArr[1][0]);  
+            K = res?1:oldArr[2][0];
+            if(res) flag = true;
+            month = newArr[1][value];
+          }else{
+            K = flag?1:oldArr[2][0];
+          }
+          newArr[2]  = this.circulation(parseInt(K),monthArr[parseInt(month)-1]+1,'日');
+          console.log(monthArr[parseInt(month)-1]+1)
+          break;
+          case 2://时
+            var K;
+            if(column == 2){
+              var res = parseInt(oldArr[2][value]) > parseInt(newArr[2][0]);  
+              K = res?0:oldArr[3][0];
+              if(res) flag = true;
+            }else{
+              K = flag?1:oldArr[3][0];
+            }
+            newArr[3]  = this.circulation(parseInt(K),24,'时');
+          break;
+          case 3://分
+            var K;
+            if(column == 3){
+              var res = parseInt(oldArr[3][value]) > parseInt(newArr[3][0]);  
+              K = res?0:oldArr[4][0];
+              if(res) flag = true;
+            }else{
+              K = flag?0:oldArr[4][0];
+            }
+            newArr[4]  = this.circulation(parseInt(K),60,'分');
+          break;
+          case 4://秒
+            var K;
+            if(column == 4){
+              var res = parseInt(oldArr[4][value]) > parseInt(newArr[4][0]);  
+              K = res?0:oldArr[5][0];
+              if(res) flag = true;
+            }else{
+              K = flag?0:oldArr[5][0];
+            }
+            newArr[5]  = this.circulation(parseInt(K),60,'秒');
+          break;
+        }
+      };
+      this.setData({
+        dateTime:newArr
+      })
+      console.log(newArr);
     }
 });
