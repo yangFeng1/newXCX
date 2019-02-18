@@ -37,7 +37,7 @@ Page({
           });
     },
     onShow(){
-      
+        var _this = this;
         this.setData({
             flag:false,
             interactionIsOvera:false 
@@ -148,11 +148,13 @@ Page({
                     console.log('获取去互动在会信息');
                     var id = _this.data.addressId;
                     var state = res.data.split(id)[1].split('"state":')[1].split(',')[0];
+                    var sn = res.data.split(id)[1].split('"sn":')[1].split(',')[0];
                     var meetingMode = parseInt(res.data.split('"meetingMode":')[1].split(',')[0]);
-                    console.log(res.data.split('"meetingMode":')[1]);
+                    console.log(meetingMode);
                     _this.setData({
                         meetingMode:meetingMode,
-                        speakId:res.data.split('[{"id":"')[1].split('",')[0]
+                        speakId:res.data.split('[{"id":"')[1].split('",')[0],
+                        sn:sn
                     })
                     _this.getStatus(state);
                 break;
@@ -160,6 +162,7 @@ Page({
         })
     },
     getloactionStatis(){//获取本地互动状态
+        console.log(123);
         var loactionData = {
             "cmd": "NETCMD_WECHAT_INTERACTION_getLocalUserInfo",
             "RecorderId": app.RecorderId,
@@ -225,7 +228,7 @@ Page({
         var data = {
             "cmd": "NETCMD_WECHAT_INTERACTION_APPLY_SPEECH",
             "RecorderId": app.RecorderId,
-            "data":     {
+            "data":{
             "cmd": "raiseHand",
             "param": "false"
           }
@@ -233,7 +236,8 @@ Page({
         data = JSON.stringify(data);
         util.sendSocketMessage({data:data,that:this});
     },
-    outSpeak(){//结束发言（结束发言调用指定发言接口，传主讲id）
+    outSpeak(){//结束发言（结束发言调用指定发言接口，传主讲id) 接口没做
+        var sn = this.data.sn;
         var data = {
             "cmd": "NETCMD_WECHAT_INTERACTION_SPEAK",
             "RecorderId":app.RecorderId,

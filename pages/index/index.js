@@ -5,17 +5,14 @@ Page({
     scanSrc: app.IPaddress+"scan-default.png",
     IP:app.IPaddress,
     cover:  true,
-    timer:false
+    timer:false,
+    q:false//onLoad(option) 判断是否为扫码进入
   },
   onLoad(option){
-    var _app = app;
-    console.log('11');
     console.log(decodeURIComponent(option.q));
     if(option.q){//判断是否是扫码进入
-      var RecorderId = decodeURIComponent(option.q).split('RecorderId=')[1].split('&')[0];
-      app.RecorderId = RecorderId;
-      wx.navigateTo({
-        url: '../controlMain/controlMain'
+      this.setData({
+        option:option.q
       })
     }
   },
@@ -43,6 +40,13 @@ Page({
         wx.setNavigationBarTitle({
           title: app.userInfo.name 
         });
+        if(_this.q){//判断是否是扫码进入
+          var RecorderId = decodeURIComponent(option.q).split('RecorderId=')[1].split('&')[0];
+          app.RecorderId = RecorderId;
+          wx.navigateTo({
+            url: '../controlMain/controlMain'
+          })
+        }
         wx.onSocketMessage(function(data) {
           console.log(data);
         })  

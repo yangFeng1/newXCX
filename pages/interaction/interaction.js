@@ -12,13 +12,18 @@ Page({
       addresList:[],
       selectedAddress:'',
       pattern:'0',
-      cover:true,
+      cover:false,
       memberName:false,
       namea:'启动会议',
       joinAcc:false,
       joinPwd:false,
       creatMeetingFlag:true,
-      dateTime:[]
+      dateTime:[],
+      user_id:false,
+      vsp_id:false,
+      startTime:'11',
+      endTime:'11',
+      timeFlag:true//判断当前选择的是开始预约时间还是结束时间 true为开始时间 false为结束时间
     },
     onUnload(){
       
@@ -136,17 +141,17 @@ Page({
         }
         var TopicType = JSON.parse(data.data).data.indexOf('interactRespondEventTopic') == -1?true:false;//判断录播机主动推送是否是互动消息
         if(JSON.parse(data.data).cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE" && !TopicType){
-          console.log(JSON.parse(data.data).data)
+          console.log(JSON.parse(data.data).data);
           var res = JSON.parse(JSON.parse(data.data).data.split('<')[1].split('>')[0]);
             switch(res.name){
               case 'recvSendEnter'://通过id加入课堂返回
                  _this.joinClassResult(res);
               break;
               case 'createMeeting'://开启互动回复
-                _this.creatMeetingResult();
+                _this.creatMeetingResult(res);
               break;
               case 'getIsInClass'://开启互动回复
-                _this.creatMeetingResult();
+                _this.creatMeetingResult(res);
               break;
             }
         }
@@ -221,11 +226,11 @@ Page({
             console.log(app.interactionIsOver);
             var result = data.data.split('"code":')[1].split(',')[0];
             console.log(result);
-            if(result == 200 && app.interactionIsOver){
+            if(result == 200 && app.interactionIsOver){//从互动界面返回
               wx.navigateBack({
                 delta: 1　
               })
-            }else if(result == 200){
+            }else if(result == 200){//该设备正在开启互动
               console.log(data.data);
               var shortid = data.data.split('"shortId":"')[1].split('",')[0];
               // var meetingMode= data.data.split('"meetingMode":')[1].split(',')[0];
@@ -241,16 +246,27 @@ Page({
                   url: '../interactionMain/interactionMain'　　// 页面 A
                 })
               }
-              
             }
            break;
            case 'NETCMD_WECHAT_INTERACTION_JOIN'://加入互动回复
               // if(data.data)
            break;
+           case 'NETCMD_WECHAT_INTERACTION_getLocalUserInfo'://获取本地用户信息
+                    if(res.data.split('"code":')[1].split(',')[0] == 200){
+                        var id = res.data.split('"id":"')[1].split('",')[0];
+                        var vsp_id = res.data.split('"vspId":"')[1].split('",')[0];
+                        _this.setData({
+                            user_id:id,
+                            vsp_id:vsp_id
+                        })
+                    }else{
+                        console.log('获取本地用户信息失败');
+                    }
+                break;
           }
       })
     },
-    creatMeetingResult(){//广播回复互动开启结果
+    creatMeetingResult(res){//广播回复互动开启结果
       var _this = this;
       _this.setData({
         cover:false,
@@ -394,7 +410,9 @@ Page({
         tabarList:tabarList,
         tabar:e.currentTarget.dataset.name
       })
-    
+      if(index == 2){//进入课堂预约界面
+          this.getloactionStatis();//获取本地账号状态
+      }
     },
     chooseClass(e){//选择互动成员
       var index = parseInt(e.currentTarget.dataset.index);
@@ -502,7 +520,7 @@ Page({
       return [31,rn,31,30,31,30,31,31,30,31,30,31];
     },
     columnchange(e){//改变时间选择器
-      console.log(e);
+      // console.log(e);
       var flag = false;//判断选择的时间否是比现在的时间大;
       var monthArr = this.nyuern();
       var oldArr = this.dateTime();
@@ -533,7 +551,7 @@ Page({
             K = flag?1:oldArr[2][0];
           }
           newArr[2]  = this.circulation(parseInt(K),monthArr[parseInt(month)-1]+1,'日');
-          console.log(monthArr[parseInt(month)-1]+1)
+          // console.log(monthArr[parseInt(month)-1]+1)
           break;
           case 2://时
             var K;
@@ -563,7 +581,7 @@ Page({
               var res = parseInt(oldArr[4][value]) > parseInt(newArr[4][0]);  
               K = res?0:oldArr[5][0];
               if(res) flag = true;
-            }else{
+            }else{ 
               K = flag?0:oldArr[5][0];
             }
             newArr[5]  = this.circulation(parseInt(K),60,'秒');
@@ -573,6 +591,24 @@ Page({
       this.setData({
         dateTime:newArr
       })
-      console.log(newArr);
+      // console.log(newArr);
+    },
+    getloactionStatis(){//获取本地账号状态
+      var loactionData = {
+          "cmd": "NETCMD_WECHAT_INTERACTION_getLocalUserInfo",
+          "RecorderId": app.RecorderId,
+          "data":   {
+              "cmd":"getLocalUserInfo"
+              }
+      }
+        loactionData = JSON.stringify(loactionData);
+        util.sendSocketMessage({data:loactionData,that:this});
+    },
+    choseDate(e){//选择时间
+      // console.log(e.currentTarget.dataset.name);
+      var flag = e.currentTarget.dataset.name == 'start'?true:false;
+      this.setData({
+        timeFlag:flag
+      })
     }
 });

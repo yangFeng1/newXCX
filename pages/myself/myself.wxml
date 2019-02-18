@@ -4,7 +4,7 @@
         <open-data type="userAvatarUrl"></open-data>
     </view>
     <view class="name clearfix">
-        <text class="fl">{{userInfo.account}}</text>
+        <text class="fl account">{{userInfo.account}}</text>
         <navigator  url="/pages/login/login?id={{zwechatId}}" class="fl">
          <image src="{{IP}}myself_editor_default.png" wx:if="{{userInfo.flag == 0}}"/>
         </navigator>

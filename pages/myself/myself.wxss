@@ -14,6 +14,7 @@ page{
 }
 .name text{
   max-width: 300rpx;
+  overflow: hidden;
 }
 .name image{
     margin-left: 32rpx;

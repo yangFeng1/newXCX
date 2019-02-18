@@ -117,14 +117,14 @@
                      </view>
                      <view class=" clearfix">
                          <text class="fl">开始时间</text>
-                         <picker mode="multiSelector"range="{{dateTime}}" bindcolumnchange='columnchange' >
-                            <input type=""  class="fl" bindinput="appointment" disabled/>
+                         <picker mode="multiSelector"range="{{dateTime}}" bindcolumnchange='columnchange' data-name="start" bindtap="choseDate">
+                            <input type=""  class="fl" bindinput="appointment" value="{{startTime}}" disabled/>
                          </picker>
                      </view>
                      <view class=" clearfix">
                          <text class="fl">结束时间</text>
-                         <picker mode="multiSelector"range="{{dateTime}}" bindcolumnchange='columnchange' >
-                             <input type="" class="fl" bindinput="appointment" disabled/>
+                         <picker mode="multiSelector"range="{{dateTime}}" bindcolumnchange='columnchange' data-name="start" bindtap="choseDate">
+                             <input type="" class="fl" bindinput="appointment" value="{{endTime}}" disabled/>
                          </picker>
                      </view>
                      <view class=" clearfix">

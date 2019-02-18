@@ -191,7 +191,7 @@ interface ICanvasContext {
     /**
      * 开始一个路径
      */
-    beginPath(): void;
+    beginPath(): void;  
     /**
      * 关闭一个路径
      */

@@ -19,6 +19,7 @@ Page({
       interactionMode:'',
       speak:false,//会议模式下不显示发言按钮
       interactionIsOvera:false////手动退出当前页面直接退出到controlMain页面
+     
     },
     onLoad(option){
         wx.setNavigationBarTitle({
@@ -62,13 +63,13 @@ Page({
             addresList:app.addresList
           });
           app.interactionIsOver = true;
+          util.monitorSocketClose(this,function(){
+            wx.onSocketOpen(function() {
+              _this.socket();
+            })
+          });
         this.socket();
         this.getIsInClassStatus();//获取互动状态
-        util.monitorSocketClose(this,function(){
-          wx.onSocketOpen(function() {
-            _this.socket();
-          })
-        });
         this.data.timer || clearTimeout(this.data.timer);
         this.whetherAddMember();//在会议开始时是否添加人员    
     },
@@ -286,12 +287,12 @@ Page({
                 case 'NETCMD_WECHAT_INTERACTION_ADD'://拉人成功
                 var result = res.data.split('"code":')[1].split(',')[0];
                 if(result == 1){//拉人成功
-                    var data = {
+                    var data = {         
                         "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
                         "RecorderId": app.RecorderId,
                         "data":  {
                           "cmd":"getIsInClass"
-                      }
+                      }   
                     }
                     wx.showToast({
                         title:'添加人员成功',
@@ -319,6 +320,7 @@ Page({
                       })
                 }
                 break;
+                
             } 
 
         });
@@ -551,7 +553,7 @@ Page({
         })
         var memberAccount = e.currentTarget.dataset.name;
         if(!memberAccount) return;
-        memberAccount = 'W@'+memberAccount.replace(/\s*/g,"");
+        memberAccount = 'W@'+memberAccount.replace(/\s*/g,""); 
         var data = {
             "cmd": "NETCMD_WECHAT_INTERACTION_DELETE",
             "RecorderId": app.RecorderId,
@@ -572,7 +574,7 @@ Page({
         this.setData({
             startLocation:e.changedTouches[0].pageX
         })
-    },
+    },  
     touchEnd(e){
         // console.log(e);
         // console.log(this.data.location)
@@ -583,8 +585,8 @@ Page({
         var move = res>0?location+900:location + -900;
         move>900 && (move = 900);
         move<-900 && (move = -900);
-        if(move == this.data.location) return;
         //  console.log(move)
+        if(move == this.data.location) return;
         if(move == -900)return;//暂时屏蔽选择视屏画页面  
         this.slide(move);
     },
@@ -598,7 +600,7 @@ Page({
     },
     speak(e){//指定或取消发言
         var id = e.currentTarget.dataset.id;
-        var order = e.currentTarget.dataset.sn;
+        var order = e.currentTarget.dataset.sn; 
         var flag = e.currentTarget.dataset.flag;//flag不为空代表的是判断申请发言操作
         var state;
         if(flag){
@@ -630,7 +632,7 @@ Page({
                 "id":id,
                 "order":order,
                 "flag":state
-                    }
+             }
             }
         };
         this.setData({
@@ -650,7 +652,8 @@ Page({
           startClassList:array,
           addresList:newArr
         })
-    }
+    },
+                                                                                                
 })
 
 
