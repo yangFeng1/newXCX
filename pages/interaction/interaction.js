@@ -18,12 +18,21 @@ Page({
       joinAcc:false,
       joinPwd:false,
       creatMeetingFlag:true,
-      dateTime:[],
+      dateTime:[],//预约课堂时间
       user_id:false,
       vsp_id:false,
-      startTime:'11',
-      endTime:'11',
-      timeFlag:true//判断当前选择的是开始预约时间还是结束时间 true为开始时间 false为结束时间
+      startTime:'',
+      endTime:'',
+      timeFlag:true,//判断当前选择的是开始预约时间还是结束时间 true为开始时间 false为结束时间
+      MonthFlag : false,//判断选择的时间否是比现在的时间大,
+      DayFlag : false,//判断选择的时间否是比现在的时间大,
+      HourFlag : false,//判断选择的时间否是比现在的时间大,
+      MinuteFlag : false,//判断选择的时间否是比现在的时间大;
+      startTimeValue:[0,0,0,0,0,0],
+      user_id:'',
+      vsp_id:'',
+      meeting_name:'',//创建预约会议的会议主题
+      meetingList:[]//预约课堂列表
     },
     onUnload(){
       
@@ -183,6 +192,9 @@ Page({
               title:'互动开启失败',
               icon: 'none',
                duration: 1000
+            });
+            _this.setData({
+              cover:false
             })
             return;
           }
@@ -252,19 +264,48 @@ Page({
               // if(data.data)
            break;
            case 'NETCMD_WECHAT_INTERACTION_getLocalUserInfo'://获取本地用户信息
-                    if(res.data.split('"code":')[1].split(',')[0] == 200){
-                        var id = res.data.split('"id":"')[1].split('",')[0];
-                        var vsp_id = res.data.split('"vspId":"')[1].split('",')[0];
+                    if(data.data.split('"code":')[1].split(',')[0] == 200){
+                        var id = data.data.split('"id":"')[1].split('",')[0];
+                        var vsp_id = data.data.split('"vspId":"')[1].split('",')[0];
                         _this.setData({
                             user_id:id,
                             vsp_id:vsp_id
                         })
+                        _this.getBookingClass()
                     }else{
                         console.log('获取本地用户信息失败');
                     }
                 break;
+            case "NETCMD_WECHAT_INTERACTION_meetingCreate"://创建预约会议
+                _this.creatMeetingReport(data.data);
+            break;
+            case "NETCMD_WECHAT_INTERACTION_meetingList"://获取预约课堂列表
+                _this.meetingListReport(data.data);
+            break;
           }
       })
+    },
+    meetingListReport(data){//获取预约课堂列表
+      var data = JSON.parse(data.split('"data":')[1].split(']')[0]+']');
+      console.log(data);
+      this.setData({
+        meetingList:data
+      })
+    },
+    creatMeetingReport(result){//创建预约会议回复
+      if(result.split('"code":')[1].split(',')[0] == 200){
+        wx.showToast({
+          title:'创建预约成功'
+        });
+        this.setData({
+          model:false
+        })
+      }else{
+        wx.showToast({
+          title:'创建预约失败',
+          icon:"none"
+        })
+      }
     },
     creatMeetingResult(res){//广播回复互动开启结果
       var _this = this;
@@ -486,8 +527,11 @@ Page({
         namea:e.currentTarget.dataset.namea
       })
     },
-    appointment(){//添加课堂
-
+    appointment(e){//添加课堂
+      
+      this.setData({
+        meeting_name:e.currentTarget.dataset.name
+      })
     },
     dateTime(){//初始化选择时间框
       var date = new Date().toLocaleString();
@@ -496,7 +540,7 @@ Page({
       var day = parseInt(date.split('/')[2].split(' ')[0]);
       var text = date.indexOf('上午') == '-1'?'下午':'上午';
       var H = parseInt(date.split(text)[1].split(':')[0]);
-      H == 12?H:text == '上午'?H:H + 12;
+      H = H == 12?H:text == '上午'?H:H + 12;
       var M = parseInt(date.split(text)[1].split(':')[1]);
       var S = parseInt(date.split(text)[1].split(':')[2]);
       var arr = [[year+'年',year+1+'年',year+2+'年']];
@@ -519,36 +563,104 @@ Page({
       var rn=((y%4==0&&y%100!=0)||y%400==0)?29:28;
       return [31,rn,31,30,31,30,31,31,30,31,30,31];
     },
+    bindchange(e){
+      console.log(e);
+      var flag = this.data.timeFlag;
+      var arr = '';
+      for(var i = 0; i < e.detail.value.length;i++){
+        let text = this.data.dateTime[i][e.detail.value[i]];
+        text = text.substr(0,text.length-1);
+        switch(i){
+          case 0:
+            arr = text;
+          break;
+          case 1:
+            arr += '-'+text;
+          break;
+          case 2:
+            arr += '-'+text;
+          break; 
+          case 3:
+            arr += ' '+text;
+          break;
+          case 4:
+            arr += ':'+text;
+          break;
+          case 5:
+            arr += ':'+text;
+          break;
+        }
+      }
+      console.log(arr);
+      if(this.data.timeFlag){
+        this.setData({
+          startTime:arr
+        })
+      }else{
+        this.setData({
+          endTime:arr
+        })
+       
+      };
+      this.setData({
+        dateTime:this.dateTime()
+      });
+    },
     columnchange(e){//改变时间选择器
       // console.log(e);
-      var flag = false;//判断选择的时间否是比现在的时间大;
+      var _this = this;
+      // var flag = false;
       var monthArr = this.nyuern();
       var oldArr = this.dateTime();
       var column = parseInt(e.detail.column);//移动的第几行
       var value = parseInt(e.detail.value);//移动到的值所在改数组的索引
       var newArr = this.data.dateTime;
       var month = 1;
+      var newTimeArr = this.data.startTimeValue;
+      newTimeArr[e.detail.column] = e.detail.value;
+      newTimeArr[e.detail.column + 1] =0;
       for(var i = column;i< 6;i++){
         switch(i){
           case 0://月
             var res = parseInt(oldArr[0][value]) > parseInt(newArr[0][0]);  
             var K = res?1:oldArr[1][0];//开始时间
             if(res){
-              flag = true;
+              _this.setData({
+                MonthFlag:true
+              });
+              // flag = true;
             }else{
               month = 1;
+              _this.setData({
+                MonthFlag:false
+              });
             }
+            newTimeArr[1] == 0;
             newArr[1]  = this.circulation(parseInt(K),13,'月');
           break;
           case 1://日
           var K;
           if(column == 1){
             var res = parseInt(oldArr[1][value]) > parseInt(newArr[1][0]);  
-            K = res?1:oldArr[2][0];
-            if(res) flag = true;
+            // K = res?1:oldArr[2][0];
+            if(res || _this.data.MonthFlag){
+              K = 1;
+              _this.setData({
+                DayFlag:true
+              });
+            }else{
+              K = oldArr[2][0];
+              _this.setData({
+                DayFlag:false
+              });
+            }
             month = newArr[1][value];
           }else{
-            K = flag?1:oldArr[2][0];
+            _this.setData({
+              DayFlag:false
+            });
+            K = _this.data.MonthFlag?1:oldArr[2][0];
+            newTimeArr[2] = 0;
           }
           newArr[2]  = this.circulation(parseInt(K),monthArr[parseInt(month)-1]+1,'日');
           // console.log(monthArr[parseInt(month)-1]+1)
@@ -557,10 +669,24 @@ Page({
             var K;
             if(column == 2){
               var res = parseInt(oldArr[2][value]) > parseInt(newArr[2][0]);  
-              K = res?0:oldArr[3][0];
-              if(res) flag = true;
+              // K = res?0:oldArr[3][0];
+              if(res || _this.data.MonthFlag || _this.data.DayFlag){
+                K=0;
+                _this.setData({
+                  HourFlag:true
+                })
+              }else{
+                K=oldArr[3][0];
+                _this.setData({
+                  HourFlag:false
+                })
+              }
             }else{
-              K = flag?1:oldArr[3][0];
+              _this.setData({
+                HourFlag:false
+              })
+              K = _this.data.MonthFlag || _this.data.DayFlag?0:oldArr[3][0];
+              newTimeArr[3] = 0;
             }
             newArr[3]  = this.circulation(parseInt(K),24,'时');
           break;
@@ -568,10 +694,24 @@ Page({
             var K;
             if(column == 3){
               var res = parseInt(oldArr[3][value]) > parseInt(newArr[3][0]);  
-              K = res?0:oldArr[4][0];
-              if(res) flag = true;
+              // K = res?0:oldArr[4][0];
+              if(res || _this.data.MonthFlag || _this.data.DayFlag || _this.data.HourFlag){
+                K = 0;
+                _this.setData({
+                  MinuteFlag : true
+                })
+              }else{
+                _this.setData({
+                  MinuteFlag : false
+                })
+                K = oldArr[4][0]
+              }
             }else{
-              K = flag?0:oldArr[4][0];
+              _this.setData({
+                MinuteFlag : false
+              })
+              K = _this.data.MonthFlag || _this.data.DayFlag || _this.data.HourFlag?0:oldArr[4][0];
+              newTimeArr[4] = 0;
             }
             newArr[4]  = this.circulation(parseInt(K),60,'分');
           break;
@@ -579,12 +719,20 @@ Page({
             var K;
             if(column == 4){
               var res = parseInt(oldArr[4][value]) > parseInt(newArr[4][0]);  
-              K = res?0:oldArr[5][0];
-              if(res) flag = true;
+              // K = res?0:oldArr[5][0];
+              if(res || _this.data.MonthFlag || _this.data.DayFlag || _this.data.HourFlag || _this.data.MinuteFlag){
+                K = 0;
+              } else{
+                K = oldArr[5][0];
+              }
             }else{ 
-              K = flag?0:oldArr[5][0];
+              K = _this.data.MonthFlag || _this.data.DayFlag || _this.data.HourFlag || _this.data.MinuteFlag?0:oldArr[5][0];
+              newTimeArr[5] = 0;
             }
             newArr[5]  = this.circulation(parseInt(K),60,'秒');
+            this.setData({
+              startTimeValue:newTimeArr
+            })
           break;
         }
       };
@@ -605,10 +753,45 @@ Page({
         util.sendSocketMessage({data:loactionData,that:this});
     },
     choseDate(e){//选择时间
-      // console.log(e.currentTarget.dataset.name);
-      var flag = e.currentTarget.dataset.name == 'start'?true:false;
+      console.log(e.currentTarget.dataset.name);
+      var flag = e.currentTarget.dataset.name == 'start'?true:false;//判断选择的是开始时间还是结束时间 true 为开始时间 false 为结束时间
       this.setData({
         timeFlag:flag
       })
+    },
+    getBookingClass(){//获取预约课堂
+      
+      var msg =  {
+      "cmd": "NETCMD_WECHAT_INTERACTION_meetingList",
+      "RecorderId": app.RecorderId,
+      "data":{
+      "cmd": "getOrderClassList"
+    }
+  }
+    msg = JSON.stringify(msg);
+    util.sendSocketMessage({data:msg,that:this});
+    },
+    creatBookingClass(){//创建预约课堂
+
+      var msg = {
+    "cmd": "NETCMD_WECHAT_INTERACTION_meetingCreate",
+    "RecorderId": app.RecorderId,
+    "data":     {
+      "cmd":"addOrderClass",
+      "param":{
+          "classMode":"2",
+          "className":this.data.meeting_name,
+          "start":this.data.startTime,
+          // "start":'2019-3-20 19:6:00',
+          // "end":'2019-3-20 20:6:00',
+          "end":this.data.endTime,
+          "conferree":[]
+      }
+  }
+}
+console.log(this.data.startTime);
+console.log(this.data.endTime);
+    msg = JSON.stringify(msg);
+    util.sendSocketMessage({data:msg,that:this});
     }
 });

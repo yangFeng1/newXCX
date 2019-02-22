@@ -149,7 +149,7 @@ page{
 .createClass{
     width: 88rpx;
     height: 88rpx;
-    position: absolute;
+    position: fixed;
     bottom: 40rpx;
     right: 40rpx;
 }

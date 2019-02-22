@@ -42,7 +42,7 @@ page{
     left: 40rpx;
     z-index: 999;
     padding: 40rpx;
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 .facilityList{
     width: 100%;
@@ -89,7 +89,7 @@ page{
     height: 108rpx;
     position: absolute;
     right: 0rpx;
-    bottom: -60rpx;
+    bottom: -38rpx;
 }
 .mybody{
     height: 866rpx;
@@ -147,8 +147,8 @@ page{
     min-height: 364rpx;
     border: 1rpx solid #4b94fa;
     position: absolute;
-    top: 0rpx;
-    left: -900px;
+    top: -900rpx;
+    left: 0rpx;
     padding: 24rpx 8rpx 32rpx 24rpx;
 }
 .viewLayout .title{
@@ -212,13 +212,20 @@ page{
 }
 
 /*申请发言列表*/
-.viewLayout {
+.speak {
+    width: 564rpx;
+    min-height: 364rpx;
+    border: 1rpx solid #4b94fa;
+    position: absolute;
+    top: 0rpx;
+    left: -900px;
+    padding: 24rpx 8rpx 32rpx 24rpx;
     box-sizing: border-box;
     max-height: 866rpx;
     overflow: scroll;
 }
 
-.viewLayout .item{
+.speak .item{
     box-sizing: border-box;
     padding: 24rpx;
     position: relative;
@@ -228,11 +235,11 @@ page{
     border: 1px solid #ffaa67;
     margin-bottom: 24rpx;
 }
-.viewLayout .item text{
+.speak .item text{
     font-size: 24rpx;
     color: #555;
 }
-.viewLayout .item view{
+.speak .item view{
     border: 4rpx;
     font-size: 24rpx;
     text-align: center;
@@ -242,13 +249,13 @@ page{
     position: absolute;
     color: #fb687a;
 }
-.viewLayout .item .agree{
+.speak .item .agree{
     border: 1px solid #ffaa67;
     background: #fcf6f1;
     right: 24rpx;
     bottom: 24rpx;
 }
-.viewLayout .item .refuse{
+.speak .item .refuse{
     border: 1px solid #fb687a;
     background: #fcf6f1;
     right: 156rpx;

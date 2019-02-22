@@ -52,19 +52,21 @@
              </view>
          </view>
          <view class="viewLayout">
-             <!-- <view class="title">
+             <view class="title">
                  视频画面
              </view>
-             <image src="{{IP}}speaker_FM_default.png" />
-             <image src="{{IP}}speaker_FM_default.png" />
-             <image src="{{IP}}speaker_FM_default.png" />
-             <image src="{{IP}}speaker_FM_default.png" />
-             <image src="{{IP}}speaker_FM_default.png" />
-             <image src="{{IP}}speaker_FM_default.png" />
-             <image src="{{IP}}speaker_FM_default.png" />
-             <image src="{{IP}}speaker_FM_default.png" />
-             <image src="{{IP}}speaker_FM_default.png" />
-             <image src="{{IP}}speaker_FM_default.png" /> -->
+             <image src="{{IP}}{{activeViewList[0]}}" data-name="film" bindtap="setVideoOutput"/>
+             <image src="{{IP}}{{activeViewList[1]}}" data-name="computer" bindtap="setVideoOutput" />
+             <image src="{{IP}}{{activeViewList[2]}}" data-name="teacher_full"  bindtap="setVideoOutput"/>
+             <image src="{{IP}}{{activeViewList[3]}}" data-name="ctftile" bindtap="setVideoOutput" />
+             <image src="{{IP}}{{activeViewList[4]}}" data-name="teacher" bindtap="setVideoOutput" />
+             <image src="{{IP}}{{activeViewList[5]}}" data-name="student" bindtap="setVideoOutput" />
+             <image src="{{IP}}{{activeViewList[6]}}" data-name="student_full" bindtap="setVideoOutput" />
+             <image src="{{IP}}{{activeViewList[7]}}" data-name="csftile" bindtap="setVideoOutput" />
+             <image src="{{IP}}{{activeViewList[8]}}" data-name="ctfpip" bindtap="setVideoOutput" />
+             <image src="{{IP}}{{activeViewList[9]}}" data-name="csfpip" bindtap="setVideoOutput" />
+            </view>
+             <view class="speak">
              <view class="viewLayoutBox">
                  <view class="item" wx:for="{{interactionMemberList}}" wx:if="{{item.raiseHand && item.online}}">
                     <text>成员{{item.name}}申请发言</text>

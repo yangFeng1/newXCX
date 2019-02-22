@@ -56,7 +56,7 @@
 
 
     <view class="appointment" wx:if="{{tabar=='appointment'}}">
-        <view class="item">
+        <!-- <view class="item">
             <view>
                  <text class="appointmentTitle">讲师名称：</text>
                  <text class="appointmentB">正大叔</text>
@@ -80,29 +80,29 @@
                  <text class="appointmentB">00:05:30</text>
             </view>
             <image src="{{IP}}interactive_openClass_default.png" />
-        </view>
-         <view class="item">
+        </view> -->
+         <view class="item" wx:for="{{meetingList}}">
             <view>
                  <text class="appointmentTitle">讲师名称：</text>
                  <text class="appointmentB">正大叔</text>
             </view>
             <view>
                  <text class="appointmentTitle">课堂ID：</text>
-                 <text class="appointmentB">正大叔</text>
+                 <text class="appointmentB">{{item.mr_short_id}}</text>
             </view>
             <view>
                  <text class="appointmentTitle">课程主题：</text>
-                 <text class="appointmentB">正大叔</text>
+                 <text class="appointmentB">{{item.name}}</text>
             </view>
             <view>
                  <text class="appointmentTitle">开始时间：</text>
-                 <text class="appointmentB">2018-09-12</text>
-                 <text class="appointmentB">00:05:30</text>
+                 <text class="appointmentB">{{item.start_date}}</text>
+                 <!-- <text class="appointmentB">00:05:30</text> -->
             </view>
             <view>
                  <text class="appointmentTitle">结束时间：</text>
-                 <text class="appointmentB">2018-09-12</text>
-                 <text class="appointmentB">00:05:30</text>
+                 <text class="appointmentB">{{item.exp_date}}</text>
+                 <!-- <text class="appointmentB">00:05:30</text> -->
             </view>
             <image src="{{IP}}interactive_openClass_default.png" />
         </view>
@@ -117,23 +117,23 @@
                      </view>
                      <view class=" clearfix">
                          <text class="fl">开始时间</text>
-                         <picker mode="multiSelector"range="{{dateTime}}" bindcolumnchange='columnchange' data-name="start" bindtap="choseDate">
-                            <input type=""  class="fl" bindinput="appointment" value="{{startTime}}" disabled/>
+                         <picker mode="multiSelector"range="{{dateTime}}" bindcolumnchange='columnchange' bindchange="bindchange" data-name="start" bindtap="choseDate" value="{{startTimeValue}}">
+                            <input type="" class="fl" value="{{startTime}}" disabled/>
                          </picker>
                      </view>
                      <view class=" clearfix">
                          <text class="fl">结束时间</text>
-                         <picker mode="multiSelector"range="{{dateTime}}" bindcolumnchange='columnchange' data-name="start" bindtap="choseDate">
-                             <input type="" class="fl" bindinput="appointment" value="{{endTime}}" disabled/>
+                         <picker mode="multiSelector"range="{{dateTime}}" bindcolumnchange='columnchange' bindchange="bindchange" data-name="end" bindtap="choseDate" value="{{startTimeValue}}">
+                             <input type=""class="fl" value="{{endTime}}" disabled/>
                          </picker>
                      </view>
                      <view class=" clearfix">
                          <text class="fl">课程主题</text>
-                         <input type="" class="fl" bindinput="appointment"/>
+                         <input type="" data-name='meeting_name' class="fl" bindinput="appointment"/>
                      </view>
                  </view>
                  <view class="bottom">
-                     <view class="fl">
+                     <view class="fl" bindtap='creatBookingClass'>
                          添加
                      </view>
                      <view class="red fl" data-name="false" bindtap="modal">

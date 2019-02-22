@@ -2,10 +2,10 @@
   "pages":[
     "pages/index/index", 
     "pages/interaction/interaction",
+    "pages/enter/enter",
     "pages/interactionMain/interactionMain",
     "pages/controlMain/controlMain",
     "pages/interactionminor/interactionminor", 
-    "pages/enter/enter",
     "pages/editAddress/editAddress",
     "pages/addressList/addressList",
     "pages/myself/myself",
