@@ -147,8 +147,8 @@ page{
     min-height: 364rpx;
     border: 1rpx solid #4b94fa;
     position: absolute;
-    top: -900rpx;
-    left: 0rpx;
+    top: 0rpx;
+    left: -900px;
     padding: 24rpx 8rpx 32rpx 24rpx;
 }
 .viewLayout .title{
@@ -218,7 +218,7 @@ page{
     border: 1rpx solid #4b94fa;
     position: absolute;
     top: 0rpx;
-    left: -900px;
+    left: 0rpx;
     padding: 24rpx 8rpx 32rpx 24rpx;
     box-sizing: border-box;
     max-height: 866rpx;

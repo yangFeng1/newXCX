@@ -11,10 +11,10 @@ Page({
       hideFlag:false,
       addresList:[],
       selectedAddress:'',
-      pattern:'0',
+      pattern:'1',
       cover:false,
       memberName:false,
-      namea:'启动会议',
+      namea:'启动课堂',
       joinAcc:false,
       joinPwd:false,
       creatMeetingFlag:true,
@@ -145,10 +145,29 @@ Page({
           JSON.parse(data.data)
         }catch(e){
           // console.log(data);
+          wx.showToast({
+            title:"解析失败",
+            icon:"none"
+          })
           console.log('JSON解析错误');
           return;
         }
-        var TopicType = JSON.parse(data.data).data.indexOf('interactRespondEventTopic') == -1?true:false;//判断录播机主动推送是否是互动消息
+        var TopicType;//判断录播机主动推送是否是互动消息
+        try {
+          TopicType = JSON.parse(data.data).data.indexOf('interactRespondEventTopic') == -1?true:false;//判断录播机主动推送是否是互动消息
+        } catch (error) {
+          if(_this.data.inCall){
+            wx.showToast({
+              icon:'none',
+              title:'互动开启失败'
+            })
+          }
+          _this.setData({
+            cover:false,
+            inCall:false
+          })
+            return;
+        }
         if(JSON.parse(data.data).cmd == "NETCMD_WECHAT_BROADCAST_MESSAGE" && !TopicType){
           console.log(JSON.parse(data.data).data);
           var res = JSON.parse(JSON.parse(data.data).data.split('<')[1].split('>')[0]);
@@ -229,6 +248,9 @@ Page({
               icon: 'none',
                duration: 1000
             })
+            _this.setData({
+              cover:false
+            })
            }
            break;
            case 'NETCMD_WECHAT_INTERACTION_STOP'://关闭互动回复
@@ -282,16 +304,13 @@ Page({
             case "NETCMD_WECHAT_INTERACTION_meetingList"://获取预约课堂列表
                 _this.meetingListReport(data.data);
             break;
+            case 'NETCMD_WECHAT_INTERACTION_meetingDelete'://删除预约课堂
+                _this.closeAppointmentReport(data.data);
+            break;
           }
       })
     },
-    meetingListReport(data){//获取预约课堂列表
-      var data = JSON.parse(data.split('"data":')[1].split(']')[0]+']');
-      console.log(data);
-      this.setData({
-        meetingList:data
-      })
-    },
+    
     creatMeetingReport(result){//创建预约会议回复
       if(result.split('"code":')[1].split(',')[0] == 200){
         wx.showToast({
@@ -299,7 +318,8 @@ Page({
         });
         this.setData({
           model:false
-        })
+        });
+        this.getBookingClass();
       }else{
         wx.showToast({
           title:'创建预约失败',
@@ -465,7 +485,8 @@ Page({
       this.setData({
         startClassList:array,
         addresList:newArr
-      })
+      });
+      console.log(this.data.addresList );
     },
     modal(e){
       switch(e.currentTarget.dataset.name == 'false'){
@@ -499,7 +520,8 @@ Page({
     }
     this.setData({
       cover:true,
-      creatMeetingFlag:false
+      creatMeetingFlag:false,
+      inCall : true//表示当前正在开启互动中
     })
     call = JSON.stringify(call);
     console.log(call);
@@ -528,9 +550,8 @@ Page({
       })
     },
     appointment(e){//添加课堂
-      
       this.setData({
-        meeting_name:e.currentTarget.dataset.name
+        meeting_name:e.detail.value
       })
     },
     dateTime(){//初始化选择时间框
@@ -771,6 +792,21 @@ Page({
     msg = JSON.stringify(msg);
     util.sendSocketMessage({data:msg,that:this});
     },
+    meetingListReport(data){//获取预约课堂列表
+      if(data.split('"data":')[1].split(',')[0] == 'null'){
+        this.setData({
+          meetingList:[],
+          cover:false
+        });
+        return;
+      }
+      var data = JSON.parse(data.split('"data":')[1].split(']')[0]+']');
+      console.log(data);
+      this.setData({
+        meetingList:data,
+        cover:false
+      })
+    },
     creatBookingClass(){//创建预约课堂
 
       var msg = {
@@ -789,9 +825,39 @@ Page({
       }
   }
 }
-console.log(this.data.startTime);
-console.log(this.data.endTime);
+  console.log(this.data.startTime);
+  console.log(this.data.endTime);
     msg = JSON.stringify(msg);
     util.sendSocketMessage({data:msg,that:this});
+    },
+    closeAppointment(e){//取消预约课堂
+      console.log(e.currentTarget.dataset.classid);
+      this.setData({
+        cover:true
+      })
+      var msg = {
+        "cmd": "NETCMD_WECHAT_INTERACTION_meetingDelete",
+        "RecorderId": app.RecorderId,
+        "data":    {
+          "cmd":"deleteOrderClass",
+          "param":{
+              "classId":e.currentTarget.dataset.classid
+          }
+      }
+    };
+    msg = JSON.stringify(msg);
+    util.sendSocketMessage({data:msg,that:this});
+    },
+    closeAppointmentReport(res){//处理取消预约课堂回复
+      // console.log(e);
+      
+      if(res.split('"code":')[1].split(',')[0] == 200){
+        this.getBookingClass();
+      }else{
+        wx.showToast({
+          title:'删除失败',
+          icon:'none'
+        })
+      }
     }
 });

@@ -1,15 +1,35 @@
-<view>
-    <view class="coverBox"  wx:if='{{cover}}'>
-            <image src="{{IP}}loading.gif"  class="loading"/>
-            <view class="cover"></view>
-    </view>
+<view class="box">
+        <view class="coverBox"  wx:if='{{cover}}'>
+                <image src="{{IP}}loading.gif"  class="loading"/>
+                <view class="cover"></view>
+        </view>
+<view  bindtouchstart="touchStart" bindtouchend="touchEnd" animation="{{ani}}" class="myBody">
+    
     <view class="speak">
         <image src="{{IP}}listener_talk_default.png" bindtap="speak" wx:if="{{speakStatus == 0 && meetingMode==1}}"/>
         <image src="{{IP}}proposer.png" bindtap="closeRaiseHang"  wx:if="{{speakStatus == 1 && meetingMode==1}}"/>
         <image src="{{IP}}closeSpeak.png" bindtap="outSpeak"  wx:if="{{speakStatus == 2 && meetingMode==1}}"/>
         <image src="{{IP}}closeInteaction.png" wx:if="{{meetingMode==0}}"  bindtap="outInteraction" />
     </view>
+    <view class="viewLayoutBox">
+       <view class="viewLayout">
+            <view class="title">
+                视频画面
+            </view>
+            <image src="{{IP}}{{activeViewList[0]}}" data-name="film" bindtap="setVideoOutput"/>
+            <image src="{{IP}}{{activeViewList[1]}}" data-name="computer" bindtap="setVideoOutput" />
+            <image src="{{IP}}{{activeViewList[2]}}" data-name="teacher_full"  bindtap="setVideoOutput"/>
+            <image src="{{IP}}{{activeViewList[3]}}" data-name="ctftile" bindtap="setVideoOutput" />
+            <image src="{{IP}}{{activeViewList[4]}}" data-name="teacher" bindtap="setVideoOutput" />
+            <image src="{{IP}}{{activeViewList[5]}}" data-name="student" bindtap="setVideoOutput" />
+            <image src="{{IP}}{{activeViewList[6]}}" data-name="student_full" bindtap="setVideoOutput" />
+            <image src="{{IP}}{{activeViewList[7]}}" data-name="csftile" bindtap="setVideoOutput" />
+            <image src="{{IP}}{{activeViewList[8]}}" data-name="ctfpip" bindtap="setVideoOutput" />
+            <image src="{{IP}}{{activeViewList[9]}}" data-name="csfpip" bindtap="setVideoOutput" />
+       </view>
+    </view>
     <view class="close">
         <image src="{{IP}}closeListen.png" bindtap="outInteraction" wx:if="{{meetingMode==1}}"/>
     </view>
+</view>
 </view>

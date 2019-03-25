@@ -30,6 +30,9 @@ page{
 }
 .startClass{
     /* position: relative; */
+    max-height: 1000rpx;
+    width: 100%;
+    overflow: scroll;
 }
 .startClass input{
     height: 80rpx;
@@ -145,7 +148,12 @@ page{
     top: 81rpx;
     right: 40rpx;
 }
-
+.appointment .item .closeAppointment{
+    width: 128rpx;
+    height: 48rpx;
+    top: 230rpx;
+    right: 40rpx ;
+}
 .createClass{
     width: 88rpx;
     height: 88rpx;

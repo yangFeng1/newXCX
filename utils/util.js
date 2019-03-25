@@ -40,6 +40,7 @@ const linkSocket = ()=>{//链接socket
     url: "wss://weixin.hd123.net.cn/ws",
     // url: "ws://172.16.1.90:9000/ajaxchattest",
     fail(){
+      console.log('连接失败');
       linkSocket();
     }
   })

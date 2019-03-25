@@ -12,13 +12,15 @@ Page({
       member:false,
       cover:false,
       addMemberName:'',
-      interactionMemberList:[],
-      meetingId:'',
-      password:'',
+      interactionMemberList:[],//申请发言列表
+      meetingId:'',//会议id
+      password:'',//会议密码
       startClassList:[],
       addresList:app.addresList,//通讯录
+      applySpeakList:false,//有人申请发言时显示申请发言列表
       interactionMode:'',
       speak:false,//会议模式下不显示发言按钮
+      VideoScalePerPage:0,//表示当前互动画面布局为几画面 0没有设置 2四画面 3九画面
       interactionIsOvera:false,////手动退出当前页面直接退出到controlMain页面
       activeViewList:['speaker_FM_default.png','speaker_CS_default.png','speaker_TF_default.png','speaker_CSTF_default.png','speaker_TS_default.png','speaker_SS_default.png','speaker_SF_default.png','speaker_CSSF_default.png','speaker_TFCS_default.png','speaker_SFCS_default.png'],//显示视屏画面选择的列表
       selectViewList:['speaker_FM_selected.png','speaker_CS_selected.png','speaker_TF_selected.png','speaker_CSTF_selected.png','speaker_TS_selected.png','speaker_SS_selected.png','speaker_SF_selected.png','speaker_CSSF_selected.png','speaker_TFCS_selected.png','speaker_SFCS_selected.png'],//选中视屏画面选择的列表
@@ -35,6 +37,7 @@ Page({
         }
     },
     onHide(){
+        var _this = this;
         this.setData({
             flag:true
           });
@@ -71,11 +74,16 @@ Page({
               _this.socket();
             })
           });
-        this.socket();
-        this.getIsInClassStatus();//获取互动状态
+          this.socket();
+          //初始化页面请求状态 （每次请求间隔100毫秒---间隔太短会出现后面的请求没有回复）
+          this.getVideoOutput()//获取互动输出视频
+          setTimeout(function(){
+            _this.getIsInClassStatus();//获取互动状态
+          },100)
         this.data.timer || clearTimeout(this.data.timer);
-        this.whetherAddMember();//在会议开始时是否添加人员    
-        this.getVideoOutput()//获取互动输出视频
+        setTimeout(function(){
+            _this.whetherAddMember();//在会议开始时是否添加人员  
+        },300)   
     },
     whetherAddMember(){//在会议开始时是否添加人员
         console.log(this.data.member);
@@ -91,6 +99,10 @@ Page({
         var _this = this;
         wx.onSocketMessage(function(res) {
             try{JSON.parse(res.data).cmd}catch(e){
+                wx.showToast({
+                    title:"解析失败",
+                    icon:"none"
+                })
                 return;
             }
             var res = JSON.parse(res.data);
@@ -233,7 +245,7 @@ Page({
                 break;
                 case "NETCMD_WECHAT_INTERACTION_DELETE"://互动踢人
                      var result = res.data.split('"code":')[1].split(',')[0];
-                     if(result == 1){//踢人成功
+                     if(result == 200){//踢人成功
                         // var data = {
                         //     "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
                         //     "RecorderId": app.RecorderId,
@@ -247,11 +259,11 @@ Page({
                         //     _this.setData({
                         //         cover:false
                         //     })
-                        //     wx.showToast({
-                        //         title:'踢出用户成功',
-                        //         icon: 'none',
-                        //          duration: 1000
-                        //       })
+                            wx.showToast({
+                                title:'踢出用户成功',
+                                icon: 'none',
+                                 duration: 1000
+                              })
                         //     wx.sendSocketMessage({
                         //         data: data,
                         //         success: function(res){
@@ -284,13 +296,14 @@ Page({
                     interactionMemberList = _this.getMemberState(interactionMemberList) //获取当前成员状态
 
                     console.log(interactionMemberList);
+                    _this.isShowApply(interactionMemberList);//判断是否有人申请发言
                     _this.setData({
                         interactionMemberList:interactionMemberList
                     })
                 break;
                 case 'NETCMD_WECHAT_INTERACTION_ADD'://拉人成功
                 var result = res.data.split('"code":')[1].split(',')[0];
-                if(result == 1){//拉人成功
+                if(result == 200){//拉人成功
                     var data = {         
                         "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
                         "RecorderId": app.RecorderId,
@@ -325,6 +338,7 @@ Page({
                 }
                 break;
                 case 'NETCMD_WECHAT_INTERACTION_getVideoOutput'://获取互动输出视频
+                    console.log("获取互动输出视频");
                     _this.getVideoOutputReport(res.data);
                 break;
                 case 'NETCMD_WECHAT_INTERACTION_setVideoOutput'://设置互动输出视频
@@ -332,6 +346,18 @@ Page({
                 break;
             } 
 
+        });
+    },
+    isShowApply(data){//判断是否有人申请发言
+        var flag = false;
+        data.forEach(function(v){
+            if(v.online && v.raiseHand){
+                flag = true;
+                return;
+            }
+        });
+        this.setData({
+            applySpeakList:flag
         });
     },
     onSpeak(data){//处理指定发言返回回复
@@ -386,7 +412,7 @@ Page({
                              duration: 1000
                           })
                     }
-    },
+    }, 
     getIsInClass(res){//处理获取互动信息回复
         var _this = this;
                     var interactionMemberList =  res.meeting.conferees;
@@ -401,7 +427,7 @@ Page({
                     _this.setData({
                         interactionMemberList:interactionMemberList
                     })
-    },
+    },  
     kickStrangersInfo(result){//处理互动踢人回复
        var _this = this;
         if(result.code == 200){//踢人成功
@@ -416,13 +442,13 @@ Page({
                         console.log(data);
                         setTimeout(function(){
                             _this.setData({
-                                cover:false
+                                cover:false                                                                             
                             })
-                            wx.showToast({
-                                title:'踢出用户成功',
-                                icon: 'none',
-                                 duration: 1000
-                              })
+                            // wx.showToast({
+                            //     title:'踢出用户成功',
+                            //     icon: 'none',
+                            //      duration: 1000
+                            //   })
                               util.sendSocketMessage({data:data,that:this})
                             wx.sendSocketMessage({
                                 data: data,
@@ -432,16 +458,15 @@ Page({
                             })
                         },1500)
                     }else{//踢人失败
-                        wx.showToast({
-                            title:'踢出用户失败',
-                            icon: 'none',
-                             duration: 1000
-                          })
+                        // wx.showToast({
+                        //     title:'踢出用户失败',
+                        //     icon: 'none',
+                        //      duration: 1000
+                        //   })
                     }
     },
     addStrangers(result){//处理互动拉人回复
         var _this = this;
-       
         if(result.code == 200){//拉人成功
                     var data = {
                         "cmd": "NETCMD_WECHAT_INTERACTION_STAFF",
@@ -451,11 +476,11 @@ Page({
                       }
                     }
                    if(this.data.addToast){//在本界面操作的才弹出提示框
-                    wx.showToast({
-                        title:'添加人员成功',
-                        icon:'none',
-                        duration:1000
-                    });
+                    // wx.showToast({
+                    //     title:'添加人员成功',
+                    //     icon:'none',
+                    //     duration:1000
+                    // });
                     this.setData({
                         addToast:true
                     });
@@ -475,11 +500,11 @@ Page({
                     },2000)
                 }else{//拉人失败
                     if(this.data.addToast){//在本界面操作的才弹出提示框
-                        wx.showToast({
-                            title:'添加人员失败',
-                            icon: 'none',
-                             duration: 1000
-                          });
+                        // wx.showToast({
+                        //     title:'添加人员失败',
+                        //     icon: 'none',
+                        //      duration: 1000
+                        //   });
                           this.setData({
                             addToast:true
                         });
@@ -581,14 +606,14 @@ Page({
         //Y轴 
         var endY = e.changedTouches[0].pageY;
         if(Math.abs(res) < 60){//横向移动小于20判断是否纵向移动
-            res = endY - this.data.startLocationY;
-            var locationY = this.data.locationY;
-            if(Math.abs(res) < 100) return;//纵向滑动小于100不予移动
-            var moveY = res>0?locationY+900:locationY + -900;
-            moveY<0 && (moveY = 0);
-            moveY>500 && (moveY = 500);
-            console.log(moveY)
-            this.slide(this.data.location,moveY);    
+            // res = endY - this.data.startLocationY;  //暂时不需要向上滑动
+            // var locationY = this.data.locationY;
+            // if(Math.abs(res) < 100) return;//纵向滑动小于100不予移动
+            // var moveY = res>0?locationY+900:locationY + -900;
+            // moveY<0 && (moveY = 0);
+            // moveY>500 && (moveY = 500);
+            // // console.log(moveY)
+            // this.slide(this.data.location,moveY);    
             return;
         }; 
         if(this.data.locationY !=0) return;//纵向不等于0时 不可以横向滑动
@@ -597,7 +622,7 @@ Page({
         move<-900 && (move = -900);
         //  console.log(move)
         if(move == this.data.location) return;
-        if(move == -900)return;//暂时屏蔽选择视屏画页面  
+        //if(move == -900)return;//暂时屏蔽选择视屏画页面  
         this.slide(move,this.data.locationY);
     },
     slide(moveX,moveY){//界面滑动
@@ -752,7 +777,7 @@ Page({
         })
         util.sendSocketMessage({data:msg,that:this});
     },
-    setVideoOutputReport(result){//处理设置互动输出视频回复
+    setVideoOutputReport(result){//处理设置互动输出视频回复1
         result = result.split('"code":')[1].split(',')[0];
         if(result == 200){
             this.getVideoOutput();
@@ -762,10 +787,21 @@ Page({
                 icon:'none'
             })
         }
-    }                                                                                               
+    },
+    setVideoScalePerPage(e){
+        var size = e.currentTarget.dataset.name;
+        var msg = {
+            "cmd": "NETCMD_WECHAT_INTERACTION_setVideoScalePerPage",
+            "RecorderId":app.RecorderId,
+            "data":    {
+                    "cmd":"setVideoScalePerPage",
+                    "param":parseInt(size)
+                }
+          };
+        msg = JSON.stringify(msg);
+        this.setData({
+            VideoScalePerPage:size
+        });
+        util.sendSocketMessage({data:msg,that:this});
+    }                                                                                          
 })
-
-
-
-
-          

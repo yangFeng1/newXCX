@@ -87,7 +87,7 @@ Page({
     //        success:function(res){
     //          wx.sendSocketMessage({
     //            data: '{'+
-    //              '"cmd": "NETCMD_WECHATLOGIN",'+
+    //              '"cmd": "NETCMD_WECHATLOGIN",'+ 
     //              '"MatterServerId": "'+data.MatterServerId+'" ,'+
     //              '"RecorderId": "'+data.RecorderId+'" ,'+
     //              '"data": {'+
@@ -118,6 +118,10 @@ Page({
         }
       },
       fail:function(e){
+        wx.showToast({
+          icon:'none',
+          title:'扫码失败'
+        })
         console.log(e);
       }
     })
