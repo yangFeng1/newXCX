@@ -309,6 +309,7 @@ Page({
           }
           if(res.data.indexOf('lockScreenState')!=-1){//锁屏状态
             var state = res.data.split('lockScreenState[')[1].split(']')[0];
+            console.log(state);
             if(state == 0){
               _this.setData({
                 screen:'home_live_off.png',
