@@ -1,23 +1,8 @@
-<!-- <view>
+<view>
     <view class="coverBox"  wx:if='{{cover}}'>
     <image src="{{IP}}loading.gif"  class="loading"/>
     <view class="cover"></view>
     
        
 </view>
-</view> -->
-<view class='view3'>
-
-    <text>预约时间</text>
-    
-    <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
-    
-    <view>
-    
-    
-    fiohreuih
-    </view>
-    
-    </picker>
-    
-    </view>
+</view>

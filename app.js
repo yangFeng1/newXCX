@@ -50,7 +50,8 @@ App({
     var _this = this;
     wx.connectSocket({
       url: "wss://weixin.hd123.net.cn/ws",
-       //url: "ws://172.16.1.90:9000/ajaxchattest", 
+      //  url: "ws://192.168.3.156:9000/ajaxchattest", 
+      //  url: "ws://123.207.167.163:9010/ajaxchattest", 
       fail(err){
         console.error('socket链接失败,重新链接')
         _this.linkSocket();
@@ -59,6 +60,18 @@ App({
         wx.onSocketOpen(function (res) {
           util.monitorSocketClose(_this);
           console.log('WebSocket连接已打开！');
+        //  var msg = {
+        //     "cmd": "NETCMD_WECHAT_INTERACTION_ANSWER_baseInfo",
+        //     "RecorderId": '32321'
+        // };
+        //   for(var i = 0; i < 60; i++){  
+        //     wx.sendSocketMessage({
+        //       data:JSON.stringify(msg),
+        //       success:function(){
+        //         console.log('success');
+        //       }
+        //     })
+        //   }
         _this.getWeChatId();
         
         wx.onSocketMessage(function(data) {

@@ -6,7 +6,10 @@ Page({
         cover:false,
         loactionData:false,
         speakStatus:0,//0为未申请发言 1申请发言 2正在发言
-        meetingMode:0//0为会议 1为课堂
+        meetingMode:0,//0为会议 1为课堂
+        location:0,
+        activeViewList:['speaker_FM_default.png','speaker_CS_default.png','speaker_TF_default.png','speaker_CSTF_default.png','speaker_TS_default.png','speaker_SS_default.png','speaker_SF_default.png','speaker_CSSF_default.png','speaker_TFCS_default.png','speaker_SFCS_default.png'],//显示视屏画面选择的列表
+        selectViewList:['speaker_FM_selected.png','speaker_CS_selected.png','speaker_TF_selected.png','speaker_CSTF_selected.png','speaker_TS_selected.png','speaker_SS_selected.png','speaker_SF_selected.png','speaker_CSSF_selected.png','speaker_TFCS_selected.png','speaker_SFCS_selected.png'],//选中视屏画面选择的列表
     },
     onHide(){
         this.setData({
@@ -51,6 +54,7 @@ Page({
               _this.socket();
             })
           });
+        this.getVideoOutput();//获取互动输出视频
     },
     socket(){
         var _this = this;
@@ -158,6 +162,13 @@ Page({
                     })
                     _this.getStatus(state);
                 break;
+                case 'NETCMD_WECHAT_INTERACTION_getVideoOutput'://获取互动输出视频
+                    console.log("获取互动输出视频");
+                    _this.getVideoOutputReport(res.data);
+                break;
+                case 'NETCMD_WECHAT_INTERACTION_setVideoOutput'://设置互动输出视频
+                    _this.setVideoOutputReport(res.data);
+                break;
             }
         })
     },
@@ -251,5 +262,129 @@ Page({
             }
         };
         util.sendSocketMessage({data:JSON.stringify(data),that:this})
-    }
+    },
+    getVideoOutput(){//获取互动输出视频
+        var msg ={
+            "cmd": "NETCMD_WECHAT_INTERACTION_getVideoOutput",
+            "RecorderId": app.RecorderId,
+            "data":      {
+                "cmd":"getVideoOutput"
+            }
+        };
+        this.setData({
+            cover:false
+        })
+        msg = JSON.stringify(msg);
+        util.sendSocketMessage({data:msg,that:this});
+    },
+    getVideoOutputReport(data){//处理互动输出视频请求回复
+       var defaultViewList = ['speaker_FM_default.png','speaker_CS_default.png','speaker_TF_default.png','speaker_CSTF_default.png','speaker_TS_default.png','speaker_SS_default.png','speaker_SF_default.png','speaker_CSSF_default.png','speaker_TFCS_default.png','speaker_SFCS_default.png']//默认视屏画面选择的列表
+        var result = data.split('"code":')[1].split(',')[0];
+        if(result == 200){
+            var layout = data.split('"result":"')[1].split('"')[0];
+            console.log(layout);
+            var index = 0;
+            switch(layout){
+                case 'film':
+                    index = 0;
+                break;
+                case 'computer':
+                    index = 1;
+                break;
+                case 'teacher_full':
+                    index = 2;
+                break;
+                case 'ctftile':
+                    index = 3;
+                break;
+                case 'teacher':
+                    index = 4;
+                break;
+                case 'student':
+                    index = 5;
+                break;
+                case 'student_full':
+                    index =6;
+                break;
+                case 'csftile':
+                    index = 7;
+                break;
+                case 'ctfpip':
+                    index = 8;
+                break;
+                case 'csfpip':
+                    index = 9;
+                break;
+            };
+            defaultViewList[index]= this.data.selectViewList[index];
+           this.setData({
+            activeViewList:defaultViewList
+           });  
+        }else{
+
+        }
+    },
+    setVideoOutput(e){//设置互动输出视频
+        var param = e.currentTarget.dataset.name;
+        var msg = {
+            "cmd": "NETCMD_WECHAT_INTERACTION_setVideoOutput",
+            "RecorderId": app.RecorderId,
+            "data":     {
+                "cmd":"setVideoOutput",
+                "param":param
+            }
+        };
+        msg = JSON.stringify(msg);
+        this.setData({
+            cover:true
+        })
+        util.sendSocketMessage({data:msg,that:this});
+    },
+    setVideoOutputReport(result){//处理设置互动输出视频回复
+        result = result.split('"code":')[1].split(',')[0];
+        if(result == 200){
+            this.getVideoOutput();
+        }else{
+            wx.showToast({
+                title:'设置失败',
+                icon:'none'
+            })
+        }
+    },
+    touchStart(e){
+        // console.log(e);
+        this.setData({
+            startLocation:e.changedTouches[0].pageX,
+        })
+    },  
+    touchEnd(e){
+        // console.log(e);
+        // console.log(this.data.location)
+        //X轴
+        var end = e.changedTouches[0].pageX;
+        var res = end - this.data.startLocation;
+        var location = this.data.location;
+        if(Math.abs(res) < 60) return;//滑动小于60时 不滑动
+        var move = res>0?location+900:location + -900;
+        move>900 && (move = 900);
+        move<-0 && (move = -0);
+        //  console.log(move)
+        if(move == this.data.location) return;
+        if(move == -900)return;//暂时屏蔽选择视屏画页面  
+        this.slide(move);
+    },
+    slide(moveX){//界面滑动
+        var animation = wx.createAnimation({
+            duration: 500,
+            timingFunction: 'ease',
+            delay: 0
+          });
+          this.setData({
+            location:moveX
+          })
+        animation.translate(moveX,0).step()
+          this.setData({
+            ani:  animation.export()
+          })
+    }    
 })

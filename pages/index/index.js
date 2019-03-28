@@ -9,10 +9,11 @@ Page({
     q:false//onLoad(option) 判断是否为扫码进入
   },
   onLoad(option){
-    console.log(decodeURIComponent(option.q));
+    console.log(1111111111);
+    console.log(option.q);
     if(option.q){//判断是否是扫码进入
       this.setData({
-        option:option.q
+        q:option.q
       })
     }
   },
@@ -40,9 +41,15 @@ Page({
         wx.setNavigationBarTitle({
           title: app.userInfo.name 
         });
-        if(_this.q){//判断是否是扫码进入
-          var RecorderId = decodeURIComponent(option.q).split('RecorderId=')[1].split('&')[0];
+        console.log('1111111111111111111111111111111111');
+        console.log(!!(_this.data.q));
+        if(_this.data.q){//判断是否是扫码进入
+          console.log(decodeURIComponent(_this.data.q));
+          var RecorderId = decodeURIComponent(_this.data.q).split('RecorderId=')[1].split('&')[0];
           app.RecorderId = RecorderId;
+          _this.setData({
+            q:false
+          })
           wx.navigateTo({
             url: '../controlMain/controlMain'
           })
@@ -87,7 +94,7 @@ Page({
     //        success:function(res){
     //          wx.sendSocketMessage({
     //            data: '{'+
-    //              '"cmd": "NETCMD_WECHATLOGIN",'+
+    //              '"cmd": "NETCMD_WECHATLOGIN",'+ 
     //              '"MatterServerId": "'+data.MatterServerId+'" ,'+
     //              '"RecorderId": "'+data.RecorderId+'" ,'+
     //              '"data": {'+
@@ -118,6 +125,10 @@ Page({
         }
       },
       fail:function(e){
+        wx.showToast({
+          icon:'none',
+          title:'扫码失败'
+        })
         console.log(e);
       }
     })
